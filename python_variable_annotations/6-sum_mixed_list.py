@@ -11,10 +11,10 @@ to specify that the input for 'sum_mixed_list'
 is a list of ints/floats, and that
 'sum_mixed_list' returns a float.
 """
-from typing import List
+from typing import List, Union
 
 
-def sum_mixed_list(mxd_lst: List) -> float:
+def sum_mixed_list(mxd_lst: List[Union[int, float]]) -> float:
     """
     Returns the sum of all of the numbers in 'mxd_list',
     assuming that 'mxd_list' is a list,
