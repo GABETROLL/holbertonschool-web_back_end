@@ -21,4 +21,4 @@ def make_multiplier(multiplier: float) -> Callable[[float], float]:
         Returns x times a closure named 'multiplier'.
         """
         return x * multiplier
-    return multiplier
+    return multiplier_function
