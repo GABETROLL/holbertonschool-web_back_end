@@ -11,9 +11,10 @@ sum_list's 'input_list' argument
 should be a list of floats,
 and 'sum_list' returns a 'float'.
 """
+from typing import List
 
 
-def sum_list(input_list: list[float]) -> float:
+def sum_list(input_list: List[float]) -> float:
     """
     Returns the sum of all of the items
     inside 'input_list', using sum(input_list).
