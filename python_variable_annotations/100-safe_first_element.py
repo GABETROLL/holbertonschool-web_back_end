@@ -9,10 +9,10 @@ and ended up accidentally seeing the answers.
 
 I'll get it next time...
 """
-from typing import Sequence, Union, Any, NoneType
+from typing import Sequence, Union, Any
 
 
-def safe_first_element(lst: Sequence[Any]) -> Union[Any, NoneType]:
+def safe_first_element(lst: Sequence[Any]) -> Union[Any, None]:
     """
     If 'lst' is not empty,
     this function returns 'lst[0]'.
