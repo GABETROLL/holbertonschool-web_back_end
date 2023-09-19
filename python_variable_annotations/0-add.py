@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Uses Python type hints to specify that 'add'
 takes float arguments and returns a float.
