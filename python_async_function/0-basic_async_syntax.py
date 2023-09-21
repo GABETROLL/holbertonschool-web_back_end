@@ -2,7 +2,7 @@
 import asyncio
 from random import uniform
 
-async wait_random(max_delay: float = 10):
+async def wait_random(max_delay: float = 10):
     """
     Waits for a random amount of time
     (somewhat) in the range of
