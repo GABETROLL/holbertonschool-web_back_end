@@ -2,12 +2,17 @@
 import asyncio
 from random import uniform
 
-async def wait_random(max_delay: float = 10):
+async def wait_random(max_delay: float = 10) -> float:
     """
-    Waits for a random amount of time
+    Chooses a random number
     (somewhat) in the range of
-    0 and 'max_delay' seconds.
+    0 and 'max_delay' seconds,
+    using 'random.uniform'.
+
+    awaits for that amount of time (in seconds)
+
+    returns the number chosen.
     """
-    await asyncio.sleep(
-            uniform(0, max_delay)
-    )
+    wait_time: float = uniform(0, max_delay)
+    await asyncio.sleep(wait_time)
+    return wait_time
