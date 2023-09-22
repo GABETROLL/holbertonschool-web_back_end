@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
 """
 Imports 'wait_random' from '0-basic_async_syntax.py'
-and creates a function that calls 'wait_randon'
+and creates a 'coroutine' that calls 'wait_randon'
 n times with a 'max_delay', all in parallel.
 
 The output of delays should be in ascending order,
-since the functions should be running at the same time,
+since the 'corountine's should be running at the same time,
 and they print the amount of time they waited,
 and the ones that finish first print smaller numbers.
 """
