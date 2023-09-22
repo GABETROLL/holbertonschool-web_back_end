@@ -36,3 +36,4 @@ async def wait_n(n: int, max_delay: int) -> List[seconds]:
     for w in range(n):
         result.append(await wait_random(max_delay))
 
+    return result
