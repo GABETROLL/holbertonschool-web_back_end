@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """
-Exercise 0
+'Hello World!' figue in Python's
+documentation for 'asyncio'.
+
+Check it out!
+https://docs.python.org/3/library/asyncio.html
 """
 import asyncio
 from random import uniform
