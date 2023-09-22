@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
+"""
+Exercise 0
+"""
 import asyncio
 from random import uniform
+
 
 async def wait_random(max_delay: int = 10) -> float:
     """
