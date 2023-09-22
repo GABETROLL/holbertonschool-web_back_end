@@ -1,27 +1,38 @@
 #!/usr/bin/env python3
 """
-Imports 'wait_random' from '0-basic_async_syntax.py'
-and creates a 'coroutine' that calls 'wait_randon'
+Imports 'wait_random' from '0-basic_async_syntax.py'.
+Creates a coroutine named 'wait_n' that calls 'wait_randon'
 n times with a 'max_delay', all in parallel.
+Makes 'wait_n' return a list of floats
+representing the amount of time each coroutine took.
 
-The output of delays should be in ascending order,
+The list of floats should be in ascending order,
 since the 'corountine's should be running at the same time,
 and they print the amount of time they waited,
 and the ones that finish first print smaller numbers.
+
+(ALTHOUGH I DON'T KNOW IF COROUTINES THAT FINISH VERY CLOSELY
+CAN ALTER THE ORDER)
 """
 wait_random = __import__('0-basic_async_syntax').wait_random
 
+from typing import List
+seconds = float
 
-async def wait_n(n: int, max_delay: int):
+
+async def wait_n(n: int, max_delay: int) -> List[seconds]:
     """
     Calls and awaits 'wait_random(max_delay)'
     'n' times.
 
-    Since each 'wait_random' should be running
-    in parallel, each float output to the stdout
-    should be bigger and bigger, corresponding
-    to the time each 'wait_random' took to finish.
+    Returns a list of floats that represent
+    the time, IN SECONDS,
+    each coroutine took. The result should
+    be in ascending order, since the coroutines
+    that finish first should also be appended first.
     """
+    result: List[seconds] = []
+
     for w in range(n):
-        await wait_random(max_delay)
+        result.append(await wait_random(max_delay))
 
