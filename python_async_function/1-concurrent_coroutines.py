@@ -2,38 +2,36 @@
 """
 Imports 'wait_random' from '0-basic_async_syntax.py'.
 Creates a coroutine named 'wait_n' that calls 'wait_randon'
-n times with a 'max_delay', all in parallel.
-Makes 'wait_n' return a list of floats
-representing the amount of time each coroutine took.
+n times with a 'max_delay', all in parallel, then
+returns a list of their results.
 
-The list of floats should be in ascending order,
-since the 'corountine's should be running at the same time,
-and they print the amount of time they waited,
-and the ones that finish first print smaller numbers.
-
-(ALTHOUGH I DON'T KNOW IF COROUTINES THAT FINISH VERY CLOSELY
-CAN ALTER THE ORDER)
+The results should be the amount of time each corountine
+took, in ascending order, since the ones that finish
+first are appended first!
 """
+from typing import List
 wait_random = __import__('0-basic_async_syntax').wait_random
 
-from typing import List
 seconds = float
 
 
 async def wait_n(n: int, max_delay: int) -> List[seconds]:
     """
-    Calls and awaits 'wait_random(max_delay)'
-    'n' times.
+    Calls 'asyncio.gather' with a list of coroutines
+    produced by 'wait_random(max_delay)'. The amount
+    of the coroutines in that list should be 'n'.
+    This should run the coroutines in parallel.
 
     Returns a list of floats that represent
     the time, IN SECONDS,
     each coroutine took. The result should
-    be in ascending order, since the coroutines
-    that finish first should also be appended first.
+    be in ascending order, since 'asyncio.gather'
+    appends first the coroutines that finish first.
     """
-    result: List[seconds] = []
+    coroutines = []
+    for _ in range(n):
+        coroutines.append(wait_random(max_delay))
 
-    for w in range(n):
-        result.append(await wait_random(max_delay))
+    result: List = await asyncio.gather(*coroutines)
 
     return result
