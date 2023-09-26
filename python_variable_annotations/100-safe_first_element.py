@@ -2,12 +2,6 @@
 """
 We were provided with 'safe_first_element', and we must
 use the 'typing' module(?) to properly annotete it.
-
-This time I was feeling confident,
-but still failed to annotate properly,
-and ended up accidentally seeing the answers.
-
-I'll get it next time...
 """
 from typing import Sequence, Union, Any
 

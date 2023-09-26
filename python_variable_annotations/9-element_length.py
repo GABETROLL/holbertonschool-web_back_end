@@ -2,10 +2,6 @@
 """
 We were provided with the function 'element_length',
 and we must annotate it.
-
-I didn't know how to annotate it,
-so I looked at the exercise's answers,
-and I understood it a little afterwards. Sorry.
 """
 from typing import Iterable, Sequence, List, Tuple
 
