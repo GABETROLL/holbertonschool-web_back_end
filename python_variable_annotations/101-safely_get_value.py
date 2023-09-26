@@ -2,7 +2,9 @@
 """
 Add type annotations to this file.
 """
-import typing
+from typing import Mapping, Union, Any, TypeVar, NoneType
+
+T = TypeVar('T')
 
 
 def safely_get_value(
