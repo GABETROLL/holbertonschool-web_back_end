@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Make a coroutine called 'async_generator'.
 It should do this 10 timeS:
