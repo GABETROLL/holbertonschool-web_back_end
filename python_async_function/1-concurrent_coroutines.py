@@ -1,31 +1,54 @@
 #!/usr/bin/env python3
 """
-Imports 'wait_random' from '0-basic_async_syntax.py'.
-Creates a coroutine named 'wait_n' that calls 'wait_randon'
-n times with a 'max_delay', all in parallel, then
-returns a list of their results.
+Creates a coroutine that runs 'wait_random(max_delay)'
+n times, all in parallel, and returns a list
+of the results of each 'wait_random' call
+(which should be the amount of time the coroutine took
+ot run)
 
-The results should be the amount of time each corountine
-took, in ascending order, since the ones that finish
-first are appended first!
+The result list of times should be in ascending order.
+To do this, this file has an INTERMEDIATE COROUTINE
+that ACTUALLY RUNS and awaits for 'wait_random(max_delay)',
+and appends that call's result to a result list parameter.
+
+'wait_n' just runs 'run_and_append(max_delay, <result list>)'
+n times with 'asyncio.gather', and each 'run_and_append'
+coroutine appends its result when it's ready, to achieve
+appending the results of the 'wait_random' calls
+in the order that they finish.
 """
-from typing import List
-wait_random = __import__('0-basic_async_syntax').wait_random
 import asyncio
+from typing import List
+
+wait_random = __import__('0-basic_async_syntax').wait_random
 
 seconds = float
 
 
 async def run_and_append(max_delay: int, l: list) -> None:
+    """
+    Runs 'wait_random(max_delay)', awaits its return value,
+    and appends its result to 'l'.
+    """
     l.append(await wait_random(max_delay))
 
 
 async def wait_n(n: int, max_delay: int) -> List[seconds]:
     """
-    Calls 'asyncio.gather' with a list of coroutines
-    produced by 'wait_random(max_delay)'. The amount
-    of the coroutines in that list should be 'n'.
-    This should run the coroutines in parallel.
+    Runs 'wait_random(max_delay)' in parallel 'n' times,
+    and returns a list of the amount of time
+    (in floats representing seconds) each 'wait_random'
+    call took, IN THE ORDER THAT THEY FINISHED.
+
+    This function achieves this, by running an intermediary
+    coroutine, 'run_and_append(max_delay, result)',
+    that awaits 'wait_random(max_delay)', then
+    appends its result to 'result', which should be the
+    result list.
+
+    This allows the amount of time each 'wait_random'
+    call took to be appended to 'result' IN THE
+    ORDER THEY FINISHED, AND TO BE RUN IN PARALLEL.
 
     Returns a list of floats that represent
     the time, IN SECONDS,
