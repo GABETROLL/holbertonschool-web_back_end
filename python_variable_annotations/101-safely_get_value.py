@@ -2,7 +2,7 @@
 """
 Add type annotations to this file.
 """
-from typing import Mapping, Union, Any, TypeVar, NoneType
+from typing import Mapping, Union, Any, TypeVar
 
 T = TypeVar('T')
 
@@ -10,7 +10,7 @@ T = TypeVar('T')
 def safely_get_value(
             dct: Mapping,
             key: Any,
-            default: Union[T, NoneType] = None) -> Union[Any, T]:
+            default: Union[T, type(None)] = None) -> Union[Any, T]:
     """
     If 'key' is a valid 'key' in 'dct',
         this function returns 'dct[key]'.
