@@ -16,6 +16,10 @@ import asyncio
 seconds = float
 
 
+async def run_and_append(max_delay: int, l: list) -> None:
+    l.append(await wait_random(max_delay))
+
+
 async def wait_n(n: int, max_delay: int) -> List[seconds]:
     """
     Calls 'asyncio.gather' with a list of coroutines
@@ -29,10 +33,13 @@ async def wait_n(n: int, max_delay: int) -> List[seconds]:
     be in ascending order, since 'asyncio.gather'
     appends first the coroutines that finish first.
     """
-    coroutines = []
-    for _ in range(n):
-        coroutines.append(wait_random(max_delay))
+    result = []
 
-    result: List = await asyncio.gather(*coroutines)
+    await asyncio.gather(
+        *(
+            run_and_append(max_delay, result)
+            for _ in range(n)
+        )
+    )
 
     return result
