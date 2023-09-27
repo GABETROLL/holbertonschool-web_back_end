@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 """
+Makes a new class, 'BasicCache',
+that inherits from 'BaseCaching'.
+
+The 'BaseCaching' class is found
+in 'base_caching.py', in this directory.
+
+This class should implement
+the 'put' and 'get' methods,
+which were defined in 'BaseCache',
+but not implemented.
 """
 from base_caching import BaseCaching
 
