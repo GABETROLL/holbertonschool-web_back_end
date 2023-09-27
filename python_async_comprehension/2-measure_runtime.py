@@ -27,13 +27,13 @@ async def measure_runtime() -> float:
     seconds.
     It should be about 10 seconds.
     """
-    before: float = time.process_time()
+    before: float = time.perf_counter()
     await asyncio.gather(
         async_comprehension(),
         async_comprehension(),
         async_comprehension(),
         async_comprehension()
     )
-    after: float = time.process_time()
+    after: float = time.perf_counter()
 
-    return (after - before) * 1000
+    return after - before
