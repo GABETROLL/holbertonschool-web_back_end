@@ -15,6 +15,14 @@ from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
+    """
+    Implements the 'get' and 'put'
+    methods defined in this class' parent,
+    'BaseCaching'.
+
+    Sets 'MAX_ITEMS' to None,
+    AND ENFORCES NO STORAGE LIMIT!
+    """
     MAX_ITEMS = None
 
     def put(self, key, item) -> None:
