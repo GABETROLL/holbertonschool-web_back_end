@@ -15,10 +15,8 @@ import asyncio
 import time
 async_comprehension = __import__("1-async_comprehension").async_comprehension
 
-Seconds = float
 
-
-async def measure_runtime() -> Seconds:
+async def measure_runtime() -> float:
     """
     Runs 'async_comprehension()'
     4 times in parallel
@@ -29,13 +27,13 @@ async def measure_runtime() -> Seconds:
     seconds.
     It should be about 10 seconds.
     """
-    before: Seconds = time.process_time()
+    before: float = time.process_time()
     await asyncio.gather(
         async_comprehension(),
         async_comprehension(),
         async_comprehension(),
         async_comprehension()
     )
-    after: Seconds = time.process_time()
+    after: float = time.process_time()
 
-    return after - before
+    return (after - before) * 1000
