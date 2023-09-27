@@ -8,8 +8,10 @@ It should do this 10 timeS:
 import asyncio
 import random
 
+from typing import Generator
 
-async def async_generator():
+
+async def async_generator() -> Generator[float, None, None]:
     """
     An async generator that yields 10 floats.
 
