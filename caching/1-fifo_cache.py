@@ -46,6 +46,9 @@ class FIFOCache(BaseCaching):
 
     def put(self, key, item) -> None:
         """
+        If 'key' or 'item' are None,
+        this method just returns without doing anything.
+
         Stores 'key' and 'item' in 'self.cache_data'
         as a key:value pair, and puts 'key'
         in 'self.keys_queue'.
@@ -58,6 +61,9 @@ class FIFOCache(BaseCaching):
 
         It also prints "DISCARD: key" to the standard output.
         """
+        if key is None or item is None:
+            return
+
         try:
             self.keys_queue.put_nowait(key)
         except queue.Full:
