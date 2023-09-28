@@ -3,7 +3,7 @@
 Exercise 1: Make a FIFO Caching system
 that keeps track of key:value pairs,
 
-has a maximum capacity same as 'BaseCaching.MAX_SIZE',
+has a maximum capacity same as 'BaseCaching.MAX_ITEMS',
 can add new pairs, and if it runs out of space,
 removes the oldest added pair to make space for the new one.
 
@@ -22,7 +22,7 @@ class FIFOCache(BaseCaching):
     in a dictionary called 'self.cache_data',
     and in a queue.Queue object called 'self.keys_queue'.
 
-    Has a max capacity equal to 'BaseCaching.MAX_SIZE",
+    Has a max capacity equal to 'BaseCaching.MAX_ITEMS",
     and 'self.keys_queue' has that same capacity.
 
     Getting a key's corresponding value from 'self.cache_data'
@@ -40,7 +40,7 @@ class FIFOCache(BaseCaching):
     def __init__(self):
         super().__init__()
 
-        self.keys_queue: queue.Queue = queue.Queue(BaseCaching.MAX_SIZE)
+        self.keys_queue: queue.Queue = queue.Queue(BaseCaching.MAX_ITEMS)
 
     def put(self, key, item):
         """
