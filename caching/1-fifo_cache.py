@@ -35,14 +35,16 @@ class FIFOCache(BaseCaching):
     and the new key:value pair to 'self.cache_data'.
 
     If there's no more space, 'self.put' first removes
-    the oldest key, and adds the new key:value pair.
+    the oldest key,
+    prints "DISCARD: <key>",
+    and adds the new key:value pair.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.keys_queue: queue.Queue = queue.Queue(BaseCaching.MAX_ITEMS)
 
-    def put(self, key, item):
+    def put(self, key, item) -> None:
         """
         Stores 'key' and 'item' in 'self.cache_data'
         as a key:value pair, and puts 'key'
@@ -53,12 +55,16 @@ class FIFOCache(BaseCaching):
         key from 'self.keys_queue',
         removes it and its value from 'self.cache_data',
         THEN executes the paragraph above.
+
+        It also prints "DISCARD: key" to the standard output.
         """
         try:
             self.keys_queue.put_nowait(key)
         except queue.Full:
             oldest_key = self.keys_queue.get_nowait()
             del self.cache_data[oldest_key]
+
+            print(f"DISCARD: {oldest_key}")
 
             self.keys_queue.put_nowait(key)
         self.cache_data[key] = item
