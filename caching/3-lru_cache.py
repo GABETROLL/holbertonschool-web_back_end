@@ -64,11 +64,11 @@ class LRUCache(BaseCaching):
 
         If the amount of key:item pairs
         in 'self.cache_data' are equal to
-        'BaseCaching.MAX_ITEMS',
-        this method first removes the LRU
-        key from 'self.cache_data' and 'self.lru_keys',
-        and places 'key' and 'item' where the removed
-        key and value were.
+        'BaseCaching.MAX_ITEMS', this method:
+        - removes the LRU key from 'self.cache_data' and 'self.lru_keys',
+        - prints f"DISCARD {LRU_key}",
+        - adds 'key' and 'item' to 'self.cache_data' as a key:value pair,
+        - and appends 'key' to 'self.lru_keys'.
 
         If 'key' is already present in 'self.cache',
         then this method just marks the key as the new
@@ -83,7 +83,10 @@ class LRUCache(BaseCaching):
             self.lru_keys.remove(key)
 
         elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
-            self.lru_keys.pop(0)
+            LRU_key = self.lru_keys.pop(0)
+            del self.cache_data[LRU_key]
+
+            print("DISCARD: {LRU_key}")
 
         self.lru_keys.append(key)
         self.cache_data[key] = item
