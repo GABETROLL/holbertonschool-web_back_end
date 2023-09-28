@@ -6,8 +6,14 @@ that keeps track of key:value pairs,
 has a maximum capacity same as 'BaseCaching.MAX_SIZE',
 can add new pairs, and if it runs out of space,
 removes the oldest added pair to make space for the new one.
+
+'BaseCaching' should be found in the file named
+'0-basic_cache.py', which should be in the
+same directory as this file.
 """
 import queue
+
+BaseCaching = __import__("0-basic_cache").BaseCaching
 
 
 class FIFOCache(BaseCaching):
@@ -15,6 +21,9 @@ class FIFOCache(BaseCaching):
     Keeps track of key:value pairs
     in a dictionary called 'self.cache_data',
     and in a queue.Queue object called 'self.keys_queue'.
+
+    Has a max capacity equal to 'BaseCaching.MAX_SIZE",
+    and 'self.keys_queue' has that same capacity.
 
     Getting a key's corresponding value from 'self.cache_data'
     can be achieved by calling 'self.get(<key>)', then
@@ -29,7 +38,7 @@ class FIFOCache(BaseCaching):
     the oldest key, and adds the new key:value pair.
     """
     def __init__(self):
-         super().__init__()
+        super().__init__()
 
         self.keys_queue: queue.Queue = queue.Queue(BaseCaching.MAX_SIZE)
 
