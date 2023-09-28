@@ -44,7 +44,7 @@ class LIFOCache(BaseCaching):
     def __init__(self):
         super().__init__()
 
-        self.keys_stack: queue.LIFOQueue = queue.LIFOQueue(BaseCaching.MAX_ITEMS)
+        self.keys_stack: queue.LifoQueue = queue.LifoQueue(BaseCaching.MAX_ITEMS)
 
     def get(self, key):
         """
