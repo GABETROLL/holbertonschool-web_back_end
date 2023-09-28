@@ -16,7 +16,7 @@ the system removes the MOST RECENTLY ADDED KEY
 AND ITS CORRESPONDING VALUE, prints the discarded key,
 then adds the new pair.
 """
-from queue import LifoQueue, Full
+import queue
 
 BaseCaching = __import__("base_caching").BaseCaching
 
@@ -47,7 +47,7 @@ class LIFOCache(BaseCaching):
     def __init__(self):
         super().__init__()
 
-        self.keys_stack: LifoQueue = LifoQueue(BaseCaching.MAX_ITEMS)
+        self.keys_stack = queue.LifoQueue(BaseCaching.MAX_ITEMS)
         """
         Keeps track of the most recently added keys
         (added through 'self.put'),
@@ -90,7 +90,7 @@ class LIFOCache(BaseCaching):
 
         try:
             self.keys_stack.put_nowait(key)
-        except Full:
+        except queue.Full:
             newest_key = self.keys_stack.get_nowait()
             del self.cache_data[newest_key]
 
