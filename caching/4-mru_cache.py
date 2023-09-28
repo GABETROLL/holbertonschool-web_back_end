@@ -74,8 +74,8 @@ class MRUCache(BaseCaching):
 
         If 'key' is already present in 'self.cache',
         then this method:
-        - marks the key as the new MRU key in 'self.mru_keys', by moving the key
-        to the end of the list,
+        - marks the key as the new MRU key in 'self.mru_keys',
+        by moving the key to the end of the list,
         - assigns 'self.cache_data[key] = item'.
         """
         if key is None or item is None:
