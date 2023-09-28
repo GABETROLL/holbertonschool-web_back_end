@@ -85,7 +85,8 @@ class MRUCache(BaseCaching):
             self.mru_keys.remove(key)
 
         elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
-            MRU_key = self.mru_keys.pop(0)
+            # pop MRU key
+            MRU_key = self.mru_keys.pop(-1)
             del self.cache_data[MRU_key]
 
             print(f"DISCARD: {MRU_key}")
