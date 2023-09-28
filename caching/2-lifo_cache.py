@@ -3,6 +3,9 @@
 Exercise 2: Make a LIFO caching system that
 keeps track of key:value pairs.
 
+It should be a child class of 'BaseCaching',
+found in 'base_caching.py', in this directory.
+
 It should have a max capacity of 'BaseCaching.MAX_ITEMS'.
 The user should be able to add a new key:value pair,
 or get a key's corresponding value with methods.
@@ -13,7 +16,7 @@ the system removes the MOST RECENTLY ADDED KEY
 AND ITS CORRESPONDING VALUE, prints the discarded key,
 then adds the new pair.
 """
-import queue
+from queue import LifoQueue, Full
 
 BaseCaching = __import__("base_caching").BaseCaching
 
@@ -26,7 +29,7 @@ class LIFOCache(BaseCaching):
     This class keeps track of its instances' stored pairs
     with a dictionary, called 'self.caching_data',
     and keeps track of the most recently added keys
-    using 'self.keys_stack'.
+    using 'self.keys_stack', which is a 'queue.LifoQueue' instance.
 
     You can add a new key:value pair with 'self.put',
     and you can get a stored key's corresponding value with 'self.get(<key>)'.
@@ -44,7 +47,7 @@ class LIFOCache(BaseCaching):
     def __init__(self):
         super().__init__()
 
-        self.keys_stack: queue.LifoQueue = queue.LifoQueue(BaseCaching.MAX_ITEMS)
+        self.keys_stack: LifoQueue = LifoQueue(BaseCaching.MAX_ITEMS)
 
     def get(self, key):
         """
@@ -81,7 +84,7 @@ class LIFOCache(BaseCaching):
 
         try:
             self.keys_stack.put_nowait(key)
-        except queue.Full:
+        except Full:
             newest_key = self.keys_stack.get_nowait()
             del self.cache_data[newest_key]
 
