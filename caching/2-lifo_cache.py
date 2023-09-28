@@ -48,6 +48,12 @@ class LIFOCache(BaseCaching):
         super().__init__()
 
         self.keys_stack: LifoQueue = LifoQueue(BaseCaching.MAX_ITEMS)
+        """
+        Keeps track of the most recently added keys
+        (added through 'self.put'),
+        so that the newest one can be removed from itself
+        and 'self.cache_data' when max capacity is reached.
+        """
 
     def get(self, key):
         """
