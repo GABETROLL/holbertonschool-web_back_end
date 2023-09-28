@@ -69,6 +69,12 @@ class LRUCache(BaseCaching):
         key from 'self.cache_data' and 'self.lru_keys',
         and places 'key' and 'item' where the removed
         key and value were.
+
+        If 'key' is already present in 'self.cache',
+        then this method just marks the key as the new
+        MRU key in 'self.lru_keys', by moving the key
+        to the end of the list,
+        then this method assigns 'self.cache_data[key] = item'.
         """
         if key is None or item is None:
             return
@@ -76,7 +82,7 @@ class LRUCache(BaseCaching):
         if key in self.cache_data:
             self.lru_keys.remove(key)
 
-        elif len(self.cache_data) > BaseCaching.MAX_ITEMS:
+        elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
             self.lru_keys.pop(0)
 
         self.lru_keys.append(key)
