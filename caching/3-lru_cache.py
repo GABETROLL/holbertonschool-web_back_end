@@ -73,13 +73,15 @@ class LRUCache(BaseCaching):
         if key is None or item is None:
             return
 
-        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-            self.lru_keys.pop(0)
-            self.lru_keys.append(key)
-
         if key in self.lru_keys:
             self.lru_keys.remove(key)
             self.lru_keys.append(key)
+
+        elif len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            self.lru_keys.pop(0)
+            self.lru_keys.append(key)
+
+
 
         self.cache_data[key] = item
 
