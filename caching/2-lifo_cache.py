@@ -103,6 +103,7 @@ class LIFOCache(BaseCaching):
             return
 
         if key in self.cache_data:
+            # Mark this key as the most recently added key
             self.keys_stack.remove(key)
             self.keys_stack.append(key)
 
@@ -118,4 +119,7 @@ class LIFOCache(BaseCaching):
             print(f"DISCARD: {MOST_RECENT_KEY}")
 
         self.cache_data[key] = item
+        # add the key to 'keys_stack',
+        # with its position indicating that it's
+        # the most recently added key.
         self.keys_stack.append(key)

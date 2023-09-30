@@ -80,6 +80,9 @@ class FIFOCache(BaseCaching):
             return
 
         if key in self.cache_data:
+            # Mark 'key' as the most recently
+            # added key, since it was used
+            # to modify its value
             self.keys_queue.remove(key)
             self.keys_queue.append(key)
 
@@ -90,6 +93,9 @@ class FIFOCache(BaseCaching):
             print(f"DISCARD: {LRU_KEY}")
 
         self.cache_data[key] = item
+        # Add 'key' to 'self.keys_queue',
+        # with its position indicating that it's the
+        # most recently added key
         self.keys_queue.append(key)
 
     def get(self, key):
