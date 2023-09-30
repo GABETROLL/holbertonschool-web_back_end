@@ -19,30 +19,35 @@ BaseCaching = __import__("0-basic_cache").BaseCaching
 class FIFOCache(BaseCaching):
     """
     Keeps track of key:value pairs
-    in a dictionary called 'self.cache_data',
-    and in a queue.Queue object called 'self.keys_queue'.
+    in a dictionary called 'self.cache_data'.
+
+    Keeps track of the keys that were most recently
+    used as arguments in 'self.get' or 'self.put',
+    in a list functioning as a queue, called 'self.keys_queue'.
 
     Has a max capacity equal to 'BaseCaching.MAX_ITEMS",
     and 'self.keys_queue' has that same capacity.
 
-    Getting a key's corresponding value from 'self.cache_data'
-    can be achieved by calling 'self.get(<key>)', then
-    getting the key's corresponding value.
+    'self.get(<key>)' returns the key's corresponding
+    value in 'self.cache_data', if the key is not None,
+    and exists in 'self.cache_data'.
+    It also marks that key as the MRU (Most Recently Used) key,
+    by moving it to the end of 'self.keys_queue'.
 
-    Putting a key:value pair into 'self.cache_data' can be achieved
-    using 'self.put'. If there's enough space,
-    'self.put' will add the new key to 'self.keys_queue',
-    and the new key:value pair to 'self.cache_data'.
-
-    If there's no more space, 'self.put' first removes
-    the oldest key,
-    prints "DISCARD: <key>",
-    and adds the new key:value pair.
+    'self.put(<key> <value>) will assign
+    'self.cache_data[key] = value'.
+    If the length of 'self.cache_data' is already
+    'BaseCaching.MAX_ITEMS', then: the LRU (Least Recently Used)
+    key, found in 'self.keys_queue[0]', gets removed,
+    the new key gets added to 'self.cache_data' with
+    its corresponding value,
+    and the new key gets added to 'self.keys_queue'
+    as the MRU (Most Recently Used) key.
     """
     def __init__(self) -> None:
         super().__init__()
 
-        self.keys_queue: queue.Queue = queue.Queue(BaseCaching.MAX_ITEMS)
+        self.keys_queue = []
 
     def put(self, key, item) -> None:
         """
@@ -50,39 +55,46 @@ class FIFOCache(BaseCaching):
         this method just returns without doing anything.
 
         Stores 'key' and 'item' in 'self.cache_data'
-        as a key:value pair, and puts 'key'
-        in 'self.keys_queue'.
+        as a key:value pair, and appends 'key'
+        into 'self.keys_queue', to mark it as
+        the MRU key.
 
-        if 'self' is full,
+        if 'self.cache_data' has reached 'BaseCaching.MAX_ITEMS',
         this method gets the oldest inserted
         key from 'self.keys_queue',
         removes it and its value from 'self.cache_data',
+        prints "DISCARD: key",
         THEN executes the paragraph above.
-
-        It also prints "DISCARD: key" to the standard output.
         """
         if key is None or item is None:
             return
 
-        try:
-            self.keys_queue.put_nowait(key)
-        except queue.Full:
-            oldest_key = self.keys_queue.get_nowait()
-            del self.cache_data[oldest_key]
+        if len(self.cache_data) == BaseCaching.MAX_ITEMS:
+            LRU_KEY = self.keys_queue.pop(0)
+            del self.cache_data[LRU_KEY]
 
-            print(f"DISCARD: {oldest_key}")
+            print(f"DISCARD: {LRU_KEY}")
 
-            self.keys_queue.put_nowait(key)
         self.cache_data[key] = item
+        self.keys_queue.append(key)
 
     def get(self, key):
         """
-        Returns 'self.cache_data[key]'...
-
-        ...But if 'key' is None,
+        If 'key' is None,
         or if 'key' isn't a key in 'self.cache_data',
         just returns None.
+
+        Otherwise,
+        this method marks 'key' as the MRU key
+        in 'self.keys_queue'
+        (by removing the key from 'self.keys_queue',
+        then appending it again at the end of 'self.keys_queue'),
+        then returns 'self.cache_data[key]'.
         """
         if key is None or key not in self.cache_data:
             return None
+
+        self.keys_queue.remove(key)
+        self.keys_queue.append(key)
+
         return self.cache_data[key]
