@@ -118,3 +118,4 @@ class LIFOCache(BaseCaching):
             print(f"DISCARD: {MOST_RECENT_KEY}")
 
         self.cache_data[key] = item
+        self.keys_stack.append(key)
