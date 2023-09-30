@@ -65,16 +65,9 @@ class LIFOCache(BaseCaching):
 
         Returns key's corresponding
         value in 'self.cache_data' ('self.cache_data[key]').
-
-        Before that, it marks the key as the MRU key
-        in 'self.keys_stack' (by moving it to the end
-        of 'self.keys_stack').
         """
         if key is None or key not in self.cache_data:
             return None
-
-        self.keys_stack.remove(key)
-        self.keys_stack.append(key)
 
         return self.cache_data[key]
 
@@ -93,23 +86,33 @@ class LIFOCache(BaseCaching):
         But if 'self.keys_stack' is already full, this method
         removes the newest added key:value pair from 'self.cache_data',
         removes the newest added key from 'self.keys_stack',
-        and places 'key' and 'item' in instead.
-        It also prints "DISCARD: <key>".
-        
+        prints "DISCARD: <key>",
+        then does what the paragraph above explains.
+
         If the key was already present in 'self.cache_data',
         but the value is different, and
         the length of 'self.cache_data' is less than
-        'BaseCaching.MAX_ITEMS',
-        the key is STILL
-        marked as the MRU key, and its value changes.
+        'BaseCaching.MAX_ITEMS':
+            the key is assigned to 'item' regardless
+            of what it is,
+            and the key is marked as the MRU key.
         """
         if key is None or item is None:
             return
 
-        if len(self.cache_data) == BaseCaching.MAX_ITEMS:
-            MRU_KEY = self.keys_stack.pop()
-            del self.cache_data[MRU_KEY]
+        if key in self.cache_data:
+            self.keys_stack.remove(key)
+            self.keys_stack.append(key)
 
-            print(f"DISCARD: {MRU_KEY}")
+        elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
+            MOST_RECENT_KEY = self.keys_queue.pop()
+            """
+            Key that was most recently added to
+            'self.cache_data', through this method,
+            found in 'self.keys_stack[-1]'.
+            """
+            del self.cache_data[MOST_RECENT_KEY]
+
+            print(f"DISCARD: {MOST_RECENT_KEY}")
 
         self.cache_data[key] = item
