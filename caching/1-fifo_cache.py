@@ -19,33 +19,40 @@ class FIFOCache(BaseCaching):
     Keeps track of key:value pairs
     in a dictionary called 'self.cache_data'.
 
-    Keeps track of the keys that were most recently
-    used as arguments in 'self.get' or 'self.put',
-    in a list functioning as a queue, called 'self.keys_queue'.
+    Keeps track of the keys added to 'self.cache_data',
+    in the order that they came in, through 'self.put'.
 
-    Has a max capacity equal to 'BaseCaching.MAX_ITEMS",
-    and 'self.keys_queue' has that same capacity.
+    The user of this class can get a key's corresponding value
+    with 'self.get(<key>)'.
 
-    'self.get(<key>)' returns the key's corresponding
-    value in 'self.cache_data', if the key is not None,
-    and exists in 'self.cache_data'.
-    It also marks that key as the MRU (Most Recently Used) key,
-    by moving it to the end of 'self.keys_queue'.
+    The user of this class can add a key:value pair
+    using 'self.put(key, value).
+    When a key is added through 'self.put', it gets added
+    to 'self.cache_data' with its value, and it
+    gets added to 'self.cache_data' as the newest added key.
+    If there's already 'BaseCaching.MAX_ITEMS' keys
+    in 'self.cache_data', the oldest added key
+    gets removed from both 'self.cache_data' and
+    'self.keys_queue', and the new key and value are
+    added.
 
-    'self.put(<key> <value>) will assign
-    'self.cache_data[key] = value'.
-    If the length of 'self.cache_data' is already
-    'BaseCaching.MAX_ITEMS', then: the LRU (Least Recently Used)
-    key, found in 'self.keys_queue[0]', gets removed,
-    the new key gets added to 'self.cache_data' with
-    its corresponding value,
-    and the new key gets added to 'self.keys_queue'
-    as the MRU (Most Recently Used) key.
+    If the key already exists in 'self.cache_data',
+    and 'self' isn't full yet, 'self.put'
+    assigns the key to the new value, and moves
+    the key to the end of 'self.keys_queue',
+    to mark it as the newest added key.
     """
     def __init__(self) -> None:
         super().__init__()
 
         self.keys_queue = []
+        """
+        Should be all of the keys added to
+        'self.cache_data' THROUGH 'self.put'.
+
+        They're ordered from least-recent
+        to most-recently added.
+        """
 
     def put(self, key, item) -> None:
         """
@@ -67,7 +74,11 @@ class FIFOCache(BaseCaching):
         if key is None or item is None:
             return
 
-        if len(self.cache_data) == BaseCaching.MAX_ITEMS:
+        if key in self.cache_data:
+            self.keys_queue.remove(key)
+            self.keys_queue.append(key)
+
+        elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
             LRU_KEY = self.keys_queue.pop(0)
             del self.cache_data[LRU_KEY]
 
@@ -83,16 +94,8 @@ class FIFOCache(BaseCaching):
         just returns None.
 
         Otherwise,
-        this method marks 'key' as the MRU key
-        in 'self.keys_queue'
-        (by removing the key from 'self.keys_queue',
-        then appending it again at the end of 'self.keys_queue'),
-        then returns 'self.cache_data[key]'.
+        this method returns 'self.cache_data[key]'.
         """
         if key is None or key not in self.cache_data:
             return None
-
-        self.keys_queue.remove(key)
-        self.keys_queue.append(key)
-
         return self.cache_data[key]
