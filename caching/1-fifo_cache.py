@@ -64,6 +64,11 @@ class FIFOCache(BaseCaching):
         into 'self.keys_queue', to mark it as
         the MRU key.
 
+        If 'key' is already present in 'self.cache_data',
+        the key's corresponding value is set to be 'item',
+        and 'key' is moved to the end of 'self.keys_queue',
+        to mark it as the newest added key.
+
         if 'self.cache_data' has reached 'BaseCaching.MAX_ITEMS',
         this method gets the oldest inserted
         key from 'self.keys_queue',
