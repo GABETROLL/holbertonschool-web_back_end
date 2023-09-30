@@ -2,10 +2,32 @@
 """
 Create a new class, called 'LRUCache',
 that inherits from 'BaseCaching'.
-"""
-import queue
 
-BaseCaching = __import__("base_caching").BaseCaching
+It should have a max capacity of 'BaseCaching.MAX_ITEMS'.
+
+It should return a key's corresponding value
+with a method called 'get',
+and set a key:value pair in its dictionary
+(inherited from 'BaseCaching', called 'cache_data').
+
+It should keep track of all of the keys
+in the dictionary, from LRU (Least Recently Used)
+to MRU (Most Recently Used).
+A key is "used" when it's passed as an argument
+through the 'get' or 'put' methods, and is valid
+(read their docs).
+
+If the dictionary is already at its max capacity,
+the system should evict the LRU (Least Recently Used)
+key:value pair from the dictionary, and put the new
+key:value pair in its place.
+
+If the key is already present in the dictionary,
+but the value set through 'put' is different,
+the new value should be set as the key's corresponding value,
+and the key should be moving 
+"""
+from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):

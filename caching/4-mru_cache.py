@@ -2,10 +2,26 @@
 """
 Create a new class, called 'MRUCache',
 that inherits from 'BaseCaching'.
-"""
-import queue
 
-BaseCaching = __import__("base_caching").BaseCaching
+It should have a max capacity of 'BaseCaching.MAX_ITEMS'.
+
+It should return a key's corresponding value
+with 'get', and set a key's corresponding value
+with 'put'.
+
+(The keys and values should be kept in
+'cache_data', inherited from 'BaseCaching')
+
+If the dictionary reaches the max capacity,
+and 'put' is called with a non-None key and value,
+the MRU (Most Recently Used) key should be evicted
+from dictionary, along with its value.
+
+The system should keep track of each key in the dictionary,
+in a list, from LRU (Least Recently Used)
+to MRU (Most Recently Used).
+"""
+from base_caching import BaseCaching
 
 
 class MRUCache(BaseCaching):
