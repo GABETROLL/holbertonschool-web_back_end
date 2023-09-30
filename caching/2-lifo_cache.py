@@ -10,9 +10,9 @@ It should have a max capacity of 'BaseCaching.MAX_ITEMS'.
 The user should be able to add a new key:value pair,
 or get a key's corresponding value with methods.
 
-It should mark a key as the MRU (Most Recently Used)
-key each time it's defined with its corresponding value,
-or used to get is value.
+When a user assigns a key with its value,
+the key should be marked as the most recently used
+key, in a stack-like data structure.
 
 If the user tries to add in a new pair,
 but there are already 'MAX_ITEMS' present,
@@ -31,7 +31,9 @@ class LIFOCache(BaseCaching):
     This class keeps track of its instances' stored pairs
     with a dictionary, called 'self.caching_data',
     and keeps track of the most recently added keys
-    using 'self.keys_stack', which is a 'queue.LifoQueue' instance.
+    using 'self.keys_stack', which is a list with the
+    least recently added keys first, and the most recently
+    added keys last.
 
     You can add a new key:value pair with 'self.put',
     and you can get a stored key's corresponding value with 'self.get(<key>)'.
@@ -105,7 +107,7 @@ class LIFOCache(BaseCaching):
             self.keys_stack.append(key)
 
         elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
-            MOST_RECENT_KEY = self.keys_queue.pop()
+            MOST_RECENT_KEY = self.keys_stack.pop()
             """
             Key that was most recently added to
             'self.cache_data', through this method,
