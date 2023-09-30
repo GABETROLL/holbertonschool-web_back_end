@@ -11,9 +11,7 @@ removes the oldest added pair to make space for the new one.
 '0-basic_cache.py', which should be in the
 same directory as this file.
 """
-import queue
-
-BaseCaching = __import__("0-basic_cache").BaseCaching
+from base_caching import BaseCaching
 
 
 class FIFOCache(BaseCaching):

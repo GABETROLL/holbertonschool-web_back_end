@@ -20,9 +20,7 @@ the system removes the MOST RECENTLY ADDED KEY
 AND ITS CORRESPONDING VALUE, prints the discarded key,
 then adds the new pair.
 """
-import queue
-
-BaseCaching = __import__("base_caching").BaseCaching
+from base_caching import BaseCaching
 
 
 class LIFOCache(BaseCaching):
