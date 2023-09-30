@@ -25,7 +25,7 @@ key:value pair in its place.
 If the key is already present in the dictionary,
 but the value set through 'put' is different,
 the new value should be set as the key's corresponding value,
-and the key should be moving 
+and the key should be moving
 """
 from base_caching import BaseCaching
 
