@@ -10,6 +10,10 @@ It should have a max capacity of 'BaseCaching.MAX_ITEMS'.
 The user should be able to add a new key:value pair,
 or get a key's corresponding value with methods.
 
+It should mark a key as the MRU (Most Recently Used)
+key each time it's defined with its corresponding value,
+or used to get is value.
+
 If the user tries to add in a new pair,
 but there are already 'MAX_ITEMS' present,
 the system removes the MOST RECENTLY ADDED KEY
@@ -39,7 +43,7 @@ class LIFOCache(BaseCaching):
     (which should be 'BaseCaching.MAX_ITEMS),
     'self.put':
     - removes the most recently added key:value
-    - pair from 'self.caching_data',
+        pair from 'self.caching_data',
     - removes the key from 'self.keys_stack',
     - prints "DISCARD <key>",
     - then adds in the new pair.
@@ -47,24 +51,33 @@ class LIFOCache(BaseCaching):
     def __init__(self):
         super().__init__()
 
-        self.keys_stack = queue.LifoQueue(BaseCaching.MAX_ITEMS)
+        self.keys_stack = []
         """
-        Keeps track of the most recently added keys
-        (added through 'self.put'),
+        Keeps track of the MRU keys,
         so that the newest one can be removed from itself
         and 'self.cache_data' when max capacity is reached.
+
+        The MRU key is at the end.
         """
 
     def get(self, key):
         """
-        Returns key's corresponding
-        value in 'self.cache_data' ('self.cache_data[key]'),
-
-        but if 'key' is None or not present in 'self.cache_data',
+        If 'key' is None or not in 'self.cache_data',
         this method just returns None.
+
+        Returns key's corresponding
+        value in 'self.cache_data' ('self.cache_data[key]').
+
+        Before that, it marks the key as the MRU key
+        in 'self.keys_stack' (by moving it to the end
+        of 'self.keys_stack').
         """
         if key is None or key not in self.cache_data:
             return None
+
+        self.keys_stack.remove(key)
+        self.keys_stack.append(key)
+
         return self.cache_data[key]
 
     def put(self, key, item) -> None:
@@ -84,18 +97,21 @@ class LIFOCache(BaseCaching):
         removes the newest added key from 'self.keys_stack',
         and places 'key' and 'item' in instead.
         It also prints "DISCARD: <key>".
+        
+        If the key was already present in 'self.cache_data',
+        but the value is different, and
+        the length of 'self.cache_data' is less than
+        'BaseCaching.MAX_ITEMS',
+        the key is STILL
+        marked as the MRU key, and its value changes.
         """
         if key is None or item is None:
             return
 
-        try:
-            self.keys_stack.put_nowait(key)
-        except queue.Full:
-            newest_key = self.keys_stack.get_nowait()
-            del self.cache_data[newest_key]
+        if len(self.cache_data) == BaseCaching.MAX_ITEMS:
+            MRU_KEY = self.keys_stack.pop()
+            del self.cache_data[MRU_KEY]
 
-            print(f"DISCARD: {newest_key}")
-
-            self.keys_stack.put_nowait(key)
+            print(f"DISCARD: {MRU_KEY}")
 
         self.cache_data[key] = item
