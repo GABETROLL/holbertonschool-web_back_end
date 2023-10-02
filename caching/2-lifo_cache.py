@@ -105,7 +105,6 @@ class LIFOCache(BaseCaching):
         if key in self.cache_data:
             # Mark this key as the most recently added key
             self.keys_stack.remove(key)
-            self.keys_stack.append(key)
 
         elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
             MOST_RECENT_KEY = self.keys_stack.pop()

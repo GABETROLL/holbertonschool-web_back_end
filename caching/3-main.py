@@ -1,0 +1,31 @@
+#!/usr/bin/python3
+""" 3-main """
+LRUCache = __import__('3-lru_cache').LRUCache
+
+my_cache = LRUCache()
+my_cache.put("A", "Hello")
+my_cache.put("B", "World")
+my_cache.put("C", "Holberton")
+my_cache.put("D", "School")
+print(my_cache.lru_keys)
+print(my_cache.get("B"))
+my_cache.put("E", "Battery")
+print(my_cache.lru_keys)
+my_cache.put("C", "Street")
+print(my_cache.lru_keys)
+print(my_cache.get("A"))
+print(my_cache.get("B"))
+print(my_cache.get("C"))
+my_cache.put("F", "Mission")
+print(my_cache.lru_keys)
+my_cache.put("G", "San Francisco")
+print(my_cache.lru_keys)
+my_cache.put("H", "H")
+print(my_cache.lru_keys)
+my_cache.put("I", "I")
+print(my_cache.lru_keys)
+my_cache.put("J", "J")
+print(my_cache.lru_keys)
+my_cache.put("K", "K")
+print(my_cache.lru_keys)
+

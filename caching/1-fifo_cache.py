@@ -84,13 +84,12 @@ class FIFOCache(BaseCaching):
             # added key, since it was used
             # to modify its value
             self.keys_queue.remove(key)
-            self.keys_queue.append(key)
 
         elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
-            LRU_KEY = self.keys_queue.pop(0)
-            del self.cache_data[LRU_KEY]
+            OLDEST_KEY = self.keys_queue.pop(0)
+            del self.cache_data[OLDEST_KEY]
 
-            print(f"DISCARD: {LRU_KEY}")
+            print(f"DISCARD: {OLDEST_KEY}")
 
         self.cache_data[key] = item
         # Add 'key' to 'self.keys_queue',
