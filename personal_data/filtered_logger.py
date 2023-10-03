@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Learning about keeping the user's data safe
+"""
 from typing import List
 import re
 
