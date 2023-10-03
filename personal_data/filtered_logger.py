@@ -3,7 +3,7 @@ from typing import List
 import re
 
 
-def filter_datum(fields: List[str], redaction: str, message: str, separator: str):
+def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
     """
     'message' should be similar to a CSV format:
     <field name>=<field value>{separator}<field name>=<field value>{separator}
