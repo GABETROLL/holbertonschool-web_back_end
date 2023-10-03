@@ -20,7 +20,7 @@ def filter_datum(
     has its value replaces with 'redacion'.
     """
     return separator.join(
-        re.sub(field.split("=")[1], redaction, field)
+        re.sub(f"(?<==)(.*?)(?={separator})", redaction, field)
         if field.split("=")[0] in fields
         else field
         for field in message.split(separator)
