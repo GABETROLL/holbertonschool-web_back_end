@@ -30,4 +30,4 @@ def is_valid(hashed_password: bytes, password: str) -> bool:
     IS NOT STORED IN ANY DATABASE,
     ONLY 'hashed_password'.
     """
-    return bcrypt.checkpw(password, hashed_password)
+    return bcrypt.checkpw(password.encode(), hashed_password)
