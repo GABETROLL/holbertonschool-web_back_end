@@ -13,11 +13,13 @@ fields = ["password", "date_of_birth"]
 class Main(unittest.TestCase):
     def test_filter_datum(self):
 
-        for password_ord in range(33, 126 + 1):
-            password = chr(password_ord)
+        for c1 in range(33, 126 + 1):
+            for c2 in range(33, 126 + 1):
 
-            self.assertEqual(
-                filter_datum(fields, "xxx", f"password={password};", ';'),
-                "password=xxx;",
-                msg=f"FAILURE: {password}"
-            )
+                password = chr(c1) + chr(c2)
+
+                self.assertEqual(
+                    filter_datum(fields, "xxx", f"password={password};", ';'),
+                    "password=xxx;",
+                    msg=f"FAILURE: {password}"
+                )
