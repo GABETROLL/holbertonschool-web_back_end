@@ -4,6 +4,7 @@ Learning about keeping the user's data safe
 """
 from typing import List
 import re
+import logging
 
 
 def filter_datum(
@@ -19,9 +20,10 @@ def filter_datum(
     Returns 'message', but each field that has a name that's in 'fields'
     has its value replaces with 'redacion'.
     """
-    return separator.join(
-        re.sub(f"(?<==)(.*?)(?={separator})", redaction, field)
-        if field.split("=")[0] in fields
-        else field
-        for field in message.split(separator)
-    )
+    result = message
+    for field_name in fields:
+        PATTERN = f"(?<={field_name}=)(.*?)(?={separator}$)"
+        # print(f"BEFORE: {PATTERN = }; {field_name = }; {result = }")
+        result = re.sub(PATTERN, redaction, result)
+        # print(f"AFTER: {PATTERN = }; {field_name = }; {result = }")        
+    return result
