@@ -23,7 +23,5 @@ def filter_datum(
     result = message
     for field_name in fields:
         PATTERN = f"(?<={field_name}=)(.*?)(?={separator}$)"
-        # print(f"BEFORE: {PATTERN = }; {field_name = }; {result = }")
         result = re.sub(PATTERN, redaction, result)
-        # print(f"AFTER: {PATTERN = }; {field_name = }; {result = }")        
     return result
