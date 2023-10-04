@@ -23,7 +23,7 @@ def hash_password(password: str) -> bytes:
 def is_valid(hashed_password: bytes, password: str) -> bool:
     """
     Returns True if 'password' is valid,
-    
+
     ASSUMING THAT:
     'hashed_password' is 'password' salted and hashed
     by 'hashed_password' or 'bcrypt', AND 'password'
