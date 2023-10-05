@@ -3,6 +3,7 @@
 """
 from flask import jsonify, abort
 from api.v1.views import app_views
+from typing import Tuple
 
 
 @app_views.route('/status/', methods=['GET'], strict_slashes=False)
@@ -29,7 +30,16 @@ def stats() -> str:
 @app_views.route('/unauthorized/')
 def unauthorized() -> None:
     """
-    This path does only one thing:
-    tells you you're not allowed in.
+    This path was made to test
+    the 401 error + Flask.
     """
     abort(401)
+
+
+@app_views.route('/forbidden/')
+def forbidden():
+    """
+    This path was made to test
+    the 403 error + Flask.
+    """
+    abort(403)
