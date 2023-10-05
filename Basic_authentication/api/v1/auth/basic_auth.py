@@ -41,7 +41,9 @@ class BasicAuth(Auth):
 
         return authorization_header[len(HEADER_START):]
 
-    def decode_base64_authorization_header(self, base64_authorization_header: str) -> str:
+    def decode_base64_authorization_header(
+            self,
+            base64_authorization_header: str) -> str:
         """
         'base64_authorization_header' IS ASSUMED TO BE RETURNED
         FROM 'self.extract_base64_authorization_header', AND IS ASSUMED
