@@ -3,7 +3,7 @@
 Template to handle all authentication of this project/folder,
 'Basic_authentication/'.
 """
-from flask import request
+from flask import Request, request
 from typing import List, TypeVar
 
 
@@ -42,9 +42,15 @@ class Auth:
 
         return path not in excluded_paths
 
-    def authorization_header(self, request=None) -> str:
+    def authorization_header(self, request: Request = None) -> str:
         """Authorization header"""
-        return None
+        if request is None:
+            return None
+
+        if request.authorization is None:
+            return None
+
+        return request.authorization
 
     def current_user(self, request=None) -> TypeVar('User'):
         """Current user"""
