@@ -32,7 +32,10 @@ run on this server,
 defined in the environment variable 'AUTH_TYPE'.
 """
 # Fulfill sdabove docstring
-if os.environ["AUTH_TYPE"] == "basic_auth":
+if os.environ.get("AUTH_TYPE", None) == "basic_auth":
+    # key may not exist.
+    # IF the key doesn't exist, we treat its value as None.
+    # and go with Auth.
     auth = BasicAuth()
 else:
     auth = Auth()
