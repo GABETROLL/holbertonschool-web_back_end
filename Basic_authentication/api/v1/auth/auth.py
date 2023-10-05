@@ -43,7 +43,11 @@ class Auth:
         return path not in excluded_paths
 
     def authorization_header(self, request: Request = None) -> str:
-        """Authorization header"""
+        """
+        Authorization header.
+        'request' IS ASSUMED TO BE
+        THE FLASK 'request' VARIABLE.
+        """
         if request is None:
             return None
 
@@ -53,5 +57,7 @@ class Auth:
         return request.authorization
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """Current user"""
+        """
+        Current user........
+        """
         return None
