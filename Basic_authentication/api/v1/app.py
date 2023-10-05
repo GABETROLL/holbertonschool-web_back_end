@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 """
-Route module for the API
+Route module for the API.
+
+Defines the protocol for every request,
+and deploys the correct type of authentication
+based on the environment variable 'AUTH_TYPE'.
+
+Also defines 3 URL paths and their responses.
+(read below)
 """
 from os import getenv
 from api.v1.views import app_views
@@ -8,14 +15,26 @@ from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
 
-from api.v1.auth.auth import Auth
+from api.v1.auth.auth import Auth, BasicAuth
 
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
-auth: Auth = Auth()
+auth: Auth = None
+"""
+Should be an instance of a child class of 'Auth',
+depending on which authentication type is being
+run on this server,
+
+defined in the environment variable 'AUTH_TYPE'.
+"""
+# Fulfill sdabove docstring
+if os.environ["AUTH_TYPE"] == "basic_auth":
+    auth = BasicAuth()
+else:
+    auth = Auth()
 
 
 @app.before_request

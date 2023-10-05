@@ -65,3 +65,7 @@ class Auth:
         Current user........
         """
         return None
+
+
+class BasicAuth(Auth):
+    pass
