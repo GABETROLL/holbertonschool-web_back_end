@@ -12,7 +12,22 @@ from models.user import User
 
 class BasicAuth(Auth):
     """
-    Empty child class of 'Auth'
+    Has method 'self.current_user(request)',
+    which takes in an HTTP request to this site,
+    and returns a 'models.user.User' instance
+    representing the user's credentials.
+
+    If the request has an auth header,
+    and the credentials are valid, the above
+    paragraph is true.
+
+    But if the credentials are invalid,
+    there's anything wrong with the auth header
+    or the auth header is missing, the method
+    returns None.
+
+    The method uses the other methods in this
+    class to achieve its purpose.
     """
     def extract_base64_authorization_header(
         self,
@@ -147,3 +162,35 @@ class BasicAuth(Auth):
                         )
 
             return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """
+        Takes in an HTTP request to this site,
+        and returns a 'models.user.User' instance
+        representing the user's credentials.
+
+        (THE 'request' VARIABLE IS ASSUMED TO BE
+        'flask.request', AND IS ASSUMED TO BE A
+        SAFE AND VALID REQUEST)
+
+        If the request has an auth header,
+        and the credentials are valid, the above
+        paragraph is true.
+
+        But if the credentials are invalid,
+        there's anything wrong with the auth header
+        or the auth header is missing, the method
+        returns None.
+
+        The method uses the other methods in this
+        class to achieve its purpose.
+        """
+        return self.user_object_from_credentials(
+            *self.extract_user_credentials(
+                self.decode_base64_authorization_header(
+                    self.extract_base64_authorization_header(
+                        self.authorization_header(request)
+                    )
+                )
+            )
+        )

@@ -62,6 +62,12 @@ class Auth:
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
-        Current user........
+        Should return the 'models.user.User' object
+        representing the user's email and password
+        credentials, which IS ASSUMED TO BE SENDING
+        OUR WEBSITE A REQUEST, 'request'.
+
+        (I believe 'request' IS ASSUMED TO BE
+        'flask.request')
         """
         return None
