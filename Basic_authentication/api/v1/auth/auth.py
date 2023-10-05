@@ -42,19 +42,23 @@ class Auth:
 
         return path not in excluded_paths
 
-    def authorization_header(self, request: flask.Request = None) -> str:
+    def authorization_header(self, request: flask.Request | None = None) -> str:
         """
-        Authorization header.
         'request' IS ASSUMED TO BE
         THE FLASK 'request' VARIABLE.
+
+        If 'request' is None, this method just returns None.
+
+        Returns the request's authorization header.
+        If it's None, that means there was no
+        authorization header sent.
         """
         if request is None:
             return None
 
-        if request.authorization is None:
-            return None
+        result = request.headers.get('authorization')
 
-        return request.authorization
+        return result
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
