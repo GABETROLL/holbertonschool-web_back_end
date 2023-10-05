@@ -42,7 +42,7 @@ class Auth:
 
         return path not in excluded_paths
 
-    def authorization_header(self, request: flask.Request | None = None) -> str:
+    def authorization_header(self, request: flask.Request = None) -> str:
         """
         'request' IS ASSUMED TO BE
         THE FLASK 'request' VARIABLE.
