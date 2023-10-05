@@ -20,6 +20,13 @@ auth: Auth = Auth()
 
 @app.before_request
 def authenticate() -> None:
+    """
+    Before doing anything with a request,
+
+    This function
+    checks if the URL path the user is requesting
+    requires authorization.
+    """
     if auth is None:
         return
 
