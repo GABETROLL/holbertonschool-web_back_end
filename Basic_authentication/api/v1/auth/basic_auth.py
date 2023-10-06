@@ -139,6 +139,8 @@ class BasicAuth(Auth):
             return None
         if user_pwd is None or type(user_pwd) != str:
             return None
+        
+        print("AAA")
 
         # Check all users, and find the one
         # that has the email and has the valid password
