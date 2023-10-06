@@ -139,17 +139,16 @@ class BasicAuth(Auth):
             return None
         if user_pwd is None or type(user_pwd) != str:
             return None
-        
-        print("AAA")
 
-        # Check all users, and find the one
-        # that has the email and has the valid password
-        for user in User.all():
+        try:
+            # Check all users, and find the one
+            # that has the email and has the valid password
+            for user in User.all():
 
-            print(user.__dict__)
-
-            if user.email == user_email and user.is_valid_password(user_pwd):
-                return user
+                if user.email == user_email and user.is_valid_password(user_pwd):
+                    return user
+        except Exception as e:
+            print(f"EXCEPTION: {e}")
 
         return None
 
