@@ -135,11 +135,11 @@ class BasicAuth(Auth):
         if user_pwd is None or type(user_pwd) != str:
             return None
         
-        print("REAL CREDENTIALS")
+        # print("REAL CREDENTIALS")
 
         MATCHING_USERS: List[User] = User.search({"email": user_email, "password": user_pwd})
 
-        print(f"{MATCHING_USERS = }")
+        # print(f"{MATCHING_USERS = }")
 
         if not MATCHING_USERS:
             return None

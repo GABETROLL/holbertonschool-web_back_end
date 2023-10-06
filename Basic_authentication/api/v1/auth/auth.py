@@ -60,7 +60,7 @@ class Auth:
 
         return result
 
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request: str = None) -> TypeVar('User'):
         """
         Should return the 'models.user.User' object
         representing the user's email and password
