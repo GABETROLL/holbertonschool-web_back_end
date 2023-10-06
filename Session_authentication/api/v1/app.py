@@ -17,6 +17,7 @@ import os
 
 from api.v1.auth.auth import Auth
 from api.v1.auth.basic_auth import BasicAuth
+from api.v1.auth.session_auth import SessionAuth
 from models.user import User
 
 app = Flask(__name__)
@@ -31,12 +32,18 @@ run on this server,
 
 defined in the environment variable 'AUTH_TYPE'.
 """
-# Fulfill sdabove docstring
-if os.environ.get("AUTH_TYPE", None) == "basic_auth":
+# Fulfill above docstring
+AUTH_TYPE: str = os.environ.get("AUTH_TYPE", None)
+
+auth: Auth = None
+
+if AUTH_TYPE == "basic_auth":
     # key may not exist.
     # IF the key doesn't exist, we treat its value as None.
     # and go with Auth.
     auth = BasicAuth()
+elif AUTH_TYPE == "session_auth":
+    auth = SessionAuth()
 else:
     auth = Auth()
 
