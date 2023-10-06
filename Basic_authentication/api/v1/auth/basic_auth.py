@@ -4,7 +4,7 @@ Contains 'BasicAuth', which is an empty
 child class of 'Auth'.
 """
 from api.v1.auth.auth import Auth
-from typing import TypeVar
+from typing import TypeVar, List
 import base64
 import binascii
 from models.user import User
@@ -137,36 +137,17 @@ class BasicAuth(Auth):
         
         print("REAL CREDENTIALS")
 
-        with open('user_data.csv') as user_data:
-            try:
-                header_line: str = next(user_data)
-            except StopIteration:
-                # CSV file was empty.
-                return None
+        MATCHING_USERS: List[User] = User.search({"email": user_email, "password": user_pwd})
 
-            try:
-                user_email_index: int = header_line.split(",").index("email")
-                user_pwd_index: int = header_line.split(",").index("password")
-            except ValueError:
-                # CSV file didn't contain the
-                # 'email' nor 'password' columns.
-                return None
+        print(f"{MATCHING_USERS = }")
 
-            # print(user_email_index, user_pwd_index)
+        if not MATCHING_USERS:
+            return None
 
-            # Check for a row with that name and that password.
-            while True:
-                try:
-                    split_line = next(user_data).split(",")
-                except StopIteration:
-                    break
-                else:
-                    if split_line[user_email_index] == user_email and split_line[user_pwd_index] == user_pwd:
-                        return User(
-                            email=user_email,
-                            _password=user_pwd
-                        )
+        elif len(MATCHING_USERS) == 1:
+            return MATCHING_USERS[0]
 
+        else:
             return None
 
     def current_user(self, request: str =None) -> TypeVar('User'):
