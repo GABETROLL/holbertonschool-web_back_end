@@ -147,8 +147,10 @@ class BasicAuth(Auth):
 
                 if user.email == user_email and user.is_valid_password(user_pwd):
                     return user
+
         except Exception as e:
             print(f"EXCEPTION: {e}")
+            print(f"EXCEPTION TYPE: {type(e)}")
 
         return None
 
