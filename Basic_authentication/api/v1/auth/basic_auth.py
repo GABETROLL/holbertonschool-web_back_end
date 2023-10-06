@@ -149,8 +149,7 @@ class BasicAuth(Auth):
                     return user
 
         except Exception as e:
-            print(f"EXCEPTION: {e}")
-            print(f"EXCEPTION TYPE: {type(e)}")
+            print(f"EXCEPTION: {e.with_traceback()}")
 
         return None
 
