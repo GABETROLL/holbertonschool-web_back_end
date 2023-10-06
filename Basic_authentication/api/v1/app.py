@@ -17,7 +17,7 @@ import os
 
 from api.v1.auth.auth import Auth
 from api.v1.auth.basic_auth import BasicAuth
-
+from models.user import User
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
@@ -59,11 +59,23 @@ def authenticate() -> None:
     ):
         return
 
-    if auth.authorization_header(request) is None:
+    AUTH_HEADER: str = auth.authorization_header(request)
+
+    if AUTH_HEADER is None:
+        # User has not authorized themselves.
         abort(401)
 
-    if auth.current_user(request) is None:
+    # assert type(AUTH_HEADER) == str
+
+    RESULT: User = auth.current_user(AUTH_HEADER)
+
+    if RESULT is None:
+        # User doesn't have valid credentials.
         abort(403)
+
+    # assert type(RESULT) == User
+
+    return RESULT
 
 
 @app.errorhandler(401)
