@@ -119,14 +119,19 @@ class BasicAuth(Auth):
             decoded_base64_authorization_header.split(':')
         )
 
-    def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):
+    def user_object_from_credentials(
+            self,
+            user_email: str,
+            user_pwd: str) -> TypeVar('User'):
         """
-        This method FIRST VALIDATES THAT THE ARGUMENT CREDENTIALS
-        ARE VALID, in ', then returns an 'api.models.user.User'
-        instance of the user that logged in.
+        If the credential arguments are valid, this method
+        returns a 'models.user.User' object representing
+        the user that just logged in.
 
-        The credentials are valid if they're both part of
-        THE SAME ROW in 'user_data.csv'.
+        If the credential arguments are not valid
+        (like them being None, not a part of the database
+        or having the wrong password),
+        this method returns None.
         """
         # print(user_email, user_pwd)
 
@@ -134,23 +139,18 @@ class BasicAuth(Auth):
             return None
         if user_pwd is None or type(user_pwd) != str:
             return None
-        
-        # print("REAL CREDENTIALS")
 
-        MATCHING_USERS: List[User] = User.search({"email": user_email, "password": user_pwd})
+        # Check all users, and find the one
+        # that has the email and has the valid password
+        for user in User.all():
+            # assert type(user) == User
 
-        # print(f"{MATCHING_USERS = }")
+            if user.email == user_email and user.is_valid_password(user_pwd):
+                return user
 
-        if not MATCHING_USERS:
-            return None
+        return None
 
-        elif len(MATCHING_USERS) == 1:
-            return MATCHING_USERS[0]
-
-        else:
-            return None
-
-    def current_user(self, request: str =None) -> TypeVar('User'):
+    def current_user(self, request: str = None) -> TypeVar('User'):
         """
         Takes in an HTTP request AUTH HEADER,
         named 'request', to this site,
