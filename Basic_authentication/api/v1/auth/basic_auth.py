@@ -128,7 +128,7 @@ class BasicAuth(Auth):
         The credentials are valid if they're both part of
         THE SAME ROW in 'user_data.csv'.
         """
-        print(user_email, user_pwd)
+        # print(user_email, user_pwd)
 
         if user_email is None or type(user_email) != str:
             return None
