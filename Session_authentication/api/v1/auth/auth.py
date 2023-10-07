@@ -5,6 +5,7 @@ Template to handle all authentication of this project/folder,
 """
 import flask
 from typing import List, TypeVar
+import os
 
 
 class Auth:
@@ -71,3 +72,24 @@ class Auth:
         'flask.request')
         """
         return None
+
+    def session_cookie(self, request: flask.Request = None):
+        """
+        ASSUMING THAT 'request' IS:
+            THE USERS' SAFE AND VALID REQUEST
+            'flask.request'
+        AND THAT 'request.cookies' HAS THE COOKIE,
+
+        this method returns the user's session ID cookie
+        in the request.
+
+        The name of the session cookie is ASSUMED to be
+        the "SESSION_NAME" environment variable,
+        in this computer, which is the server.
+        """
+        if request is None:
+            return None
+
+        return request.cookies.get(
+            os.environ.get("SESSION_NAME", None)
+        )
