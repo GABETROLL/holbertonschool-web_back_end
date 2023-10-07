@@ -65,14 +65,21 @@ def authenticate() -> None:
 
     if not auth.require_auth(
         request.path,
-        ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+        [
+            '/api/v1/status/',
+            '/api/v1/unauthorized/',
+            '/api/v1/forbidden/',
+            '/api/v1/auth_session/login/'
+        ]
     ):
         return
 
     AUTH_HEADER: str = auth.authorization_header(request)
+    SESSION_COOKIE = auth.session_cookie(request)
 
-    if AUTH_HEADER is None:
-        # User has not authorized themselves.
+    if AUTH_HEADER is None and SESSION_COOKIE is None:
+        # User has not provided credentials,
+        # nor has provided a session cookie.
         abort(401)
 
     # assert type(AUTH_HEADER) == str
