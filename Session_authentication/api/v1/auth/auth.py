@@ -80,7 +80,8 @@ class Auth:
             'flask.request'
         AND THAT 'request.cookies' HAS THE COOKIE,
 
-        this method returns the user's session ID cookie
+        this method returns value of
+        the user's session ID cookie
         in the request.
 
         The name of the session cookie is ASSUMED to be

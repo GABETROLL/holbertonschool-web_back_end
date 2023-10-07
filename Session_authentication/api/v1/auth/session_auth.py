@@ -4,6 +4,8 @@ Contains class 'SessionAuth'.
 """
 from api.v1.auth.auth import Auth
 import uuid
+from models.user import User
+from typing import Union
 
 
 class SessionAuth(Auth):
@@ -54,4 +56,33 @@ class SessionAuth(Auth):
         if session_id is None or type(session_id) != str:
             return None
 
-        return self.user_id_by_session_id.get(session_id, default=None)
+        return self.user_id_by_session_id.get(session_id, None)
+
+    def current_user(self, request=None) -> Union[User, None]:
+        """
+        ASSUMING THAT 'request' IS A VALID
+        AND SAFE 'flask.request' from the user,
+
+        and that 'request' contains the user's
+        VALID SESSION COOKIE,
+
+        This method returns the user's
+        'models.user.User' representation,
+        as a way to allow the user in.
+
+        If 'request' is None, the cookie is missing,
+        or the cookie is invalid (for example,
+        the session expired or never existed),
+        this method returns None instead.
+        """
+
+        SESSION_COOKIE = self.session_cookie(request)
+
+        # print(SESSION_COOKIE)
+
+        RESULT = self.user_id_for_session_id(SESSION_COOKIE)
+
+        # print(f"{self.user_id_by_session_id = }")
+        # print(RESULT)
+
+        return RESULT
