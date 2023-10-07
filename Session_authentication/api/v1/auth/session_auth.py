@@ -76,6 +76,9 @@ class SessionAuth(Auth):
         this method returns None instead.
         """
 
+        if request is None:
+            return None
+
         SESSION_COOKIE = self.session_cookie(request)
 
         # print(SESSION_COOKIE)
