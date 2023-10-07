@@ -80,7 +80,8 @@ def authenticate() -> None:
     RESULT: User = auth.current_user(AUTH_HEADER)
 
     if RESULT is None:
-        # User doesn't have valid credentials.
+        # User doesn't have valid credentials,
+        # or the user isn't using correct authorization.
         abort(403)
 
     # assert type(RESULT) == User
