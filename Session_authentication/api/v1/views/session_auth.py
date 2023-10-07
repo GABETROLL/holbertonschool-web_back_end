@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+"""
+Contains the flask route '/api/v1/auth_session/login/',
+which allows the user to login for the first time,
+and creates a new session for the user.
+"""
 from api.v1.views import app_views
 import flask
 from models.user import User
