@@ -9,7 +9,6 @@ import flask
 from models.user import User
 from typing import List, Tuple
 from api.v1.auth.session_auth import SessionAuth
-from api.v1.app import auth
 import os
 
 
@@ -42,6 +41,8 @@ def login():
     CREATES A SESSION FOR THE USER, and SENDS
     the SESSION TOKEN to the user as a COOKIE.
     """
+    from api.v1.app import auth
+
     EMAIL = flask.request.form.get("email", default=None)
     PASSWORD = flask.request.form.get("password", default=None)
 
@@ -94,6 +95,8 @@ def logout() -> Tuple[flask.Response, int]:
     If destroying the session is successful,
     this function returns True with a response code
     of 200."""
+    from api.v1.app import auth
+
     assert type(auth) == SessionAuth
 
     SESSION_DESTROYED: bool = auth.destroy_session(flask.request)
