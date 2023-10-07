@@ -17,7 +17,7 @@ class SessionAuth(Auth):
     with the user when a user logs in cold.
 
     'user_id_by_session_id' is a dictionary
-    of SESSION UUIDs and USER IDs.
+    of SESSION UUID strings and USER IDs.
     """
     user_id_by_session_id = {}
 
@@ -31,7 +31,7 @@ class SessionAuth(Auth):
         ASSUMES THAT 'user_id' IS A SAFE & VALID USER ID,
         FIRST CREATED WITH USER CREDENTIALS.
 
-        Generates a new session UUID,
+        Generates a new session UUID string,
         assigns it to 'user_id' in this class' dictionary,
 
         and returns the SESSION UUID.
@@ -39,9 +39,9 @@ class SessionAuth(Auth):
         if user_id is None or type(user_id) != str:
             return None
 
-        SESSION_ID: uuid.UUID = uuid.uuid4()
+        SESSION_ID: str = str(uuid.uuid4())
 
-        self.user_id_by_session_id[SESSION_ID]: uuid.UUID = user_id
+        self.user_id_by_session_id[SESSION_ID] = user_id
 
         return SESSION_ID
 
@@ -83,9 +83,10 @@ class SessionAuth(Auth):
 
         # print(SESSION_COOKIE)
 
-        RESULT = self.user_id_for_session_id(SESSION_COOKIE)
+        USER_ID = self.user_id_for_session_id(SESSION_COOKIE)
 
         # print(f"{self.user_id_by_session_id = }")
         # print(RESULT)
 
-        return RESULT
+        USER: User = User.get(USER_ID)
+        return USER
