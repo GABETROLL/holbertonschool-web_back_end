@@ -90,3 +90,33 @@ class SessionAuth(Auth):
 
         USER: User = User.get(USER_ID)
         return USER
+
+    def destroy_session(self, request=None) -> bool:
+        """
+        If 'request' is None, this method returns False.
+
+        If the user 'request' doesn't have the
+        session ID cookie, this method returns False.
+
+        ASSUMING THAT 'request' IS 'flask.request',
+        AND THAT 'request' IS SAFE AND VALID,
+
+        this method uses the request's cookies sent by the user,
+        which should contain the session ID cookie,
+        then deletes the session, logging off the user.
+
+        Returns weather or not a session was killed.
+        """
+        if request is None:
+            return False
+
+        SESSION_ID: str = self.session_cookie(request)
+
+        if SESSION_ID is None:
+            return False
+
+        if self.user_id_for_session_id(SESSION_ID) is None:
+            return False
+
+        del self.user_id_by_session_id[SESSION_ID]
+        return True

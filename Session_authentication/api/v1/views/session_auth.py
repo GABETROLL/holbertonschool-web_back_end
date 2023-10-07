@@ -7,14 +7,14 @@ and creates a new session for the user.
 from api.v1.views import app_views
 import flask
 from models.user import User
-from typing import List
+from typing import List, Tuple
 from api.v1.auth.session_auth import SessionAuth
 from api.v1.app import auth
 import os
 
 
 @app_views.route('/auth_session/login', methods=["POST"], strict_slashes=False)
-def something():
+def login():
     """
     Allows the user to send a POST flask.request
     with their email and password,
@@ -78,3 +78,27 @@ def something():
     response.set_cookie(SESSION_COOKIE_NAME, USER_SESSION_ID)
 
     return response
+
+@app_views.route('/auth_session/logout', methods=["DELETE"], strict_slashes=False)
+def logout() -> Tuple[flask.Response, int]:
+    """
+    Upon recieving a DELETE request from the user,
+
+    This function tries to delete the user's session
+    using 'auth.destroy_session(request)'.
+
+    If something goes wrong, and the 'destroy_session'
+    call returns False, this function returns
+    False with a response code of 404.
+
+    If destroying the session is successful,
+    this function returns True with a response code
+    of 200."""
+    assert type(auth) == SessionAuth
+
+    SESSION_DESTROYED: bool = auth.destroy_session(flask.request)
+
+    if SESSION_DESTROYED:
+        return flask.jsonify(True), 200
+    else:
+        return flask.jsonify(False), 404
