@@ -57,6 +57,34 @@ def authenticate() -> None:
     checks if the URL path the user is requesting
     requires authorization.
 
+    If it does, this function then tries to validate
+    the user's auth details.
+
+    If the user hasn't sent an AUTH header
+    nor a session cookie,
+    this function aborts with a response code of
+    401 (Unauthorized).
+
+    This function responds to the request depending
+    on the AUTH method, defined in 'auth',
+    which is defined by the 'AUTH_TYPE' environment
+    variable in the computer running this script,
+    which should be the server.
+
+    If the AUTH method (defined in the
+    "AUTH_TYPE" environment variable) is Basic,
+    and the user's request is also using Basic,
+    this function attempts to validate the user's
+    credentials and allows them in if they are correct.
+
+    If the AUTH method the user is using is Basic,
+    and 'auth' is currently 'SessionAuth',
+    this function aborts with a response code of
+    403.
+
+    If the user has provided a session ID cookie,
+    <IMPLEMENT...>
+
     Also assigns 'request.current_user' to the current
     user.
     """
@@ -85,6 +113,11 @@ def authenticate() -> None:
     # assert type(AUTH_HEADER) == str
 
     RESULT: User = auth.current_user(AUTH_HEADER)
+    # (if the 'auth' type is 'SessionAuth',
+    # the 'current_user' method being ran is the one
+    # from 'Auth', which should automatically return None,
+    # and forbid the user from using Basic AUTH,
+    # instead of Session AUTH)
 
     if RESULT is None:
         # User doesn't have valid credentials,
