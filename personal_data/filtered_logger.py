@@ -44,13 +44,20 @@ class RedactingFormatter(logging.Formatter):
         self.fields: List[str] = fields
 
     def format(self, record: logging.LogRecord) -> str:
-        return filter_datum(self.fields, self.REDACTION, record.getMessage(), self.SEPARATOR)
+        """
+        Returns the 'record.getMessage()',
+        filtered to censor the sensitive user information,
+        using the 'filter_datum' function.
+        """
+        return filter_datum(
+            self.fields, self.REDACTION, record.getMessage(), self.SEPARATOR
+        )
 
 
 def get_logger() -> logging.Logger:
     """
     Returns a new 'logging.Logger' instance.
-    
+
     The instance has a level of 'logging.INFO',
     doesn't propagate, has a StreamHandler and
     has 'RedactingFormatter' as its filter.
