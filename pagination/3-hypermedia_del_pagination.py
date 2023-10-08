@@ -32,7 +32,12 @@ class Server:
 
     def indexed_dataset(self) -> Dict[int, List]:
         """
-        Dataset indexed by sorting position, starting at 0
+        Dataset from 'DATA_FILE',
+        cached as a dictionary of the rows' indexes
+        and their contents,
+
+        so that even if a row is deleted,
+        the other rows don't offset.
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
