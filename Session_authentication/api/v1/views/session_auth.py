@@ -28,12 +28,12 @@ def login():
     (this function searches for the matching user
     with 'models.user.User.search'),
     this function returns the JSON
-    { "error": "no user found for this email" },
+    {"error": "no user found for this email"},
     with a response code of 404.
 
     If the email in the POST request DOES BELONG TO
     A USER, but the password doesn't, this function returns
-    the JSON { "error": "wrong password" }, with a response
+    the JSON {"error": "wrong password"}, with a response
     code of 401.
 
     If the user's POST request's 'form' contains
@@ -47,15 +47,15 @@ def login():
     PASSWORD = flask.request.form.get("password", default=None)
 
     if EMAIL is None:
-        return flask.jsonify({ "error": "email missing" }), 400
+        return flask.jsonify({"error": "email missing"}), 400
 
     if PASSWORD is None:
-        return flask.jsonify({ "error": "password missing" }), 400
+        return flask.jsonify({"error": "password missing"}), 400
 
     USERS_WITH_EMAIL: List[User] = User.search({"email": EMAIL})
 
     if not USERS_WITH_EMAIL:
-        return flask.jsonify({ "error": "no user found for this email" }), 404
+        return flask.jsonify({"error": "no user found for this email"}), 404
 
     # There should only ever be one user
     # with X email.
@@ -64,7 +64,7 @@ def login():
     USER: User = USERS_WITH_EMAIL[0]
 
     if not USER.is_valid_password(PASSWORD):
-        return flask.jsonify({ "error": "wrong password" }), 401
+        return flask.jsonify({"error": "wrong password"}), 401
 
     # No other auth type should be allowed.
     assert type(auth) == SessionAuth
@@ -75,12 +75,17 @@ def login():
     # Create cookie
     SESSION_COOKIE_NAME: str = os.environ.get("SESSION_NAME")
 
-    response: flask.Response = flask.make_response(flask.jsonify(USER.to_json()))
+    response: flask.Response = flask.make_response(
+        flask.jsonify(USER.to_json())
+    )
     response.set_cookie(SESSION_COOKIE_NAME, USER_SESSION_ID)
 
     return response
 
-@app_views.route('/auth_session/logout', methods=["DELETE"], strict_slashes=False)
+
+@app_views.route('/auth_session/logout',
+                 methods=["DELETE"],
+                 strict_slashes=False)
 def logout() -> Tuple[flask.Response, int]:
     """
     Upon recieving a DELETE request from the user,
