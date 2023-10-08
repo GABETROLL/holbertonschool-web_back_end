@@ -46,25 +46,34 @@ class Server:
         """
         Returns a dictionary:
         {
-            "index": index,
-            "next_index": <
-                the next available index in the cached data.
-                Normally, it would be 'index + 1', but some rows may be deleted,
-                so this number is the next available row
-            >
-            "page_size": <the amount of items in the requested page>
-            "data": <the rows that survived deletions, and can be returned for this page>
+            "index": 'index',
+            "next_index":
+                the index of the first row of the next page
+                from this one. Should be 'index + page_size'.
+            "page_size":
+                the amount of items in the requested page.
+                It may not always be 'page_size', since some
+                items may have been deleted.
+            data:
+                the rows that, according to their indeces,
+                are supposed to be displayed in this page,
+                from 'index' to 'index + page_size'.
+                Some of them may be deleted, but their indexes
+                remain the same.
         }
-        Returns a list of rows from the data,
-        from 'index' to 'index + page_size'.
 
-        Normally, this object should have the data from
-        'DATA_FILE' cached and indexed (you can get it with
-        'self.index_dataset()').
-        If a row gets deleted, the other rows are still indexed
-        how they were indexed before (because they're cached
-        in a dictionary). And this method just returns all of the
-        rows of data that have the indexes from 'index' to 'index + page_size'.
+        Normally, the data in 'self.indexed_data()'
+        has all of the rows in 'DATA_FILE',
+        all indexed properly, from [0, rows).
+
+        But, if a row gets deleted from 'self',
+        since the cache in 'self.indexed_data()' is a dictionary
+        instead of a list, the row being deleted doesn't offset
+        the indexes of the other items.
+
+        In this method, we return all of the items
+        in the range of ['index', 'index + page_size'),
+        but skipping the rows that were deleted.
         """
 
         INDEXED_DATASET: Dict[int, List] = self.indexed_dataset()
