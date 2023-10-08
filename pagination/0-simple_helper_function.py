@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
-Contains function 'index_range'.
+Exercise 0:
+
+Make a funtion 'index_range' that takes in a
+page number and the amount of items per page,
+and returns the indexes of the start end end
+items in that page.
 """
 from typing import Tuple
 
