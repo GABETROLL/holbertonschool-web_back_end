@@ -91,7 +91,7 @@ def authenticate() -> None:
     if auth is None:
         return
 
-    if not auth.require_auth(
+    if auth.require_auth(
         request.path,
         [
             '/api/v1/status/',
@@ -104,6 +104,8 @@ def authenticate() -> None:
 
     AUTH_HEADER: str = auth.authorization_header(request)
     SESSION_COOKIE = auth.session_cookie(request)
+
+    #print(f"{request.path = }")
 
     if AUTH_HEADER is None and SESSION_COOKIE is None:
         # User has not provided credentials,
