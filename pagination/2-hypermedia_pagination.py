@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 """
-Exercise 1:
+Exercise 2:
 
-Make a class to get data from the CSV file
-containing the most popular baby names,
-and return the data for that page.
+Implement the 'get_hyper' method.
 """
 from typing import Tuple, List, Mapping, Union
 import csv
