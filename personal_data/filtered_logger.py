@@ -6,7 +6,7 @@ from typing import List
 import re
 import logging
 
-PII_FIELDS = "name", "phone", "ssn", "password", "ip"
+PII_FIELDS = "email", "phone", "ssn", "password", "ip"
 
 
 def filter_datum(
@@ -24,7 +24,7 @@ def filter_datum(
     """
     result = message
     for field_name in fields:
-        PATTERN = f"(?<={field_name}=)(.*?)(?={separator}$)"
+        PATTERN = f"(?<={field_name}=)(.*{separator}*?)(?={separator}$)"
         result = re.sub(PATTERN, redaction, result)
     return result
 
