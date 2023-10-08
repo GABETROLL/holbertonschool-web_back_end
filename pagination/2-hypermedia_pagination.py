@@ -6,7 +6,7 @@ Make a class to get data from the CSV file
 containing the most popular baby names,
 and return the data for that page.
 """
-from typing import Tuple, List, Mapping
+from typing import Tuple, List, Mapping, Union
 import csv
 import math
 
@@ -77,7 +77,10 @@ class Server:
         except IndexError:
             return []
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> Mapping
+    def get_hyper(
+            self,
+            page: int = 1,
+            page_size: int = 10) -> Mapping[str, Union[int, None]]:
         """
         Given a page index (STARTING A 1) 'page',
         and the amount of data items per page 'page_size',
