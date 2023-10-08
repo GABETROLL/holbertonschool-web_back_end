@@ -67,7 +67,7 @@ class Server:
         rows of data that have the indexes from 'index' to 'index + page_size'.
         """
 
-        INDEXED_DATASET: Dict[int, List] = self.indexed_dataset
+        INDEXED_DATASET: Dict[int, List] = self.indexed_dataset()
 
         PAGE_DATA: List[List] = [
             INDEXED_DATASET[i]
