@@ -59,14 +59,19 @@ def get_logger() -> logging.Logger:
     Returns a new 'logging.Logger' instance.
 
     The instance has a level of 'logging.INFO',
-    doesn't propagate, has a StreamHandler and
-    has 'RedactingFormatter' as its filter.
+    doesn't propagate to other 'logging.Logger' objects,
+    and has a 'StreamHandler' that has a 'RedactingFormatter'
+    as its 'logging.Formatter'.
     """
     result: logging.Logger = logging.getLogger("user_data")
 
     result.setLevel(logging.INFO)
     result.propagate = False
-    result.addHandler(logging.StreamHandler())
-    result.addFilter(RedactingFormatter(PII_FIELDS))
+
+    HANDLER: logging.StreamHandler = logging.StreamHandler()
+
+    HANDLER.setFormatter(RedactingFormatter(PII_FIELDS))
+
+    result.addHandler(HANDLER)
 
     return result
