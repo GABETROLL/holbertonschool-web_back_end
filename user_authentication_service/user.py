@@ -3,7 +3,7 @@
 Defines the 'User' SQLAlchemy model for an SQL table named 'users'.
 """
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Column, Integer, String
 
 Base = declarative_base()
 
@@ -18,9 +18,9 @@ class User(Base):
     """
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(nullable=False)
-    hashed_password: Mapped[str] = mapped_column(nullable=False)
-    session_id: Mapped[str]
-    reset_token: Mapped[str]
+    id = Column(Integer, primary_key=True)
+    email = Column(string, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    session_id = Column(String)
+    reset_token = Column(String)
 
