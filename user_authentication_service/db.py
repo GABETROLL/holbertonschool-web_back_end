@@ -37,7 +37,7 @@ class DB:
     def add_user(self, email: str, hashed_password: str) -> User:
         """
         Creates a new User object using 'email' and 'hashed_password'
-        correspondingly, adds the data to 'self's DB,
+        correspondingly, adds the data to 'self's DB file,
         and returns it.
         """
         RESULT: User = User(
@@ -46,5 +46,6 @@ class DB:
         )
 
         self._session.add(RESULT)
+        self._session.commit()
 
         return RESULT
