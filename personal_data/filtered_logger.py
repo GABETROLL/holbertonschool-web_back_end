@@ -95,7 +95,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     this function returns a MySQL connector
     for the database containing the PII.
     """
-    result = mysql.connector.connect(
+    return mysql.connector.connect(
         user=environ.get("PERSONAL_DATA_DB_USERNAME"),
         password=environ.get("PERSONAL_DATA_DB_PASSWORD"),
         host=environ.get("PERSONAL_DATA_DB_HOST"),
