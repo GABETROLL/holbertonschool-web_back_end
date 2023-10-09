@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.exc import NoResultFound
 from user import Base, User
+from typing import Union
 
 
 class DB:
@@ -56,5 +57,18 @@ class DB:
         that matches the 'kwargs'.
 
         Then, returns the row as a User object.
+
+        If the 'kwargs' don't match the definition of 'User',
+        this method raises 'InvalidRequestError'.
+
+        If no matching 'User' row is found,
+        this method raises 'NoResultFound'.
         """
-        return self._session.query(User).filter_by(**kwargs).first()
+        RESULT: Union[User, None] = self._session.query(User) \
+            .filter_by(**kwargs) \
+            .first()
+
+        if RESULT is None:
+            raise NoResultFound
+
+        return RESULT
