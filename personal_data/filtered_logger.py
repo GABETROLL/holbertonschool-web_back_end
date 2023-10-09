@@ -101,3 +101,48 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         host=environ.get("PERSONAL_DATA_DB_HOST"),
         database=environ.get("PERSONAL_DATA_DB_NAME")
     )
+
+
+def main() -> None:
+    """
+    Displays all of the rows of user's data in
+    this server's database, through 'get_db()',
+
+    using the logger in returned by 'get_logger()',
+    to hide the PII (name, email, phone, ssn, password)
+    """
+    LOGGER: logging.Logger = get_logger()
+
+    DB = get_db()
+    DB_CURSOR = DB.cursor()
+
+    DB_CURSOR.execute(
+        "SELECT"
+        "name, email, phone, ssn, password, ip, last_login, user_agent"
+        "FROM USERS"
+    )
+
+    for (
+            name,
+            email,
+            phone,
+            ssn,
+            password,
+            ip,
+            last_login,
+            user_agent) in DB_CURSOR:
+        LOGGER.log(
+            logging.INFO,
+            f"{name=}{RedactingFormatter.SEPARATOR}"
+            f"{email=}{RedactingFormatter.SEPARATOR}"
+            f"{phone=}{RedactingFormatter.SEPARATOR}"
+            f"{ssn=}{RedactingFormatter.SEPARATOR}"
+            f"{password=}{RedactingFormatter.SEPARATOR}"
+            f"{ip=}{RedactingFormatter.SEPARATOR}"
+            f"{last_login=}{RedactingFormatter.SEPARATOR}"
+            f"{user_agent=}{RedactingFormatter.SEPARATOR}"
+        )
+
+
+if __name__ == '__main__':
+    main()
