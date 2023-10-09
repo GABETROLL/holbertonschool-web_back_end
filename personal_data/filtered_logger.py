@@ -31,7 +31,8 @@ def filter_datum(
 
 class RedactingFormatter(logging.Formatter):
     """
-    Redacting Formatter class
+    Uses 'filter_datum' to redact the PII fields
+    in a record message.
     """
 
     REDACTION = "***"
@@ -46,11 +47,13 @@ class RedactingFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         """
         Returns the 'record.getMessage()',
-        filtered to censor the sensitive user information,
-        using the 'filter_datum' function.
+        formatted using '% self.FORMAT',
+        and filtered to censor the sensitive user information,
+        using the 'filter_datum' function,
         """
+        FORMATTED_MSG: str = super().format(record)
         return filter_datum(
-            self.fields, self.REDACTION, record.getMessage(), self.SEPARATOR
+            self.fields, self.REDACTION, FORMATTED_MSG, self.SEPARATOR
         )
 
 
