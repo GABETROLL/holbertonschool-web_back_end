@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-
+from sqlalchemy.orm.exc import NoResultFound
 from user import Base, User
 
 
@@ -19,7 +19,7 @@ class DB:
         """
         Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db")
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -49,3 +49,12 @@ class DB:
         self._session.commit()
 
         return RESULT
+
+    def find_user_by(self, **kwargs) -> User:
+        """
+        Finds the first row in the 'users' table
+        that matches the 'kwargs'.
+
+        Then, returns the row as a User object.
+        """
+        return self._session.query(User).filter_by(**kwargs).first()
