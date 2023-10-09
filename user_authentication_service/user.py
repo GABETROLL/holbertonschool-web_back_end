@@ -2,7 +2,8 @@
 """
 Defines the 'User' SQLAlchemy model for an SQL table named 'users'.
 """
-from sqlalchemy.orm import DeclarativeBase, Mapped
+from sqlalchemy.orm import \
+        DeclarativeBase, Mapped, mapped_column
 
 
 class Base(DeclarativeBase):
