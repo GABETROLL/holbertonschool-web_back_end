@@ -2,15 +2,10 @@
 """
 Defines the 'User' SQLAlchemy model for an SQL table named 'users'.
 """
-from sqlalchemy.orm import \
-        DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Mapped, mapped_column
 
-
-class Base(DeclarativeBase):
-    """
-    Base SQLAlchemy model
-    """
-    pass
+Base = declarative_base()
 
 
 class User(Base):
