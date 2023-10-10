@@ -95,4 +95,6 @@ class DB:
             raise ValueError("Cannot update 'id' of 'User'.")
 
         for attr, value in kwargs.items():
+            if attr not in USER.__dict__.keys():
+                raise ValueError(f"'User' object has no attribute '{attr}'")
             USER.attr = value

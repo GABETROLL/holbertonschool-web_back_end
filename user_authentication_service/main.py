@@ -15,3 +15,6 @@ print(user.id)
 
 my_db.update_user(user.id, hashed_password='NewPwd')
 print("Password updated")
+
+my_db.update_user(user.id, hello='hi')
+
