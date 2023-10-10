@@ -72,3 +72,27 @@ class DB:
             raise NoResultFound
 
         return RESULT
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """
+        Finds the 'User' with 'user_id' as its 'id'
+        in 'self's DB file, and updates the row with
+        'kwargs'.
+
+        This method uses 'self.find_user_by(id=user_id)'
+        to find the user.
+
+        So, if a user with 'user_id' as
+        its 'id' doesn't exist, this method also raises
+        NoResultFound.
+
+        And if the 'kwargs' don't have the correct attributes,
+        this method raises ValueError.
+        """
+        USER: User = self.find_user_by(id=user_id)
+
+        if 'id' in kwargs:
+            raise ValueError("Cannot update 'id' of 'User'.")
+
+        for attr, value in kwargs.items():
+            USER.attr = value
