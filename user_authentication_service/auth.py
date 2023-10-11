@@ -52,13 +52,21 @@ class Auth:
 
         Returns True if a User with 'email' as its email
         and 'password' as its password exists in the DB.
+        (THE PASSWORDS ARE HASHED)
+
+        If the user with 'email' as its email doesn't exist,
+        this method returns False.
 
         After validating the email, this method
-        checks the password with 'bcrypt.checkpw'.
+        checks the password with 'bcrypt.checkpw'. If the password
+        is invalid, this method returns False.
         """
         try:
             MAYBE_USER: User = self._db.find_user_by(email=email)
         except NoResultFound:
             return False
         else:
-            return bcrypt.checkpw(password.encode(), MAYBE_USER.hashed_password)
+            return bcrypt.checkpw(
+                password.encode(),
+                MAYBE_USER.hashed_password
+            )
