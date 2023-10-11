@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Flask app for signing 'User's in.
 """
