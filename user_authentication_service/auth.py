@@ -8,4 +8,3 @@ def _hash_password(password: str) -> bytes:
     using 'bcrypt'.
     """
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-
