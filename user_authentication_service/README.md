@@ -1,2 +1,5 @@
-# User authenticatio Service, From Scratch, In Flask
+# User authenticatio Service, From Scratch
+## Dependencies
+Flask
+SQLAlchemy
 
