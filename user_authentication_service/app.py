@@ -18,7 +18,7 @@ def bienvenue() -> Tuple[flask.Response, int]:
 @app.route("/users/", methods=["POST"], strict_slashes=False)
 def users() -> Tuple[flask.Response, int]:
     """
-    Endpoint for signing up a user.
+    Endpoint for registering a new user.
 
     EXPECTS:
 
@@ -26,7 +26,8 @@ def users() -> Tuple[flask.Response, int]:
     "email=<email> password=<password>".
 
     WITH 'curl':
-    curl -X POST localhost:5000/users -d 'email=<email>' -d 'password=<password>'
+
+    curl localhost:5000/users -d email '<email>' -d password '<password>'
 
     If a user with that email already exists,
     this endpoint should respond with the JSON:
