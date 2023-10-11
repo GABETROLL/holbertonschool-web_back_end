@@ -78,4 +78,4 @@ def _generate_uuid() -> str:
     Returns the 'str' representation of
     'uuid.uuid5()'.
     """
-    return str(uuid.uuid5())
+    return str(uuid.uuid4())
