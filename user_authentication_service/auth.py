@@ -99,11 +99,5 @@ class Auth:
             return None
         else:
             USER_SESSION_ID: str = _generate_uuid()
-
-            print(USER_TO_LOGIN.__dict__)
-
             self._db.update_user(USER_TO_LOGIN.id, session_id=USER_SESSION_ID)
-
-            print(USER_TO_LOGIN.__dict__)
-
             return USER_SESSION_ID
