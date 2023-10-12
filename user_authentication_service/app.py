@@ -132,5 +132,38 @@ def logout():
     return flask.redirect(flask.url_for('bienvenue'))
 
 
+@app.route("/profile/", methods=["GET"], strict_slashes=False)
+def profile() -> flask.Response:
+    """
+    EXPECTS:
+        cookie: session_id=<session id>
+
+    RESPONDS:
+        If the cookie exists and is valid, this route responds with:
+            {"email": <user email>"}
+            and a status code of 200
+        by returning a 'flask.Reponse' with the above data.
+        Otherwise:
+            This function calls 'flask.abort(403)'.
+    """
+    REQUEST_SESSION_ID_COOKIE: Optional[str] = \
+        flask.request.cookies.get(
+            "session_id"
+        )
+
+    if REQUEST_SESSION_ID_COOKIE is None:
+        flask.abort(403)
+
+    USER: Optional[User] = \
+        AUTH.get_user_from_session_id(
+            REQUEST_SESSION_ID_COOKIE
+        )
+
+    if USER is None:
+        flask.abort(403)
+
+    return flask.jsonify({"email": USER.email})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
