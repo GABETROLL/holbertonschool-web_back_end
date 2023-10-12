@@ -192,5 +192,41 @@ def get_reset_password_token() -> flask.Response:
     return flask.jsonify({"email": EMAIL, "reset_token": RESULT})
 
 
+@app.route("/reset_password/", methods=["PUT"], strict_slashes=False)
+def update_password() -> flask.Response:
+    """
+    EXPECTS:
+        form data:
+            email=<User's email>
+            reset_token=<reset_token>
+            new_password=<new password>
+
+    Updates the password of the User specified with the form data.
+    If that User doesn't exist or doesn't have that reset token,
+
+    this function responds with a code of 403, by calling 'flask.abort(403)'.
+
+    RESPONDS:
+        If the credentials and reset token are valid:
+            data:
+                {"email": <email>, "message": "Password updated"}
+            code:
+                200
+        Otherwise:
+            code:
+                403
+    """
+    EMAIL: Optional[str] = flask.request.form.get("email")
+    RESET_TOKEN: Optional[str] = flask.request.form.get("reset_token")
+    NEW_PASSWORD: Optional[str] = flask.request.form.get("new_password")
+
+    try:
+        AUTH.update_password(RESET_TOKEN, NEW_PASSWORD)
+    except ValueError:
+        flask.abort(403)
+
+    return flask.jsonify({"email": EMAIL, "message": "Password updated"})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
