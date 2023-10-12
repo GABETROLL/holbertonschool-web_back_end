@@ -61,3 +61,15 @@ class TestAuth(unittest.TestCase):
             auth.get_reset_password_token,
             "DOESN'T EXIST"
         )
+
+    def test_update_password(self):
+        """
+        Tests that 'AUTH.update_password(<token>)'
+        updates the password of the USER.
+        """
+        TOKEN: str = auth.get_reset_password_token(USER_EMAIL)
+        NEW_PASSWORD = "NEW PASSWORD"
+        auth.update_password(TOKEN, NEW_PASSWORD)
+        self.assertTrue(
+            auth.valid_login(USER_EMAIL, NEW_PASSWORD)
+        )
