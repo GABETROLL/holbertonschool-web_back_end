@@ -13,6 +13,10 @@ app = flask.Flask(__name__)
 
 @app.route("/", methods=["GET"], strict_slashes=False)
 def bienvenue() -> Tuple[flask.Response, int]:
+    """
+    Expects GET with nothing,
+    responds with {"message": "Bienvenue"} and a status code of 200.
+    """
     return flask.jsonify({"message": "Bienvenue"}), 200
 
 
