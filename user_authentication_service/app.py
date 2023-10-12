@@ -165,5 +165,32 @@ def profile() -> flask.Response:
     return flask.jsonify({"email": USER.email})
 
 
+@app.route("/reset_password/", methods=["POST"], strict_slashes=False)
+def get_reset_password_token() -> flask.Response:
+    """
+    EXPECTS:
+        form data: email=<user's email>
+
+    RESPONDS:
+        {"email": <email>, "reset_token": <reset token>}
+        and a status code of 200,
+            if the form data contains "email", and the value
+            is valid.
+        or  status code of 403
+            if the "email" data is missing or invalid.
+    """
+    EMAIL: Optional[str] = flask.request.form.get("email")
+
+    if EMAIL is None:
+        flask.abort(403)
+
+    try:
+        RESULT: str = AUTH.get_reset_password_token(EMAIL)
+    except ValueError:
+        flask.abort(403)
+
+    return flask.jsonify({"email": EMAIL, "reset_token": RESULT})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
