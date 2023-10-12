@@ -108,12 +108,18 @@ def logout():
 
     (The route for "GET /" is the top function in this file)
     """
-    REQUEST_SESSION_ID_COOKIE: Optional[str] = flask.request.cookies.get("session_id")
+    REQUEST_SESSION_ID_COOKIE: Optional[str] = \
+        flask.request.cookies.get(
+            "session_id"
+        )
 
     if REQUEST_SESSION_ID_COOKIE is None:
         flask.abort(403)
 
-    USER: Optional[User] = AUTH.get_user_from_session_id(REQUEST_SESSION_ID_COOKIE)
+    USER: Optional[User] = \
+        AUTH.get_user_from_session_id(
+            REQUEST_SESSION_ID_COOKIE
+        )
 
     if USER is None:
         flask.abort(403)
