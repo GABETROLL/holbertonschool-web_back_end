@@ -8,7 +8,7 @@ from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
 import uuid
-from typing import Union
+from typing import Optional
 
 
 def _hash_password(password: str) -> bytes:
@@ -81,7 +81,7 @@ class Auth:
                 MAYBE_USER.hashed_password
             )
 
-    def create_session(self, email: str) -> Union[str, None]:
+    def create_session(self, email: str) -> Optional[str]:
         """
         Creates an new session ID for the user
         with 'email' as its 'email',
