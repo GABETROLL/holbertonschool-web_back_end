@@ -6,7 +6,7 @@ import flask
 from typing import Tuple, Optional
 from auth import Auth
 
-auth = Auth()
+AUTH = Auth()
 app = flask.Flask(__name__)
 
 
