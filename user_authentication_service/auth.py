@@ -167,7 +167,9 @@ class Auth:
         HASHED_PASSWORD: str = _hash_password(password)
 
         try:
-            self._db.update_user(USER.id, reset_token=None, hashed_password=HASHED_PASSWORD)
+            self._db.update_user(
+                USER.id, reset_token=None, hashed_password=HASHED_PASSWORD
+            )
         except (NoResultFound, ValueError, Exception):
             # These are not supposed to happen, since we already found
             # the 'USER' above.
