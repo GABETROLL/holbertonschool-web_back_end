@@ -42,7 +42,7 @@ def users() -> Tuple[flask.Response, int]:
     PASSWORD: Optional[str] = flask.request.form.get("password")
 
     try:
-        auth.register_user(EMAIL, PASSWORD)
+        AUTH.register_user(EMAIL, PASSWORD)
     except ValueError:
         return flask.jsonify({"message": "email already registered"}), 400
     else:
@@ -67,7 +67,7 @@ def login() -> flask.Response:
     flask.abort(401).
 
     Otherwise, this function creates a session for the user
-    with 'auth.create_session', and sends:
+    with 'AUTH.create_session', and sends:
 
     cookie: session_id=<SESSION ID>
     response data: {"email": <user email>, "message": "logged in"}
@@ -76,10 +76,10 @@ def login() -> flask.Response:
     EMAIL: Optional[str] = flask.request.form.get("email")
     PASSWORD: Optional[str] = flask.request.form.get("password")
 
-    if not auth.valid_login(EMAIL, PASSWORD):
+    if not AUTH.valid_login(EMAIL, PASSWORD):
         flask.abort(401)
 
-    SESSION_ID: Optional[str] = auth.create_session(EMAIL)
+    SESSION_ID: Optional[str] = AUTH.create_session(EMAIL)
 
     if SESSION_ID is None:
         flask.abort(401)
