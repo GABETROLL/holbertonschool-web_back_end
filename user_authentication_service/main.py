@@ -9,11 +9,17 @@ def register_user(email: str, password: str) -> None:
 
 
 def log_in_wrong_password(email: str, password: str) -> None:
-    requests.post(URL + '/sessions/', json={"email": email, "password": password + "p"})
+    requests.post(
+        URL + '/sessions/',
+        json={"email": email, "password": password + "p"}
+    )
 
 
 def log_in(email: str, password: str) -> str:
-    RESULT = requests.post(URL + '/sessions/', json={"email": email, "password": password})
+    RESULT = requests.post(
+        URL + '/sessions/',
+        json={"email": email, "password": password}
+    )
 
     return RESULT.cookies.get("session_id")
 
@@ -34,6 +40,7 @@ def reset_password_token(email: str) -> str:
     RESPONSE = requests.post(URL + '/reset_password/', json={"email": email})
 
     return RESPONSE.cookies.get("reset_token")
+
 
 def update_password(email: str, reset_token: str, new_password: str) -> None:
     requests.put(
