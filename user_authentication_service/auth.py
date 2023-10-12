@@ -126,5 +126,7 @@ class Auth:
         This method
         destroys the session of the user that has 'user_id's value
         as its 'id'.
+
+        If the User doesn't exist, this method does nothing.
         """
         self._db.update_user(user_id, session_id=None)

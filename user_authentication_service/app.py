@@ -5,6 +5,7 @@ Flask app for signing 'User's in.
 import flask
 from typing import Tuple, Optional
 from auth import Auth
+from sqlalchemy.orm.exc import NoResultFound
 
 AUTH = Auth()
 app = flask.Flask(__name__)
@@ -90,6 +91,39 @@ def login() -> flask.Response:
     response.set_cookie("session_id", SESSION_ID)
 
     return response
+
+
+@app.route("/sessions/", methods=["DELETE"], strict_slashes=False)
+def logout():
+    """
+    EXPECTS:
+        cookie: session_id=<session id>
+
+    If the cookie is invalid, this route responds with a
+    status code of 403.
+
+    Kills the user's session by replacing the User's
+    'session_id' value with None.
+    Redirects to "GET /".
+
+    (The route for "GET /" is the top function in this file)
+    """
+    REQUEST_SESSION_ID_COOKIE: Optional[str] = flask.request.cookies.get("session_id")
+
+    if REQUEST_SESSION_ID_COOKIE is None:
+        flask.abort(403)
+
+    USER: Optional[User] = AUTH.get_user_from_session_id(REQUEST_SESSION_ID_COOKIE)
+
+    if USER is None:
+        flask.abort(403)
+
+    try:
+        AUTH.destroy_session(USER.id)
+    except NoResultFound:
+        abort(403)
+
+    return flask.redirect(flask.url_for('bienvenue'))
 
 
 if __name__ == "__main__":
