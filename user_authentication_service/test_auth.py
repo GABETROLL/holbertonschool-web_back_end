@@ -16,3 +16,5 @@ class TestAuth(unittest.TestCase):
         self.assertTrue(USER_SESSION_ID is not None)
         self.assertEqual(USER.session_id, USER_SESSION_ID)
 
+    def test_get_user_from_session_id(self):
+        pass
