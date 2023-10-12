@@ -29,7 +29,7 @@ class TestUpdateUser(unittest.TestCase):
         anything, and raises an AttributeError.
         """
         self.assertRaises(
-            AttributeError,
+            ValueError,
             db.update_user,
             USER.id,
             bad_attr=None

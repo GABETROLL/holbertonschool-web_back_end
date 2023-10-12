@@ -118,3 +118,13 @@ class Auth:
         except NoResultFound:
             return None
         return RESULT
+
+    def destroy_session(self, user_id: int) -> None:
+        """
+        ASSUMING that 'user_id' is valid and safe,
+
+        This method
+        destroys the session of the user that has 'user_id's value
+        as its 'id'.
+        """
+        self._db.update_user(user_id, session_id=None)

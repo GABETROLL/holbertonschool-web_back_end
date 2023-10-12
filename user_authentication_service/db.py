@@ -87,7 +87,7 @@ class DB:
         NoResultFound.
 
         And if the 'kwargs' don't have the correct attributes,
-        this method raises AttributeError.
+        this method raises a ValueError.
         """
         USER: User = self.find_user_by(id=user_id)
 
@@ -96,5 +96,5 @@ class DB:
 
         for attr, value in kwargs.items():
             if attr not in USER.__dict__.keys():
-                raise AttributeError(f"'User' object has no attribute '{attr}'")
+                raise ValueError(f"'User' object has no attribute '{attr}'")
             setattr(USER, attr, value)
