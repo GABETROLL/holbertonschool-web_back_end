@@ -36,3 +36,28 @@ class TestAuth(unittest.TestCase):
         auth.destroy_session(USER.id)
 
         self.assertIs(USER.session_id, None)
+
+    def test_get_reset_password_token(self):
+        """
+        Tests that calling 'AUTH.get_reset_password_token(<user's email>)'
+        sets the user's 'reset_token' value to the new token,
+        and returns it.
+
+        The User should be the one that has the email above as its 'email'
+        value.
+
+        If the user doesn't exist, 'AUTH.get_reset_password_token'
+        should raise 'ValueError'.
+        """
+        auth.create_session(USER_EMAIL)
+
+        TOKEN: str = auth.get_reset_password_token(USER_EMAIL)
+
+        self.assertTrue(TOKEN is not None)
+        self.assertEqual(TOKEN, USER.reset_token)
+
+        self.assertRaises(
+            ValueError,
+            auth.get_reset_password_token,
+            "DOESN'T EXIST"
+        )

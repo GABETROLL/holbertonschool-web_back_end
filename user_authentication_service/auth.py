@@ -130,3 +130,22 @@ class Auth:
         If the User doesn't exist, this method does nothing.
         """
         self._db.update_user(user_id, session_id=None)
+
+    def get_reset_password_token(self, email: str) -> str:
+        """
+        If a User with 'email's value as its 'email'
+        doesn't exist in 'self's DB, this method raises ValueError.
+
+        Otherwise, this method returns makes a new reset token,
+        sets the User's 'reset_token' value to the token,
+        and returns the token.
+        """
+        try:
+            USER: User = self._db.find_user_by(email=email)
+        except NoResultFound:
+            raise ValueError(f"User with {email=} doesn't exist.")
+
+        USER_RESET_TOKEN: str = _generate_uuid()
+        self._db.update_user(USER.id, reset_token=USER_RESET_TOKEN)
+
+        return USER_RESET_TOKEN
