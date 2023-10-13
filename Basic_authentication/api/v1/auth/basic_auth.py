@@ -152,7 +152,7 @@ class BasicAuth(Auth):
                     return user
         except KeyError as e:
             # No Users in DB
-            print(e)
+            pass
 
         return None
 
