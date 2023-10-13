@@ -1,12 +1,18 @@
+import uuid
+from api.v1.auth.basic_auth import BasicAuth
+from models.user import User
 
-if __name__ == "__main__":
-    from api.v1.auth.basic_auth import BasicAuth
 
-    ba = BasicAuth()
-    res = ba.user_object_from_credentials("u1@gmail.com", "pwd")
-    if res is not None:
-        print("user_object_from_credentials must return None if 'user_email' is not linked to any user")
-        exit(1)
-    
-    print("OK", end="")
+""" Retreive this user via the class BasicAuth """
+
+a = BasicAuth()
+
+u = a.user_object_from_credentials(None, None)
+print(u.display_name() if u is not None else "None")
+
+u = a.user_object_from_credentials(89, 98)
+print(u.display_name() if u is not None else "None")
+
+u = a.user_object_from_credentials("email@notfound.com", "pwd")
+print(u.display_name() if u is not None else "None")
 

@@ -141,16 +141,18 @@ class BasicAuth(Auth):
         if user_pwd is None or type(user_pwd) != str:
             return None
 
-        if DATA.get(User) is not None:
+        try:
             # At least one user in DB
 
             # Check all users, and find the one
             # that has the email and has the valid password
             for user in User.all():
-                if user.email == user_email and user.is_valid_password(
-                    user_pwd
-                ):
+                if user.email == user_email and \
+                        user.is_valid_password(user_pwd):
                     return user
+        except KeyError as e:
+            # No Users in DB
+            print(e)
 
         return None
 
