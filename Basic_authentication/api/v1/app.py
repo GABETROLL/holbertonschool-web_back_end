@@ -48,7 +48,8 @@ def authenticate() -> None:
 
     This function
     checks if the URL path the user is requesting
-    requires authorization.
+    requires authorization. If it does, it validates the user's
+    credentials using Basic AUTH.
     """
     if auth is None:
         return
@@ -75,7 +76,7 @@ def authenticate() -> None:
 
     # assert type(RESULT) == User
 
-    return RESULT
+    return RESULT.to_json()
 
 
 @app.errorhandler(401)

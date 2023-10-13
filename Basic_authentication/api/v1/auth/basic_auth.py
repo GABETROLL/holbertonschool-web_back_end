@@ -83,7 +83,7 @@ class BasicAuth(Auth):
 
         try:
             return base64.b64decode(base64_authorization_header).decode()
-        except binascii.Error:
+        except Exception:
             return None
 
     def extract_user_credentials(
@@ -179,12 +179,28 @@ class BasicAuth(Auth):
         The method uses the other methods in this
         class to achieve its purpose.
         """
-        return self.user_object_from_credentials(
-            *self.extract_user_credentials(
-                self.decode_base64_authorization_header(
-                    self.extract_base64_authorization_header(
-                        request
-                    )
-                )
-            )
+        # print("REQUEST: ", request)
+        
+        BASE_64_AUTH_HEADER = self.extract_base64_authorization_header(
+            request
         )
+
+        # print("BASE_64_AUTH_HEADER: ", BASE_64_AUTH_HEADER)
+
+        AUTH_HEADER = self.decode_base64_authorization_header(
+            BASE_64_AUTH_HEADER
+        )
+
+        # print(AUTH_HEADER)
+
+        USER_CREDENTIALS = self.extract_user_credentials(
+            AUTH_HEADER
+        )
+
+        # print(USER_CREDENTIALS)
+
+        RESULT = self.user_object_from_credentials(*USER_CREDENTIALS)
+
+        # print(RESULT)
+
+        return RESULT
