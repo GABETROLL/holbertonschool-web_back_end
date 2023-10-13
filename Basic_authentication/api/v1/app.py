@@ -76,7 +76,7 @@ def authenticate() -> None:
 
     # assert type(RESULT) == User
 
-    return RESULT.to_json()
+    return jsonify(RESULT.to_json())
 
 
 @app.errorhandler(401)
