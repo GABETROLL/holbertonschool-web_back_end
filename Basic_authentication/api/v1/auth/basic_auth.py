@@ -148,8 +148,9 @@ class BasicAuth(Auth):
                 if user.email == user_email and user.is_valid_password(user_pwd):
                     return user
 
-        except Exception as e:
-            print(f"EXCEPTION: {e.with_traceback()}")
+        except KeyError:
+            # No users in DB
+            pass
 
         return None
 
