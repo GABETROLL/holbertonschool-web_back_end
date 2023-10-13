@@ -68,15 +68,11 @@ def authenticate() -> None:
 
     # assert type(AUTH_HEADER) == str
 
-    RESULT: User = auth.current_user(AUTH_HEADER)
+    USER: User = auth.current_user(AUTH_HEADER)
 
-    if RESULT is None:
+    if USER is None:
         # User doesn't have valid credentials.
         abort(403)
-
-    # assert type(RESULT) == User
-
-    return jsonify(RESULT.to_json())
 
 
 @app.errorhandler(401)
