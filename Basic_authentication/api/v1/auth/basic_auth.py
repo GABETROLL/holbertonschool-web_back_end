@@ -147,8 +147,9 @@ class BasicAuth(Auth):
             # Check all users, and find the one
             # that has the email and has the valid password
             for user in User.all():
-                if user.email == user_email \
-                        and user.is_valid_password(user_pwd):
+                if user.email == user_email and user.is_valid_password(
+                    user_pwd
+                ):
                     return user
 
         return None
