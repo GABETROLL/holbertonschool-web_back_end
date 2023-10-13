@@ -180,7 +180,7 @@ class BasicAuth(Auth):
         class to achieve its purpose.
         """
         # print("REQUEST: ", request)
-        
+
         BASE_64_AUTH_HEADER = self.extract_base64_authorization_header(
             request
         )
