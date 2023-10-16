@@ -10,8 +10,6 @@ from typing import (
     Mapping,
     Sequence,
     Any,
-    Dict,
-    Callable,
 )
 
 
@@ -43,3 +41,19 @@ class TestAccessNestedMap(unittest.TestCase):
         2
         """
         self.assertEqual(utils.access_nested_map(nested_map, path), expected)
+
+    @parameterized.expand(
+        [
+            ({}, ("a",)),
+            ({"a": 1}, ("a", "b"))
+        ]
+    )
+    def test_access_nested_map_exception(self, nested_map: Mapping, path: Sequence) -> None:
+        """
+        Tests that inputting a path that's too long or wrong
+        for the nested mapping results in 'utils.access_nested_map'
+        to raise a KeyError with the first wrong key in 'path'
+        as the error message.
+        """
+        with self.assertRaises(KeyError):
+            utils.access_nested_map(nested_map, path)
