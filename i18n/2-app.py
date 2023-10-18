@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 """
-Exercise 1: Create a 'flask_babel.Babel' object named 'babel',
-create a 'Config' class with the available languages,
-add "en" as 'babel's default language and "UTC" as
-'babel's default timezone,
-and call 'app.config.from_object(Config)'.
+Exercise 2: Use the 'babel.localeselector'
+to find the best matching available language
+to give to the user.
 """
 import flask
 import flask_babel
@@ -28,6 +26,31 @@ babel.default_locale = Config.LANGUAGES[0]
 babel.default_timezone = "UTC"
 
 app.config.from_object(Config)
+
+
+@babel.localeselector
+def get_locale() -> Union[str, None]:
+    """
+    Returns the language from 'app.config["LANGUAGES"]'
+    that best matches the languages in the request's
+    'Accept-Language' header,
+    using:
+
+    return flask.request.accept_languages.best_match(
+        app.config["LANGUAGES"]
+    )
+    """
+    return flask.request.accept_languages.best_match(
+        app.config["LANGUAGES"]
+    )
+
+
+@babel.timezoneselector
+def get_timezone() -> str:
+    """
+    Returns the default timezone, UTC.
+    """
+    return "UTC"
 
 
 @app.route("/", strict_slashes=False)
