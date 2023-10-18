@@ -12,6 +12,10 @@ babel = flask_babel.Babel(app)
 
 
 class Config:
+    """
+    Contains the allowed languages
+    and default timezone for 'babel'.
+    """
     LANGUAGES = ["en", "fr"]
     DEFAULT_TIMEZONE = "UTC"
 
@@ -20,19 +24,32 @@ app.config.from_object(Config)
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> (str | None):
+    """
+    Returns the language from 'app.config["LANGUAGES"]'
+    that best matches the languages in the request's
+    'Accept-Language' header,
+    using:
+
+    return flask.request.accept_languages.best_match(
+        app.config["LANGUAGES"]
+    )
+    """
     return flask.request.accept_languages.best_match(
         app.config["LANGUAGES"]
     )
 
 
 @babel.timezoneselector
-def get_timezone():
+def get_timezone() -> str:
+    """
+    Returns the default timezone, UTC.
+    """
     return "UTC"
 
 
 @app.route("/", strict_slashes=False)
-def home():
+def home() -> flask.Response:
     """
     Returns the 0th template.
     Has "Welcome to Holberton" as page <title>
