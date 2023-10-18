@@ -13,7 +13,7 @@ from os import environ
 
 
 app = flask.Flask(__name__)
-babel = flask_babel.Babel(app)
+
 
 
 class Config:
@@ -24,9 +24,7 @@ class Config:
     LANGUAGES = ["en", "fr"]
 
 
-babel.default_locale = Config.LANGUAGES[0]
-babel.default_timezone = "UTC"
-
+babel = flask_babel.Babel(app, Config.LANGUAGES[0], "UTC")
 app.config.from_object(Config)
 
 
