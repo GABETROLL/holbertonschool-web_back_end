@@ -4,7 +4,9 @@ Uses the 'unittest' and 'parameterized' modules
 to test 'utils.py'.
 """
 import unittest
-import parameterized
+from parameterized import parameterized
+import unittest.mock
+from fixtures import TEST_PAYLOAD
 import utils
 from typing import (
     Mapping,
@@ -20,7 +22,7 @@ class TestAccessNestedMap(unittest.TestCase):
     @parameterized.expand(
         [
             ({"a": 1}, ("a",), 1),
-            ({"a": {"b": 2}}, ("a",), {"b", 2}),
+            ({"a": {"b": 2}}, ("a",), {"b": 2}),
             ({"a": {"b": 2}}, ("a", "b"), 2)
         ]
     )
@@ -57,3 +59,42 @@ class TestAccessNestedMap(unittest.TestCase):
         """
         with self.assertRaises(KeyError):
             utils.access_nested_map(nested_map, path)
+
+
+utils.requests.get = unittest.mock.patch('utils.requests.get')
+
+
+class TestGetJson(unittest.TestCase):
+    """
+    Tests 'utils.get_json'.
+    """
+    @parameterized.expand(
+        [
+            ("http://example.com", {"payload": True}),
+            ("http://holberton.io", {"payload": False})
+        ]
+    )
+    @unittest.mock.patch(
+        'utils.requests.get',
+        new=unittest.mock.Mock(
+            return_value=unittest.mock.Mock()
+        )
+    )
+    def test_get_json(self, url: str, expected) -> None:
+        """
+        Tests that 'utils.get_json' returns
+        the expected payload for each URL:
+
+        "http://example.com" -> not the payload in 'fixtures.py'.
+        "http://holberton.io" -> the payload in 'fixtures.py'
+
+        Without actually making a request to those sites,
+        and mocking 'utils.requests.get', as weitten above.
+        """
+        with unittest.mock.patch("utils.requests.get"):
+            if expected["payload"]:
+
+                self.assertEqual(
+                    utils.get_json(url),
+                    TEST_PAYLOAD
+                )
