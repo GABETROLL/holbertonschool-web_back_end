@@ -20,10 +20,11 @@ class Config:
     and default timezone for 'babel'.
     """
     LANGUAGES = ["en", "fr"]
+    TIMEZOME = "UTC"
 
 
 babel.default_locale = Config.LANGUAGES[0]
-babel.default_timezone = "UTC"
+babel.default_timezone = Config.TIMEZOME
 
 app.config.from_object(Config)
 

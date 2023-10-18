@@ -61,24 +61,25 @@ class TestAccessNestedMap(unittest.TestCase):
             utils.access_nested_map(nested_map, path)
 
 
-utils.requests.get = unittest.mock.patch('utils.requests.get')
-
-
 class TestGetJson(unittest.TestCase):
     """
     Tests 'utils.get_json'.
     """
+    @unittest.mock.patch(
+        'utils.requests.Response.json',
+        return_value=TEST_PAYLOAD
+    )
+    @unittest.mock.patch(
+        'utils.requests.get',
+        new=unittest.mock.Mock(
+            return_value=utils.requests.Response
+        )
+    )
     @parameterized.expand(
         [
             ("http://example.com", {"payload": True}),
             ("http://holberton.io", {"payload": False})
         ]
-    )
-    @unittest.mock.patch(
-        'utils.requests.get',
-        new=unittest.mock.Mock(
-            return_value=unittest.mock.Mock()
-        )
     )
     def test_get_json(self, url: str, expected) -> None:
         """
@@ -91,10 +92,8 @@ class TestGetJson(unittest.TestCase):
         Without actually making a request to those sites,
         and mocking 'utils.requests.get', as weitten above.
         """
-        with unittest.mock.patch("utils.requests.get"):
-            if expected["payload"]:
-
-                self.assertEqual(
-                    utils.get_json(url),
-                    TEST_PAYLOAD
-                )
+        if expected["payload"]:
+            self.assertEqual(
+                utils.get_json(url),
+                TEST_PAYLOAD
+            )
