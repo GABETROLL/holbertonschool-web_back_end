@@ -4,6 +4,7 @@ Exercise 0: Setup a basic app
 """
 import flask
 import flask_babel
+from typing import Union
 from os import environ
 
 
@@ -24,7 +25,7 @@ app.config.from_object(Config)
 
 
 @babel.localeselector
-def get_locale() -> (str | None):
+def get_locale() -> Union[str, None]:
     """
     Returns the language from 'app.config["LANGUAGES"]'
     that best matches the languages in the request's
