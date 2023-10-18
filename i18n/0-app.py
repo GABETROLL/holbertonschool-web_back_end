@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Exercise 0: Setup a basic app
+"""
 import flask
 
 app = flask.Flask(__name__)
