@@ -4,6 +4,7 @@ Exercise 0: Setup a basic app
 """
 import flask
 import flask_babel
+from os import environ
 
 app = flask.Flask(__name__)
 
@@ -13,10 +14,11 @@ class Config:
     DEFAULT_TIMEZONE = "UTC"
 
 
-babel = flask_babel.Babel(
+babel = flask_babel.Babel()
+babel.init_app(
     app,
-    BABEL_DEFAULT_LOCALE=Config.LANGUAGES[0],
-    BABEL_DEFAULT_TIMEZONE=Config.DEFAULT_TIMEZONE
+    default_locale=Config.LANGUAGES[0],
+    default_timezone=Config.DEFAULT_TIMEZONE
 )
 
 
@@ -28,3 +30,9 @@ def home():
     and "Hello world" as the <h1>.
     """
     return flask.render_template("0-index.html")
+
+
+if __name__ == "__main__":
+    app.run(
+        environ.get("HOST"), environ.get("PORT")
+    )

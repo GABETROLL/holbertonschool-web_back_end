@@ -3,6 +3,7 @@
 Exercise 0: Setup a basic app
 """
 import flask
+from os import environ
 
 app = flask.Flask(__name__)
 
@@ -15,3 +16,9 @@ def home():
     and "Hello world" as the <h1>.
     """
     return flask.render_template("0-index.html")
+
+
+if __name__ == "__main__":
+    app.run(
+        environ.get("HOST"), environ.get("PORT")
+    )
