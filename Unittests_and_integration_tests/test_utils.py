@@ -8,6 +8,7 @@ from parameterized import parameterized
 import unittest.mock
 from fixtures import TEST_PAYLOAD
 import utils
+from utils import memoize
 from typing import (
     Mapping,
     Sequence,
@@ -94,3 +95,54 @@ class TestGetJson(unittest.TestCase):
         ):
             if expected["payload"]:
                 self.assertEqual(utils.get_json(url), TEST_PAYLOAD)
+
+
+class TestMemoize(unittest.TestCase):
+    """
+    Tests the 'utils.memoize' decorator.
+    """
+    def test_memoize(self):
+        """
+        Tests that using 'utils.memoize' as a decorator
+        on a method
+
+        first runs the method normally, then returns
+        the cached result of the method every other time.
+
+        >>> class TestClass:
+            def a_method(self):
+                return 42
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+        >>> t = TestClass()
+        >>> t.a_property
+        42
+        >>> t.a_property
+        42
+        >>> t.a_property
+        42
+
+        This method mocks 'TestClass.a_method', and tests
+        that the mocked 'TestClass.a_method' only gets run once.
+        """
+        EXPECTED_OUTPUT = 42
+
+
+        class TestClass:
+            def a_method(self):
+                return EXPECTED_OUTPUT
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+
+        TestClass.a_method = unittest.mock.Mock(return_value=EXPECTED_OUTPUT)
+
+        t = TestClass()
+
+        self.assertEqual(t.a_property, EXPECTED_OUTPUT)
+        t.a_method.assert_called_once()
+        self.assertEqual(t.a_property, EXPECTED_OUTPUT)
+        t.a_method.assert_called_once()
