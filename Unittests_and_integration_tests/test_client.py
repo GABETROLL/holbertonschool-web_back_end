@@ -68,3 +68,35 @@ class TestGithubOrgClient(unittest.TestCase):
             # print(GH_CLIENT.org)
 
             self.assertEqual(GH_CLIENT._public_repos_url, TEST_PAYLOAD[0][0]["repos_url"])
+
+    @patch(
+        "client.get_json",
+        new=Mock(
+            return_value=[{"name": "repo0"}, {"name": "repo1"}, {"name": "repo2"}]
+        )
+    )
+    def test_public_repos(self):
+        """
+        While mocking
+        client.get_json(...) -> [
+            {"name": "repo0"}, {"name": "repo1"}, {"name": "repo2"}
+        ],
+
+        this method makes <GH_CLIENT = client.GithubOrgClient()>,
+        and tests that <client.GithubOrgClient().public_repos()>
+        returns ["repo0", "repo1", "repo2"].
+
+        Assuming that <<instance>.public_repos()> calls
+        <<instance>.repos_payload()>"""
+        with patch(
+            "client.GithubOrgClient._public_repos_url",
+            new_callable=PropertyMock(
+                return_value=TEST_PAYLOAD[0][0]["repos_url"]
+            )
+        ):
+            GH_CLIENT = client.GithubOrgClient("...")
+
+            self.assertEqual(
+                GH_CLIENT.public_repos(),
+                ["repo0", "repo1", "repo2"]
+            )
