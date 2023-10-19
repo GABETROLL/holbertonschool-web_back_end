@@ -10,6 +10,9 @@ from unittest.mock import patch, Mock, PropertyMock
 
 
 class TestGithubOrgClient(unittest.TestCase):
+    """
+    Tests the <client.GithubOrgClient> class.
+    """
     @patch("client.get_json", new=Mock(return_value=TEST_PAYLOAD))
     @parameterized.expand(
         [("google",), ("abc",)]
@@ -67,12 +70,19 @@ class TestGithubOrgClient(unittest.TestCase):
 
             # print(GH_CLIENT.org)
 
-            self.assertEqual(GH_CLIENT._public_repos_url, TEST_PAYLOAD[0][0]["repos_url"])
+            self.assertEqual(
+                GH_CLIENT._public_repos_url,
+                TEST_PAYLOAD[0][0]["repos_url"]
+            )
 
     @patch(
         "client.get_json",
         new=Mock(
-            return_value=[{"name": "repo0"}, {"name": "repo1"}, {"name": "repo2"}]
+            return_value=[
+                {"name": "repo0"},
+                {"name": "repo1"},
+                {"name": "repo2"}
+            ]
         )
     )
     def test_public_repos(self):
