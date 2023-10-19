@@ -27,7 +27,12 @@ class TestAccessNestedMap(unittest.TestCase):
             ({"a": {"b": 2}}, ("a", "b"), 2)
         ]
     )
-    def test_access_nested_map(self, nested_map: Mapping, path: Sequence, expected: Any) -> None:
+    def test_access_nested_map(
+        self,
+        nested_map: Mapping,
+        path: Sequence,
+        expected: Any
+    ) -> None:
         """
         Tests that 'utils.access_nested_map' returns
         what it's supposed to.
@@ -51,7 +56,12 @@ class TestAccessNestedMap(unittest.TestCase):
             ({"a": 1}, ("a", "b"))
         ]
     )
-    def test_access_nested_map_exception(self, nested_map: Mapping, path: Sequence) -> None:
+    def test_access_nested_map_exception(
+        self,
+        nested_map:
+        Mapping,
+        path: Sequence
+    ) -> None:
         """
         Tests that inputting a path that's too long or wrong
         for the nested mapping results in 'utils.access_nested_map'
@@ -80,7 +90,8 @@ class TestGetJson(unittest.TestCase):
         "http://example.com" -> not the payload in 'fixtures.py'.
         "http://holberton.io" -> the payload in 'fixtures.py'
 
-        While mocking 'utils.requests.get' to just return a 'unittests.mock.Mock'
+        While mocking 'utils.requests.get'
+        to just return a 'unittests.mock.Mock'
         object with its 'json' attribute returning:
             either the expected payload for the URL
             or <{}>.
@@ -129,14 +140,13 @@ class TestMemoize(unittest.TestCase):
         """
         EXPECTED_OUTPUT = 42
 
-
         class TestClass:
             def a_method(self):
                 return EXPECTED_OUTPUT
+
             @memoize
             def a_property(self):
                 return self.a_method()
-
 
         TestClass.a_method = unittest.mock.Mock(return_value=EXPECTED_OUTPUT)
 
