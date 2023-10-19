@@ -65,16 +65,6 @@ class TestGetJson(unittest.TestCase):
     """
     Tests 'utils.get_json'.
     """
-    @unittest.mock.patch(
-        'utils.requests.Response.json',
-        return_value=TEST_PAYLOAD
-    )
-    @unittest.mock.patch(
-        'utils.requests.get',
-        new=unittest.mock.Mock(
-            return_value=utils.requests.Response
-        )
-    )
     @parameterized.expand(
         [
             ("http://example.com", {"payload": True}),
@@ -89,11 +79,18 @@ class TestGetJson(unittest.TestCase):
         "http://example.com" -> not the payload in 'fixtures.py'.
         "http://holberton.io" -> the payload in 'fixtures.py'
 
-        Without actually making a request to those sites,
-        and mocking 'utils.requests.get', as weitten above.
+        While mocking 'utils.requests.get' to just return a 'unittests.mock.Mock'
+        object with its 'json' attribute returning:
+            either the expected payload for the URL
+            or <{}>.
         """
-        if expected["payload"]:
-            self.assertEqual(
-                utils.get_json(url),
-                TEST_PAYLOAD
+        with unittest.mock.patch(
+            'utils.requests.get',
+            return_value=unittest.mock.Mock(
+                json=unittest.mock.Mock(
+                    return_value=TEST_PAYLOAD if expected["payload"] else {}
+                )
             )
+        ):
+            if expected["payload"]:
+                self.assertEqual(utils.get_json(url), TEST_PAYLOAD)
