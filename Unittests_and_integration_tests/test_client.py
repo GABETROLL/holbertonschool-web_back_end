@@ -6,7 +6,7 @@ import unittest
 from fixtures import TEST_PAYLOAD
 import client
 from parameterized import parameterized
-from unittest.mock import patch, Mock
+from unittest.mock import patch, Mock, PropertyMock
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
         So, this method mocks 'client.get_json' to just return the
         'TEST_PAYLOAD', and asserts that when accessing
-        <gh_client.org> twice, 'get_json' was only
+        <gh_client.org> twice, 'client.get_json' was only
         called once, since it's memoized.
 
         And asserts that <gh_client.org> returns
@@ -38,7 +38,7 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         gh_client = client.GithubOrgClient(org)
 
-        print(client.get_json, gh_client.ORG_URL)
+        # print(client.get_json, gh_client.ORG_URL)
 
         self.assertEqual(gh_client.org, TEST_PAYLOAD)
         self.assertEqual(gh_client.org, TEST_PAYLOAD)
@@ -46,3 +46,25 @@ class TestGithubOrgClient(unittest.TestCase):
         client.get_json.assert_called_once_with(
             client.GithubOrgClient.ORG_URL.format(org=org)
         )
+
+    def test_public_repos_url(self):
+        """
+        Makes <GH_CLIENT = client.GithubOrgClient("...")>,
+        then tests that the property
+        <GH_CLIENT._public_repos_url>
+        returns <GH_CLIENT.org["repos_url"].
+
+        Mocks the <GH_CLIENT.org> property to return
+        <TEST_PAYLOAD>.
+        """
+        with patch(
+            "client.GithubOrgClient.org",
+            new_callable=PropertyMock(
+                return_value=TEST_PAYLOAD[0][0]
+            )
+        ):
+            GH_CLIENT = client.GithubOrgClient("...")
+
+            # print(GH_CLIENT.org)
+
+            self.assertEqual(GH_CLIENT._public_repos_url, TEST_PAYLOAD[0][0]["repos_url"])
