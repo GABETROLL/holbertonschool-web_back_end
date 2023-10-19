@@ -23,21 +23,6 @@ class Config:
     LANGUAGES = ["en", "fr"]
 
 
-@babel.localeselector
-def get_locale() -> Union[str, None]:
-    """
-    Returns the language from 'app.config["LANGUAGES"]'
-    that best matches the languages in the request's
-    'Accept-Language' header,
-    using:
-
-    return flask.request.accept_languages.best_match(
-        app.config["LANGUAGES"]
-    )
-    """
-    return Config.LANGUAGES[0]
-
-
 app.config.from_object(Config)
 
 
