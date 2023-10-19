@@ -7,6 +7,7 @@ from fixtures import TEST_PAYLOAD
 import client
 from parameterized import parameterized
 from unittest.mock import patch, Mock, PropertyMock
+from typing import Dict
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -50,7 +51,7 @@ class TestGithubOrgClient(unittest.TestCase):
             client.GithubOrgClient.ORG_URL.format(org=org)
         )
 
-    def test_public_repos_url(self):
+    def test_public_repos_url(self) -> None:
         """
         Makes <GH_CLIENT = client.GithubOrgClient("...")>,
         then tests that the property
@@ -85,7 +86,7 @@ class TestGithubOrgClient(unittest.TestCase):
             ]
         )
     )
-    def test_public_repos(self):
+    def test_public_repos(self) -> None:
         """
         While mocking
         client.get_json(...) -> [
@@ -110,3 +111,34 @@ class TestGithubOrgClient(unittest.TestCase):
                 GH_CLIENT.public_repos(),
                 ["repo0", "repo1", "repo2"]
             )
+
+    @parameterized.expand(
+        [
+            ({"license": {"key": "my_license"}}, "my_license", True),
+            ({"license": {"key": "other_license"}}, "my_license", False)
+        ]
+    )
+    def test_has_licence(
+        self,
+        repo: Dict[str, Dict],
+        license_key: str,
+        expected: bool
+    ) -> None:
+        """
+        Tests that:
+
+        client.GithubOrgClient.has_license(
+            {"license": {"key": "my_license"}},
+            "my_license"
+        ) -> True
+        client.GithubOrgClient.has_license(
+            {"license": {"key": "other_license"}},
+            "my_license"
+        ) -> False
+        """
+        self.assertEqual(
+            client.GithubOrgClient.has_license(
+                repo, license_key
+            ),
+            expected
+        )
