@@ -5,7 +5,7 @@ Tests the 'client.py' module, found in this file.
 import unittest
 from fixtures import TEST_PAYLOAD
 import client
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, Mock, PropertyMock
 from typing import Dict
 
@@ -118,8 +118,7 @@ class TestGithubOrgClient(unittest.TestCase):
             ({"license": {"key": "other_license"}}, "my_license", False)
         ]
     )
-    def test_has_licence(
-        self,
+    def test_has_license(self,
         repo: Dict[str, Dict],
         license_key: str,
         expected: bool
@@ -142,3 +141,22 @@ class TestGithubOrgClient(unittest.TestCase):
             ),
             expected
         )
+
+
+# @parameterized_class
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.get_patcher = patch(
+            "reuqests.get",
+            side_effect=Mock(
+                json=Mock(return_value=TEST_PAYLOAD)
+            )
+        )
+
+    def test_public_repos(self):
+        pass
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.get_patcher.stop()
