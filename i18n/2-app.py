@@ -41,7 +41,6 @@ def get_locale() -> Union[str, None]:
         app.config["LANGUAGES"]
     )
     """
-    print(app.config["LANGUAGES"])
     return flask.request.accept_languages.best_match(
         app.config["LANGUAGES"]
     )
