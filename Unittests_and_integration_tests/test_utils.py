@@ -41,11 +41,11 @@ class TestAccessNestedMap(unittest.TestCase):
         of the path through each nested mapping,
         like a file path:
 
-        >>> access_nested_map({"a": 1}, ("a",))
+        >>> utils.access_nested_map({"a": 1}, ("a",))
         1
-        >>> access_nested_map({"a": {"b": 2}}, ("a",))
+        >>> utils.access_nested_map({"a": {"b": 2}}, ("a",))
         {"b": 2}
-        >>> access_nested_map({"a": {"b": 2}}, ("a", "b"))
+        >>> utils.access_nested_map({"a": {"b": 2}}, ("a", "b"))
         2
         """
         self.assertEqual(utils.access_nested_map(nested_map, path), expected)
@@ -67,6 +67,11 @@ class TestAccessNestedMap(unittest.TestCase):
         for the nested mapping results in 'utils.access_nested_map'
         to raise a KeyError with the first wrong key in 'path'
         as the error message.
+
+        >>> utils.access_nested_map({}, ("a",))
+        KeyError
+        >>> utils.access_nested_map({"a": 1}, ("a", "b"))
+        KeyError
         """
         with self.assertRaises(KeyError):
             utils.access_nested_map(nested_map, path)
@@ -82,30 +87,25 @@ class TestGetJson(unittest.TestCase):
             ("http://holberton.io", {"payload": False})
         ]
     )
-    def test_get_json(self, url: str, expected) -> None:
+    def test_get_json(self, test_url: str, test_payload) -> None:
         """
-        Tests that 'utils.get_json' returns
-        the expected payload for each URL:
-
-        "http://example.com" -> not the payload in 'fixtures.py'.
-        "http://holberton.io" -> the payload in 'fixtures.py'
-
-        While mocking 'utils.requests.get'
-        to just return a 'unittests.mock.Mock'
-        object with its 'json' attribute returning:
-            either the expected payload for the URL
-            or <{}>.
+        Tests that <utils.get_json>
+        returns <test_payload> for <test_url>,
+        while mocking <utils.requests.get> to return
+        a mocked <utils.requests.Request> object that has the <json> method
+        mocked to return <test_payload>.
         """
         with unittest.mock.patch(
             'utils.requests.get',
-            return_value=unittest.mock.Mock(
-                json=unittest.mock.Mock(
-                    return_value=TEST_PAYLOAD if expected["payload"] else {}
+            new=unittest.mock.Mock(
+                return_value=unittest.mock.Mock(
+                    json=unittest.mock.Mock(
+                        return_value=test_payload
+                    )
                 )
             )
         ):
-            if expected["payload"]:
-                self.assertEqual(utils.get_json(url), TEST_PAYLOAD)
+            self.assertEqual(utils.get_json(test_url), test_payload)
 
 
 class TestMemoize(unittest.TestCase):
