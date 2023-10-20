@@ -10,23 +10,23 @@ from typing import Union
 from os import environ
 
 
-app = flask.Flask(__name__)
-babel = flask_babel.Babel(app)
-
-
 class Config:
     """
     Contains the allowed languages
     and default timezone for 'babel'.
     """
     LANGUAGES = ["en", "fr"]
-    TIMEZOME = "UTC"
+    DEFAULT_LOCALE = "en"
+    DEFAULT_TIMEZONE = "UTC"
 
 
-babel.default_locale = Config.LANGUAGES[0]
-babel.default_timezone = Config.TIMEZOME
-
+app = flask.Flask(__name__)
 app.config.from_object(Config)
+babel = flask_babel.Babel(
+    app,
+    Config.DEFAULT_LOCALE,
+    Config.DEFAULT_TIMEZONE
+)
 
 
 @babel.localeselector
@@ -41,6 +41,7 @@ def get_locale() -> Union[str, None]:
         app.config["LANGUAGES"]
     )
     """
+    print(app.config["LANGUAGES"])
     return flask.request.accept_languages.best_match(
         app.config["LANGUAGES"]
     )

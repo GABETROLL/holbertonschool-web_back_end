@@ -11,9 +11,6 @@ import flask_babel
 from typing import Union
 from os import environ
 
-app = flask.Flask(__name__)
-babel = flask_babel.Babel(app)
-
 
 class Config:
     """
@@ -21,9 +18,17 @@ class Config:
     and default timezone for 'babel'.
     """
     LANGUAGES = ["en", "fr"]
+    DEFAULT_LOCALE = "en"
+    DEFAULT_TIMEZONE = "UTC"
 
 
+app = flask.Flask(__name__)
 app.config.from_object(Config)
+babel = flask_babel.Babel(
+    app,
+    Config.DEFAULT_LOCALE,
+    Config.DEFAULT_TIMEZONE
+)
 
 
 @app.route("/", strict_slashes=False)
