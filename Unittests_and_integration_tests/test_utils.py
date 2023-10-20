@@ -135,8 +135,9 @@ class TestMemoize(unittest.TestCase):
         >>> t.a_property
         42
 
-        This method mocks 'TestClass.a_method', and tests
-        that the mocked 'TestClass.a_method' only gets run once.
+        This method mocks <TestClass.a_method> to just return 42,
+        and tests that the mocked <TestClass.a_method> only gets run once,
+        to verify that <TestClass.a_property> is properly chached.
         """
         EXPECTED_OUTPUT = 42
 
