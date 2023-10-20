@@ -16,16 +16,16 @@ class Config:
     and default timezone for 'babel'.
     """
     LANGUAGES = ["en", "fr"]
-    DEFAULT_LOCALE = "en"
-    DEFAULT_TIMEZONE = "UTC"
+    BABEL_DEFAULT_LOCALE = "en"
+    BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
 app = flask.Flask(__name__)
 app.config.from_object(Config)
 babel = flask_babel.Babel(
     app,
-    Config.DEFAULT_LOCALE,
-    Config.DEFAULT_TIMEZONE
+    Config.BABEL_DEFAULT_LOCALE,
+    Config.BABEL_DEFAULT_TIMEZONE
 )
 
 
