@@ -14,10 +14,15 @@ class TestGithubOrgClient(unittest.TestCase):
     """
     Tests the <client.GithubOrgClient> class.
     """
-    @patch("client.get_json", new=Mock(return_value=TEST_PAYLOAD))
-    @parameterized.expand(
-        [("google",), ("abc",)]
-    )
+    ORG_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1][0]["owner"]
+    ORG_OUTPUT = ORG_GET_JSON_OUTPUT
+    PUBLIC_REPOS_URL_OUTPUT = ORG_OUTPUT["repos_url"]
+    REPOS_PAYLOAD_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1]
+    @parameterized.expand([
+        ("google",),
+        ("abc",)
+    ])
+    @patch("client.get_json", new=Mock(return_value=ORG_GET_JSON_OUTPUT))
     def test_org(self, org: str) -> None:
         """
         Using 'google' and 'abc' as the 'org' argument,
@@ -30,22 +35,27 @@ class TestGithubOrgClient(unittest.TestCase):
         @<client.memoize>.
 
         So, this method mocks 'client.get_json' to just return the
-        'TEST_PAYLOAD', and asserts that when accessing
+        'self.ORG_OUTPUT', and asserts that when accessing
         <gh_client.org> twice, 'client.get_json' was only
         called once, since it's memoized.
 
         And asserts that <gh_client.org> returns
-        <TEST_PAYLOAD>.
+        <self.ORG_OUTPUT>.
 
         (<client.get_json> and <client.memoize>'s definitions
         are found in <utils.py>)
         """
         gh_client = client.GithubOrgClient(org)
 
-        # print(client.get_json, gh_client.ORG_URL)
+        # print(client.get_json, gh_client._org_name, type(gh_client.org))
 
-        self.assertEqual(gh_client.org, TEST_PAYLOAD)
-        self.assertEqual(gh_client.org, TEST_PAYLOAD)
+        self.assertEqual(gh_client.org, self.ORG_GET_JSON_OUTPUT)
+
+        client.get_json.assert_called_once_with(
+            client.GithubOrgClient.ORG_URL.format(org=org)
+        )
+
+        self.assertEqual(gh_client.org, self.ORG_GET_JSON_OUTPUT)
 
         client.get_json.assert_called_once_with(
             client.GithubOrgClient.ORG_URL.format(org=org)
@@ -59,31 +69,25 @@ class TestGithubOrgClient(unittest.TestCase):
         returns <GH_CLIENT.org["repos_url"].
 
         Mocks the <GH_CLIENT.org> property to return
-        <TEST_PAYLOAD>.
+        <ORG_OUTPUT>.
         """
         with patch(
             "client.GithubOrgClient.org",
             new_callable=PropertyMock(
-                return_value=TEST_PAYLOAD[0][0]
+                return_value=self.ORG_OUTPUT
             )
         ):
             GH_CLIENT = client.GithubOrgClient("...")
 
-            # print(GH_CLIENT.org)
-
             self.assertEqual(
                 GH_CLIENT._public_repos_url,
-                TEST_PAYLOAD[0][0]["repos_url"]
+                self.PUBLIC_REPOS_URL_OUTPUT
             )
 
     @patch(
         "client.get_json",
         new=Mock(
-            return_value=[
-                {"name": "repo0"},
-                {"name": "repo1"},
-                {"name": "repo2"}
-            ]
+            return_value=REPOS_PAYLOAD_GET_JSON_OUTPUT
         )
     )
     def test_public_repos(self) -> None:
@@ -102,14 +106,14 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch(
             "client.GithubOrgClient._public_repos_url",
             new_callable=PropertyMock(
-                return_value=TEST_PAYLOAD[0][0]["repos_url"]
+                return_value=self.PUBLIC_REPOS_URL_OUTPUT
             )
         ):
             GH_CLIENT = client.GithubOrgClient("...")
 
             self.assertEqual(
-                GH_CLIENT.public_repos(),
-                ["repo0", "repo1", "repo2"]
+                GH_CLIENT.public_repos("other"),
+                ["ios-webkit-debug-proxy", "build-debian-cloud"]
             )
 
     @parameterized.expand(
@@ -136,14 +140,17 @@ class TestGithubOrgClient(unittest.TestCase):
         ) -> False
         """
         self.assertEqual(
-            client.GithubOrgClient.has_license(
-                repo, license_key
-            ),
+            client.GithubOrgClient.has_license(repo, license_key),
             expected
         )
 
 
-# @parameterized_class
+@parameterized_class(
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    [
+        (TEST_PAYLOAD[0][0], TEST_PAYLOAD[0][1], TEST_PAYLOAD[0][1], TEST_PAYLOAD[0][2])
+    ]
+)
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
