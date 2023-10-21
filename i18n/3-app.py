@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Exercise 2: Use the 'babel.localeselector'
-to find the best matching available language
-to give to the user.
+Exercise 3: Create the translation
+configurations/templates, and translations/
+.
 """
 import flask
 import flask_babel
