@@ -15,6 +15,7 @@ import flask
 import flask_babel
 from typing import Union
 import pytz
+import datetime
 from os import environ
 
 
@@ -158,9 +159,7 @@ def get_user() -> Union[dict, None]:
 @app.before_request
 def before_request():
     """
-    Gets the user from <get_user()>,
-    and stores it in <flask.g.user>,
-    for the 'templates/5-index.html' template to use.
+    Stores <get_user()> in <flask.g.user>.
     """
     USER: Union[dict, None] = get_user()
     flask.g.user = USER
@@ -169,20 +168,19 @@ def before_request():
 @app.route("/", strict_slashes=False)
 def home() -> flask.Response:
     """
-    Returns the 0th template.
-    Has "Welcome to Holberton" as page <title>
-    and "Hello world" as the <h1>.
+    Stores the current time for the user-selected timezone
+    (in <babel.timezone>)
+    in <flask.g.current_time>,
+    then returns the rendered 'index.html' template.
     """
-    USER: Union[dict, None] = get_user()
-    USERNAME: Union[str, None] = USER["name"] if USER is not None else None
-
-    TIMEZONE = get_timezone()
-
-    return flask.render_template(
-        "7-index.html",
-        username=USERNAME,
-        timezone=TIMEZONE
+    flask.g.current_time = flask_babel.format_datetime(
+        datetime.datetime.now(
+            pytz.timezone(
+                babel.timezone_selector_func()
+            )
+        )
     )
+    return flask.render_template("index.html")
 
 
 if __name__ == "__main__":
