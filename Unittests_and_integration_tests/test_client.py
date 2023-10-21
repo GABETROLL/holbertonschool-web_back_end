@@ -18,6 +18,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ORG_OUTPUT = ORG_GET_JSON_OUTPUT
     PUBLIC_REPOS_URL_OUTPUT = ORG_OUTPUT["repos_url"]
     REPOS_PAYLOAD_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1]
+
     @parameterized.expand([
         ("google",),
         ("abc",)
@@ -122,7 +123,8 @@ class TestGithubOrgClient(unittest.TestCase):
             ({"license": {"key": "other_license"}}, "my_license", False)
         ]
     )
-    def test_has_license(self,
+    def test_has_license(
+        self,
         repo: Dict[str, Dict],
         license_key: str,
         expected: bool
@@ -146,9 +148,19 @@ class TestGithubOrgClient(unittest.TestCase):
 
 
 @parameterized_class(
-    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    (
+        "org_payload",
+        "repos_payload",
+        "expected_repos",
+        "apache2_repos"
+    ),
     [
-        (TEST_PAYLOAD[0][0], TEST_PAYLOAD[0][1], TEST_PAYLOAD[0][1], TEST_PAYLOAD[0][2])
+        (
+            TEST_PAYLOAD[0][0],
+            TEST_PAYLOAD[0][1],
+            TEST_PAYLOAD[0][1],
+            TEST_PAYLOAD[0][2]
+        )
     ]
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
