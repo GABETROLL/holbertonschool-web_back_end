@@ -86,52 +86,6 @@ def get_locale() -> Union[str, None]:
     )
 
 
-@babel.timezoneselector
-def get_timezone() -> str:
-    """
-    If the user has added <timezone=...> as a URL argument
-    in the request, and the timezone is valid,
-    this function returns that timezone.
-
-    Otherwise, if the user has logged in,
-    this function checks that the user's prefered timezone is valid.
-    If it is, this function returns it.
-
-    Otherwise, this function returns the default timezone,
-    which is "UTC".
-    """
-    timezone = None
-
-    print("HELLO??????? ARE YOU RUNNING?")
-
-    TIMEZONE_URL_ARG = flask.request.args.get("timezone")
-    if TIMEZONE_URL_ARG is not None:
-
-        print(f"TIMEZONE_URL_ARG={TIMEZONE_URL_ARG}")
-
-        try:
-            timezone = pytz.timezone(TIMEZONE_URL_ARG)
-        except pytz.exceptions.UnknownTimeZoneError:
-            pass
-        else:
-            return timezone.zone
-
-    if hasattr(flask.g, "user") and flask.g.user is not None:
-        USER: dict = flask.g.user
-        # ASSUMED TO BE STRUCTURED THE SAME WAY
-        # AS THE VALUES OF 'user'.
-        try:
-            timezone = pytz.timezone(USER["timezone"])
-        except pytz.exceptions.UnknownTimeZoneError:
-            pass
-        else:
-            return timezone.zone
-
-    print("AAAAAAAAAAAAA")
-
-    return app.config["BABEL_DEFAULT_TIMEZONE"]
-
-
 def get_user() -> Union[dict, None]:
     """
     Returns the corresponding user in <users>

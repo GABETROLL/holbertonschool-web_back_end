@@ -14,6 +14,7 @@ languages.
 import flask
 import flask_babel
 from typing import Union
+import pytz
 from os import environ
 
 
@@ -48,14 +49,18 @@ def get_locale() -> Union[str, None]:
     """
     Checks that the request URL contains "?locale=<language>",
     and returns the language code specified in the URL, if it is available.
-
-    If the language in the URL is not present,
-    or if the language isn't available in this app
     (available languages are defined in this module,
-    in <Config.LANGUAGES>),
-    this function:
+    in <Config.LANGUAGES>)
 
-    Returns the language from 'app.config["LANGUAGES"]'
+    Otherwise,
+    if <flask.g> has a 'user' attribute, and it's not None,
+    this function returns the <flask.g.user["locale"]>,
+    ASSUMING THAT <flask.g.user> is structured the same way
+    as the values in 'users'.
+
+    Otherwise,
+    This function returns the language from
+    'app.config["LANGUAGES"]'
     that best matches the languages in the request's
     'Accept-Language' header,
     using:
@@ -69,9 +74,62 @@ def get_locale() -> Union[str, None]:
     if LOCALE_ARG is not None and LOCALE_ARG in app.config["LANGUAGES"]:
         return LOCALE_ARG
 
+    if hasattr(flask.g, "user") and flask.g.user is not None:
+        USER_PREFERED_LOCALE: Union[str, None] = flask.g.user["locale"]
+
+        if USER_PREFERED_LOCALE is not None \
+                and USER_PREFERED_LOCALE in app.config["LANGUAGES"]:
+            return USER_PREFERED_LOCALE
+
     return flask.request.accept_languages.best_match(
         app.config["LANGUAGES"]
     )
+
+
+@babel.timezoneselector
+def get_timezone() -> str:
+    """
+    If the user has added <timezone=...> as a URL argument
+    in the request, and the timezone is valid,
+    this function returns that timezone.
+
+    Otherwise, if the user has logged in,
+    this function checks that the user's prefered timezone is valid.
+    If it is, this function returns it.
+
+    Otherwise, this function returns the default timezone,
+    which is "UTC".
+    """
+    timezone = None
+
+    # print("HELLO??????? ARE YOU RUNNING?")
+
+    TIMEZONE_URL_ARG = flask.request.args.get("timezone")
+    if TIMEZONE_URL_ARG is not None:
+
+        # print(f"TIMEZONE_URL_ARG={TIMEZONE_URL_ARG}")
+
+        try:
+            timezone = pytz.timezone(TIMEZONE_URL_ARG)
+        except pytz.exceptions.UnknownTimeZoneError:
+            pass
+        else:
+            return timezone.zone
+
+    if hasattr(flask.g, "user") and flask.g.user is not None:
+        USER: dict = flask.g.user
+        # ASSUMED TO BE STRUCTURED THE SAME WAY
+        # AS THE VALUES OF 'user'.
+        try:
+            timezone = pytz.timezone(USER["timezone"])
+        except pytz.exceptions.UnknownTimeZoneError:
+            pass
+        else:
+            return timezone.zone
+
+    # print("AAAAAAAAAAAAA")
+
+    return app.config["BABEL_DEFAULT_TIMEZONE"]
 
 
 def get_user() -> Union[dict, None]:
@@ -115,7 +173,7 @@ def home() -> flask.Response:
     Has "Welcome to Holberton" as page <title>
     and "Hello world" as the <h1>.
     """
-    return flask.render_template("5-index.html")
+    return flask.render_template("7-index.html")
 
 
 if __name__ == "__main__":

@@ -173,7 +173,16 @@ def home() -> flask.Response:
     Has "Welcome to Holberton" as page <title>
     and "Hello world" as the <h1>.
     """
-    return flask.render_template("index.html")
+    USER: Union[dict, None] = get_user()
+    USERNAME: Union[str, None] = USER["name"] if USER is not None else None
+
+    TIMEZONE = get_timezone()
+
+    return flask.render_template(
+        "7-index.html",
+        username=USERNAME,
+        timezone=TIMEZONE
+    )
 
 
 if __name__ == "__main__":
