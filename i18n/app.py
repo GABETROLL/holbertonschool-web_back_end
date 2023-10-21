@@ -102,12 +102,12 @@ def get_timezone() -> str:
     """
     timezone = None
 
-    print("HELLO??????? ARE YOU RUNNING?")
+    # print("HELLO??????? ARE YOU RUNNING?")
 
     TIMEZONE_URL_ARG = flask.request.args.get("timezone")
     if TIMEZONE_URL_ARG is not None:
 
-        print(f"TIMEZONE_URL_ARG={TIMEZONE_URL_ARG}")
+        # print(f"TIMEZONE_URL_ARG={TIMEZONE_URL_ARG}")
 
         try:
             timezone = pytz.timezone(TIMEZONE_URL_ARG)
@@ -127,7 +127,7 @@ def get_timezone() -> str:
         else:
             return timezone.zone
 
-    print("AAAAAAAAAAAAA")
+    # print("AAAAAAAAAAAAA")
 
     return app.config["BABEL_DEFAULT_TIMEZONE"]
 
@@ -173,7 +173,7 @@ def home() -> flask.Response:
     Has "Welcome to Holberton" as page <title>
     and "Hello world" as the <h1>.
     """
-    return flask.render_template("6-index.html")
+    return flask.render_template("index.html")
 
 
 if __name__ == "__main__":

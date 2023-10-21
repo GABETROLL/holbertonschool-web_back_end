@@ -74,13 +74,6 @@ def get_locale() -> Union[str, None]:
     )
 
 
-@babel.timezoneselector
-def get_timezone() -> str:
-    """
-    Returns the default timezone, UTC.
-    """
-    return "UTC"
-
 
 def get_user() -> Union[dict, None]:
     """

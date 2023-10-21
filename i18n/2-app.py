@@ -46,14 +46,6 @@ def get_locale() -> Union[str, None]:
     )
 
 
-@babel.timezoneselector
-def get_timezone() -> str:
-    """
-    Returns the default timezone, UTC.
-    """
-    return "UTC"
-
-
 @app.route("/", strict_slashes=False)
 def home() -> flask.Response:
     """
