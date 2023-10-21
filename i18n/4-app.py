@@ -79,7 +79,7 @@ def home() -> flask.Response:
     Has "Welcome to Holberton" as page <title>
     and "Hello world" as the <h1>.
     """
-    return flask.render_template("3-index.html")
+    return flask.render_template("4-index.html")
 
 
 if __name__ == "__main__":
