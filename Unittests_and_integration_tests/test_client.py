@@ -164,6 +164,10 @@ class TestGithubOrgClient(unittest.TestCase):
     ]
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """
+    Tests the 'client.GithubOrgClient' class,
+    in integration, by only mocking external requests.
+    """
     @classmethod
     def setUpClass(cls) -> None:
         cls.get_patcher = patch(
