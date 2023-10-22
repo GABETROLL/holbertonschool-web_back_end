@@ -178,8 +178,10 @@ class TestGithubOrgClient(unittest.TestCase):
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """
-    Tests the 'client.GithubOrgClient' class,
+    Tests the <client.GithubOrgClient.public_repos> method,
     in integration, by only mocking external requests.
+
+    All requests are done with <utils.requests.get>.
     """
     @classmethod
     def setUpClass(cls) -> None:
