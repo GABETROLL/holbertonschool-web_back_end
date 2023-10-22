@@ -9,6 +9,13 @@ from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, Mock, PropertyMock
 from typing import Dict
 
+ORG_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1][0]["owner"]
+ORG_OUTPUT = ORG_GET_JSON_OUTPUT
+PUBLIC_REPOS_URL_OUTPUT = ORG_OUTPUT["repos_url"]
+REPOS_PAYLOAD_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1]
+APACHE2_LICENSE = "apache-2.0"
+PUBLIC_REPOS_APACHE2_OUTPUT = ["dagger", "kratu", "traceur-compiler", "firmata.py"]
+
 
 class TestGithubOrgClient(unittest.TestCase):
     """
@@ -99,11 +106,17 @@ class TestGithubOrgClient(unittest.TestCase):
         ],
 
         this method makes <GH_CLIENT = client.GithubOrgClient()>,
-        and tests that <client.GithubOrgClient().public_repos()>
+        and tests that <client.GithubOrgClient().public_repos(APACHE2_LICENSE)>
         returns ["repo0", "repo1", "repo2"].
 
-        Assuming that <<instance>.public_repos()> calls
-        <<instance>.repos_payload()>"""
+        Assuming that <<instance>.public_repos(APACHE2_LICENSE)> calls
+        <<instance>.repos_payload()>.
+
+        <instance>.repos_payload uses <instance>._public_repos_url,
+        which has been mocked, so it doesn't call <client.get_json>.
+
+        This means that <client.get_json> should only be called once.
+        """
         with patch(
             "client.GithubOrgClient._public_repos_url",
             new_callable=PropertyMock(
@@ -113,8 +126,8 @@ class TestGithubOrgClient(unittest.TestCase):
             GH_CLIENT = client.GithubOrgClient("...")
 
             self.assertEqual(
-                GH_CLIENT.public_repos("other"),
-                ["ios-webkit-debug-proxy", "build-debian-cloud"]
+                GH_CLIENT.public_repos(APACHE2_LICENSE),
+                PUBLIC_REPOS_APACHE2_OUTPUT
             )
 
             client.get_json.assert_called_once()
@@ -126,10 +139,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ]
     )
     def test_has_license(
-        self,
-        repo: Dict[str, Dict],
-        license_key: str,
-        expected: bool
+        self, repo: Dict[str, Dict], license_key: str, expected: bool
     ) -> None:
         """
         Tests that:
@@ -158,10 +168,10 @@ class TestGithubOrgClient(unittest.TestCase):
     ),
     [
         (
-            TEST_PAYLOAD[0][0],
-            TEST_PAYLOAD[0][1],
-            TEST_PAYLOAD[0][1],
-            TEST_PAYLOAD[0][2]
+            ORG_GET_JSON_OUTPUT,
+            PUBLIC_REPOS_URL_OUTPUT,
+            REPOS_PAYLOAD_GET_JSON_OUTPUT,
+            PUBLIC_REPOS_APACHE2_OUTPUT
         )
     ]
 )
@@ -172,18 +182,47 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     """
     @classmethod
     def setUpClass(cls) -> None:
-        cls.get_patcher = patch(
-            "reuqests.get",
-            side_effect=Mock(
-                json=Mock(return_value=TEST_PAYLOAD)
+        cls.ORG_NAME = "..."
+        ORG_REQUEST_URL = client.GithubOrgClient.ORG_URL.format(
+            org=cls.ORG_NAME
+        )
+        REPOS_PAYLOAD_REQUEST_URL = PUBLIC_REPOS_URL_OUTPUT
+
+        def mocked_requests_get(url: str):
+            output = None
+
+            if url == ORG_REQUEST_URL:
+                output = ORG_GET_JSON_OUTPUT
+            elif url == REPOS_PAYLOAD_REQUEST_URL:
+                 output = REPOS_PAYLOAD_GET_JSON_OUTPUT
+            else:
+                raise ValueError(f"Unexpected url: {url}")
+
+            return Mock(
+                json=Mock(
+                    return_value=output
+                )
             )
+
+        cls.get_patcher = patch(
+            "requests.get",
+            side_effect=mocked_requests_get
         )
 
     def test_public_repos(self):
         """
-        Empty, for now
+        Tests that <GH_CLIENT.public_repos(APACHE2_LICENSE)>
+        returns the expected output, which should be
+        <PUBLIC_REPOS_APACHE2_OUTPUT>,
+
+        while only mocking <client.get_json> calls.
         """
-        pass
+        GH_CLIENT = client.GithubOrgClient(self.ORG_NAME)
+
+        self.assertEqual(
+            GH_CLIENT.public_repos(APACHE2_LICENSE),
+            PUBLIC_REPOS_APACHE2_OUTPUT
+        )
 
     @classmethod
     def tearDownClass(cls) -> None:
