@@ -15,7 +15,9 @@ ORG_OUTPUT = ORG_GET_JSON_OUTPUT
 PUBLIC_REPOS_URL_OUTPUT = ORG_OUTPUT["repos_url"]
 REPOS_PAYLOAD_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1]
 APACHE2_LICENSE = "apache-2.0"
-PUBLIC_REPOS_APACHE2_OUTPUT = ["dagger", "kratu", "traceur-compiler", "firmata.py"]
+PUBLIC_REPOS_APACHE2_OUTPUT = [
+    "dagger", "kratu", "traceur-compiler", "firmata.py"
+]
 
 
 class TestGithubOrgClient(unittest.TestCase):
