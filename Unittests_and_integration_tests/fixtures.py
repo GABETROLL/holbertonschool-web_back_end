@@ -7,11 +7,13 @@ the expected outputs for:
   GithubClientOrg("google").org
   GithubClientOrg("google")._public_repos_url
   GithubClientOrg("google").repos_payload
-  GithubClientOrg("google").and public_repos
+  GithubClientOrg("google").public_repos()
+  GithubClientOrg("google").public_repos("apache-2.0")
 are found in:
   TEST_PAYLOAD[0][0] (not the complete output, but it's mocked)
   TEST_PAYLOAD[0][0]["repos_url"]
   TEST_PAYLOAD[0][1]
+  TEST_PAYLOAD[0][-2]
   TEST_PAYLOAD[0][-1]
 """
 

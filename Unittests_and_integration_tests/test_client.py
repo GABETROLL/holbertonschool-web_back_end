@@ -14,6 +14,7 @@ ORG_GET_JSON_OUTPUT = TEST_PAYLOAD[0][0]
 ORG_OUTPUT = ORG_GET_JSON_OUTPUT
 PUBLIC_REPOS_URL_OUTPUT = ORG_OUTPUT["repos_url"]
 REPOS_PAYLOAD_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1]
+PUBLIC_REPOS_OUTPUT = TEST_PAYLOAD[0][-2]
 APACHE2_LICENSE = "apache-2.0"
 PUBLIC_REPOS_APACHE2_OUTPUT = TEST_PAYLOAD[0][-1]
 
@@ -162,11 +163,25 @@ class TestGithubOrgClient(unittest.TestCase):
 
     def test_public_repos(self):
         """
+        Tests that <client.GithubOrgClient("google").public_repos()>
+        is a superset of
+        <PUBLIC_REPOS_OUTPUT>.
+        """
+        GH_CLIENT = client.GithubOrgClient("google")
+
+        self.assertTrue(
+            set(GH_CLIENT.public_repos()).issuperset(
+                PUBLIC_REPOS_OUTPUT
+            )
+        )
+
+    def test_public_repos_with_license(self):
+        """
         Tests that <client.GithubOrgClient("google").public_repos(
             APACHE2_LICENSE
-        )
+        )>
         is a superset of
-        PUBLIC_REPOS_APACHE2_OUTPUT.
+        <PUBLIC_REPOS_APACHE2_OUTPUT>.
         """
         GH_CLIENT = client.GithubOrgClient("google")
 
