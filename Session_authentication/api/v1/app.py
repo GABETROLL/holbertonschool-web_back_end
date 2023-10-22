@@ -112,23 +112,21 @@ def authenticate() -> None:
 
     # assert type(AUTH_HEADER) == str
 
-    RESULT: User = auth.current_user(AUTH_HEADER)
+    USER: User = auth.current_user(AUTH_HEADER)
     # (if the 'auth' type is 'SessionAuth',
     # the 'current_user' method being ran is the one
     # from 'Auth', which should automatically return None,
     # and forbid the user from using Basic AUTH,
     # instead of Session AUTH)
 
-    if RESULT is None:
+    if USER is None:
         # User doesn't have valid credentials,
         # or the user isn't using correct authorization.
         abort(403)
 
-    # assert type(RESULT) == User
+    # assert type(USER) == User
 
-    request.current_user = RESULT
-
-    return RESULT
+    request.current_user = USER
 
 
 @app.errorhandler(401)
