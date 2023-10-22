@@ -8,6 +8,7 @@ import client
 from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, Mock, PropertyMock
 from typing import Dict
+import utils
 
 ORG_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1][0]["owner"]
 ORG_OUTPUT = ORG_GET_JSON_OUTPUT
@@ -183,31 +184,35 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.ORG_NAME = "..."
+        """What the mocked ORG name will be."""
+
         ORG_REQUEST_URL = client.GithubOrgClient.ORG_URL.format(
             org=cls.ORG_NAME
         )
+        """
+        What the request URL produced by the
+        <GithubOrgClient.org>, to <utils.requests.get>,
+        should be
+        """
         REPOS_PAYLOAD_REQUEST_URL = PUBLIC_REPOS_URL_OUTPUT
 
         def mocked_requests_get(url: str):
-            output = None
+            json_output = None
 
             if url == ORG_REQUEST_URL:
-                output = ORG_GET_JSON_OUTPUT
+                json_output = ORG_GET_JSON_OUTPUT
             elif url == REPOS_PAYLOAD_REQUEST_URL:
-                 output = REPOS_PAYLOAD_GET_JSON_OUTPUT
+                json_output = REPOS_PAYLOAD_GET_JSON_OUTPUT
             else:
                 raise ValueError(f"Unexpected url: {url}")
 
-            return Mock(
-                json=Mock(
-                    return_value=output
-                )
-            )
+            return Mock(json=Mock(return_value=json_output))
 
         cls.get_patcher = patch(
             "requests.get",
-            side_effect=mocked_requests_get
+            new=Mock(side_effect=mocked_requests_get)
         )
+        cls.get_patcher.start()
 
     def test_public_repos(self):
         """
@@ -218,6 +223,10 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         while only mocking <client.get_json> calls.
         """
         GH_CLIENT = client.GithubOrgClient(self.ORG_NAME)
+
+        # Test the 'org' method first.
+        GH_CLIENT_ORG = GH_CLIENT.org
+        self.assertIn("repos_url", GH_CLIENT_ORG)
 
         self.assertEqual(
             GH_CLIENT.public_repos(APACHE2_LICENSE),
