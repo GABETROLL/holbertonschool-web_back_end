@@ -178,6 +178,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         )
 
     def test_public_repos(self):
+        """
+        Empty, for now
+        """
         pass
 
     @classmethod
