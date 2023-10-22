@@ -117,6 +117,8 @@ class TestGithubOrgClient(unittest.TestCase):
                 ["ios-webkit-debug-proxy", "build-debian-cloud"]
             )
 
+            client.get_json.assert_called_once()
+
     @parameterized.expand(
         [
             ({"license": {"key": "my_license"}}, "my_license", True),
