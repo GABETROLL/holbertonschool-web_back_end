@@ -160,6 +160,22 @@ class TestGithubOrgClient(unittest.TestCase):
             expected
         )
 
+    def test_public_repos(self):
+        """
+        Tests that <client.GithubOrgClient("google").public_repos(
+            APACHE2_LICENSE
+        )
+        is a superset of
+        PUBLIC_REPOS_APACHE2_OUTPUT.
+        """
+        GH_CLIENT = client.GithubOrgClient("google")
+
+        self.assertTrue(
+            set(GH_CLIENT.public_repos(APACHE2_LICENSE)).issuperset(
+                PUBLIC_REPOS_APACHE2_OUTPUT
+            )
+        )
+
 
 @parameterized_class(
     ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
