@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+"""
+Inside 'TEST_PAYLOAD',
+there's a tuple.
+Inside the tuple,
+the expected outputs for:
+  GithubClientOrg("google").org
+  GithubClientOrg("google")._public_repos_url
+  GithubClientOrg("google").repos_payload
+  GithubClientOrg("google").and public_repos
+are found in:
+  TEST_PAYLOAD[0][0] (not the complete output, but it's mocked)
+  TEST_PAYLOAD[0][0]["repos_url"]
+  TEST_PAYLOAD[0][1]
+  TEST_PAYLOAD[0][-1]
+"""
 
 TEST_PAYLOAD = [
   (

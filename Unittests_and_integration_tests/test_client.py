@@ -8,16 +8,13 @@ import client
 from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, Mock, PropertyMock
 from typing import Dict
-import utils
 
-ORG_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1][0]["owner"]
+ORG_GET_JSON_OUTPUT = TEST_PAYLOAD[0][0]
 ORG_OUTPUT = ORG_GET_JSON_OUTPUT
 PUBLIC_REPOS_URL_OUTPUT = ORG_OUTPUT["repos_url"]
 REPOS_PAYLOAD_GET_JSON_OUTPUT = TEST_PAYLOAD[0][1]
 APACHE2_LICENSE = "apache-2.0"
-PUBLIC_REPOS_APACHE2_OUTPUT = [
-    "dagger", "kratu", "traceur-compiler", "firmata.py"
-]
+PUBLIC_REPOS_APACHE2_OUTPUT = TEST_PAYLOAD[0][-1]
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -164,20 +161,13 @@ class TestGithubOrgClient(unittest.TestCase):
 
 
 @parameterized_class(
-    (
-        "org_payload",
-        "repos_payload",
-        "expected_repos",
-        "apache2_repos"
-    ),
-    [
-        (
-            ORG_GET_JSON_OUTPUT,
-            PUBLIC_REPOS_URL_OUTPUT,
-            REPOS_PAYLOAD_GET_JSON_OUTPUT,
-            PUBLIC_REPOS_APACHE2_OUTPUT
-        )
-    ]
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    [(
+        ORG_GET_JSON_OUTPUT,
+        PUBLIC_REPOS_URL_OUTPUT,
+        REPOS_PAYLOAD_GET_JSON_OUTPUT,
+        PUBLIC_REPOS_APACHE2_OUTPUT
+    )]
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """
