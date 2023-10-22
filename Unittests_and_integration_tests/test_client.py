@@ -9,6 +9,7 @@ from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, Mock, PropertyMock
 from typing import Dict
 
+TEST_ORG_NAME = "google"
 ORG_GET_JSON_OUTPUT = TEST_PAYLOAD[0][0]
 ORG_OUTPUT = ORG_GET_JSON_OUTPUT
 PUBLIC_REPOS_URL_OUTPUT = ORG_OUTPUT["repos_url"]
@@ -71,7 +72,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     def test_public_repos_url(self) -> None:
         """
-        Makes <GH_CLIENT = client.GithubOrgClient("...")>,
+        Makes <GH_CLIENT = client.GithubOrgClient(TEST_ORG_NAME)>,
         then tests that the property
         <GH_CLIENT._public_repos_url>
         returns <GH_CLIENT.org["repos_url"].
@@ -85,7 +86,7 @@ class TestGithubOrgClient(unittest.TestCase):
                 return_value=self.ORG_OUTPUT
             )
         ):
-            GH_CLIENT = client.GithubOrgClient("...")
+            GH_CLIENT = client.GithubOrgClient(TEST_ORG_NAME)
 
             self.assertEqual(
                 GH_CLIENT._public_repos_url,
@@ -105,8 +106,8 @@ class TestGithubOrgClient(unittest.TestCase):
             {"name": "repo0"}, {"name": "repo1"}, {"name": "repo2"}
         ],
 
-        this method makes <GH_CLIENT = client.GithubOrgClient()>,
-        and tests that <client.GithubOrgClient().public_repos(APACHE2_LICENSE)>
+        this method makes <GH_CLIENT = client.GithubOrgClient(TEST_ORG_NAME)>,
+        and tests that <GH_CLIENT.public_repos(APACHE2_LICENSE)>
         returns ["repo0", "repo1", "repo2"].
 
         Assuming that <<instance>.public_repos(APACHE2_LICENSE)> calls
@@ -123,7 +124,7 @@ class TestGithubOrgClient(unittest.TestCase):
                 return_value=self.PUBLIC_REPOS_URL_OUTPUT
             )
         ):
-            GH_CLIENT = client.GithubOrgClient("...")
+            GH_CLIENT = client.GithubOrgClient(TEST_ORG_NAME)
 
             self.assertEqual(
                 GH_CLIENT.public_repos(APACHE2_LICENSE),
@@ -178,11 +179,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     """
     @classmethod
     def setUpClass(cls) -> None:
-        cls.ORG_NAME = "..."
-        """What the mocked ORG name will be."""
-
         ORG_REQUEST_URL = client.GithubOrgClient.ORG_URL.format(
-            org=cls.ORG_NAME
+            org=TEST_ORG_NAME
         )
         """
         What the request URL produced by the
@@ -217,7 +215,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
         while only mocking <client.get_json> calls.
         """
-        GH_CLIENT = client.GithubOrgClient(self.ORG_NAME)
+        GH_CLIENT = client.GithubOrgClient(TEST_ORG_NAME)
 
         # Test the 'org' method first.
         GH_CLIENT_ORG = GH_CLIENT.org
