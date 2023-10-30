@@ -30,11 +30,7 @@ class Config:
 
 app = flask.Flask(__name__)
 app.config.from_object(Config)
-babel = flask_babel.Babel(
-    app,
-    Config.BABEL_DEFAULT_LOCALE,
-    Config.BABEL_DEFAULT_TIMEZONE
-)
+babel = flask_babel.Babel(app)
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},

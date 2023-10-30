@@ -24,13 +24,8 @@ class Config:
 
 app = flask.Flask(__name__)
 app.config.from_object(Config)
-"""
-babel = flask_babel.Babel(
-    app,
-    Config.BABEL_DEFAULT_LOCALE,
-    Config.BABEL_DEFAULT_TIMEZONE
-)
-"""
+babel = flask_babel.Babel(app)
+
 
 @app.route("/", strict_slashes=False)
 def home() -> flask.Response:
