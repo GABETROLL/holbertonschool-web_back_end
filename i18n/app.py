@@ -31,11 +31,7 @@ class Config:
 
 app = flask.Flask(__name__)
 app.config.from_object(Config)
-babel = flask_babel.Babel(
-    app,
-    Config.BABEL_DEFAULT_LOCALE,
-    Config.BABEL_DEFAULT_TIMEZONE
-)
+babel = flask_babel.Babel(app)
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -115,6 +111,7 @@ def get_timezone() -> str:
         except pytz.exceptions.UnknownTimeZoneError:
             pass
         else:
+            print(f"RETURNING TIMEZONE: {timezone}")
             return timezone.zone
 
     if hasattr(flask.g, "user") and flask.g.user is not None:
@@ -126,12 +123,14 @@ def get_timezone() -> str:
         except pytz.exceptions.UnknownTimeZoneError:
             pass
         else:
+            print(f"RETURNING TIMEZONE: {timezone}")
             return timezone.zone
 
-    # print("AAAAAAAAAAAAA")
+    timezone = app.config["BABEL_DEFAULT_TIMEZONE"]
 
-    return app.config["BABEL_DEFAULT_TIMEZONE"]
+    print(f"RETURNING TIMEZONE: {timezone}")
 
+    return timezone
 
 def get_user() -> Union[dict, None]:
     """
