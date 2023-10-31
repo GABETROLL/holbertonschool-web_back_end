@@ -86,10 +86,11 @@ def replay(method: Callable) -> None:
 
     for input, output in zip(INPUTS, OUTPUTS):
         input = input.decode()
+        # assumed to be a valid repr of a tuple.
         output = output.decode()
 
         print(
-            f"{method.__qualname__}*({input}) -> {output}"
+            f"{method.__qualname__}(*{input}) -> {output}"
         )
 
 
