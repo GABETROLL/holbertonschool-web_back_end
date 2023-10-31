@@ -31,10 +31,14 @@ def count_calls(method: Callable) -> Callable:
         calls[method.__qualname__] += 1
         return method(*args, **kwargs)
 
-    return property(increment)
+    return increment
 
 
 class Cache:
+    """
+    Connection to Redis DB.
+    Flushes the DB when instanciated.
+    """
     def __init__(self):
         self._redis = redis.Redis()
         self._redis.flushdb()
