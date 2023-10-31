@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Has <DB = redis.Redis()>, that keeps track
 of the amount of calls per URL through <get_page>
