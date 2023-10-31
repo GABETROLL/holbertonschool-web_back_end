@@ -18,4 +18,4 @@ class Cache:
         a uuid key in the Redis database
         stored in <self>.
         """
-        self._redis.set(uuid4(), data)
+        self._redis.set(str(uuid4()), data)
