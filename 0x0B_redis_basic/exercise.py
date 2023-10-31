@@ -82,6 +82,8 @@ def replay(method: Callable) -> None:
     INPUTS = redis_tunnel.lrange(f"{method.__qualname__}:inputs", 0, -1)
     OUTPUTS = redis_tunnel.lrange(f"{method.__qualname__}:outputs", 0, -1)
 
+    print(f"{method.__qualname__} was called {len(INPUTS)} times:")
+
     for input, output in zip(INPUTS, OUTPUTS):
         print(
             f"{method.__qualname__}*({input}) -> {output}"
