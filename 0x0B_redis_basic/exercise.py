@@ -13,6 +13,9 @@ def count_calls(method: Callable) -> Callable:
     Assuming that this function is being used
     as a decorator on a method in <Cache>,
 
+    this function attempts keeps count of the attempted
+    calls made to <method>, by impersonating it.
+
     This function returns the replacement for <method>,
     which is a function: <increment(self, *args, **kwargs)>,
     which is decorated by <@wraps(method)>.
@@ -23,6 +26,9 @@ def count_calls(method: Callable) -> Callable:
     to keep count of the calls to <method>.
     The <increment> function then calls
     <method(self, *args, **kwargs)>.
+
+    We don't need to verify that the key for counting
+    the calls exists!!!
     """
     @wraps(method)
     def increment(self, *args, **kwargs):
