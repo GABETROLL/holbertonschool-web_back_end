@@ -10,26 +10,24 @@ from typing import Union, Optional, Callable
 
 def count_calls(method: Callable) -> Callable:
     """
-    Decorator for <method>,
-    that keeps count of the calls to <method>.
+    Assuming that this function is being used
+    as a decorator on a method in <Cache>,
 
-    Makes a calls dict to keep track of the <method>'s
-    <__qualname__> and the amount of times it was called,
+    This function returns the replacement for <method>,
+    which is a function: <increment(self, *args, **kwargs)>,
+    which is decorated by <@wraps(method)>.
 
-    makes <increment(*args, **kwargs)>, that's decorated
-    with <wraps(method)>,
-    that increments <method>'s counter
-    and returns <method(*args, **kwargs)>.
-
-    Returns the <increment> inner function,
-    which should have the closure for the calls counter.
+    The <increment> function, behaving like a method of
+    <Cache>, increments the <method>'s __qualname__ counter
+    (using <self._redis.inc(method.__qualname__)>)
+    to keep count of the calls to <method>.
+    The <increment> function then calls
+    <method(self, *args, **kwargs)>.
     """
-    calls = {method.__qualname__: 0}
-
     @wraps(method)
-    def increment(*args, **kwargs):
-        calls[method.__qualname__] += 1
-        return method(*args, **kwargs)
+    def increment(self, *args, **kwargs):
+        self._redis.incr(method.__qualname__)
+        return method(self, *args, **kwargs)
 
     return increment
 
