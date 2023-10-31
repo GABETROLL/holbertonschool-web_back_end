@@ -66,6 +66,28 @@ def call_history(method: Callable) -> Callable:
     return log
 
 
+def replay(method: Callable) -> None:
+    """
+    Assuming that <method> is a method of <Cache>,
+    this function prints all of the method's history.
+
+    The history should be stored in the method's instance's DB,
+    LIKE SPECIFIED IN THE <call_history> DECORATOR WRITTEN
+    ABOVE:
+    with the inputs in the DB's <f"{method.__qualname__}:inputs"> key,
+    and with the outputs in the DB's <f"{method.__qualname__}:outputs">
+    """
+    redis_tunnel = redis.Redis()
+
+    INPUTS = redis_tunnel.lrange(f"{method.__qualname__}:inputs", 0, -1)
+    OUTPUTS = redis_tunnel.lrange(f"{method.__qualname__}:outputs", 0, -1)
+
+    for input, output in zip(INPUTS, OUTPUTS):
+        print(
+            f"{method.__qualname__}*({input}) -> {output}"
+        )
+
+
 class Cache:
     """
     Connection to Redis DB.

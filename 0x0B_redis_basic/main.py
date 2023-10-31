@@ -3,7 +3,7 @@
 Main file
 """
 import redis
-from exercise import Cache\
+from exercise import Cache, replay
 
 cache = Cache()
 
@@ -51,3 +51,7 @@ print("inputs: {}".format(inputs))
 print("outputs: {}".format(outputs))
 
 assert [o.decode() for o in outputs[-3:]] == [s1, s2, s3]
+
+print("4 -------------------------------------")
+
+replay(cache.store)
