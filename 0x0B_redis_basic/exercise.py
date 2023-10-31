@@ -5,7 +5,7 @@ Contains <Cache> class with Redis database.
 import redis
 from functools import wraps
 from uuid import uuid4
-from typing import Union, Optional, Callable
+from typing import Union, List, Callable, Optional
 
 
 def count_calls(method: Callable) -> Callable:
@@ -51,15 +51,15 @@ def call_history(method: Callable) -> Callable:
     """
     @wraps(method)
     def log(self, *args, **kwargs):
-        INPUTS = str(args)
-        OUTPUT = str(method(self, *args, **kwargs))
+        INPUTS = args
+        OUTPUT = method(self, *args, **kwargs)
 
         self._redis.rpush(
-            f"{method.__qualname__}:inputs", INPUTS
+            f"{method.__qualname__}:inputs", str(INPUTS)
         )
 
         self._redis.rpush(
-            f"{method.__qualname__}:outputs", OUTPUT
+            f"{method.__qualname__}:outputs", str(OUTPUT)
         )
 
         return OUTPUT
@@ -79,12 +79,15 @@ def replay(method: Callable) -> None:
     """
     redis_tunnel = redis.Redis()
 
-    INPUTS = redis_tunnel.lrange(f"{method.__qualname__}:inputs", 0, -1)
-    OUTPUTS = redis_tunnel.lrange(f"{method.__qualname__}:outputs", 0, -1)
+    INPUTS: List[bytes] = redis_tunnel.lrange(f"{method.__qualname__}:inputs", 0, -1)
+    OUTPUTS: List[bytes] = redis_tunnel.lrange(f"{method.__qualname__}:outputs", 0, -1)
 
     print(f"{method.__qualname__} was called {len(INPUTS)} times:")
 
     for input, output in zip(INPUTS, OUTPUTS):
+        input = input.decode()
+        output = output.decode()
+
         print(
             f"{method.__qualname__}*({input}) -> {output}"
         )
