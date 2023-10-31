@@ -38,6 +38,34 @@ def count_calls(method: Callable) -> Callable:
     return increment
 
 
+def call_history(method: Callable) -> Callable:
+    """
+    Assuming <method> is a method of <Cache> (below, in this file),
+
+    This function decorates <method> to keep track of its inputs and outputs
+    in the method's intance's redis DB,
+
+    RPUSH-ing <str(args)> to <f"{method.__qualname__}:inputs">,
+    and RPUSH-ing <str(method(self, *args, **kwargs))>
+    to <f"{method.__qualname__}:outputs">.
+    """
+    @wraps(method)
+    def log(self, *args, **kwargs):
+        INPUTS = str(args)
+        OUTPUT = str(method(self, *args, **kwargs))
+
+        self._redis.rpush(
+            f"{method.__qualname__}:inputs", INPUTS
+        )
+
+        self._redis.rpush(
+            f"{method.__qualname__}:outputs", OUTPUT
+        )
+
+        return OUTPUT
+    return log
+
+
 class Cache:
     """
     Connection to Redis DB.
@@ -47,6 +75,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
@@ -90,13 +119,3 @@ class Cache:
         of the value (fn=lambda x: int(x.decode())).
         """
         return self.get(key, lambda x: int(x.decode()))
-
-
-if __name__ == "__main__":
-    cache = Cache()
-    KEY = cache.store(3)
-    print(f"KEY: {KEY}")
-    print(f"VALUE: {cache.get(KEY)}")
-    print(f"CONVERTED_VALUE: {cache.get(KEY, lambda x: x.decode().split(', '))}")
-    print(f"STR VALUE: {cache.get_str(KEY)}")
-    print(f"INT_VALUE: {cache.get_int(KEY)}")
