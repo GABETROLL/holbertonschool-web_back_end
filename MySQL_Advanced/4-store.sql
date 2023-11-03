@@ -3,8 +3,7 @@
 -- (the tables for the items on stock and orders
 -- are in '4-init.sql',
 -- and are named 'items' and 'orders')
-CREATE TRIGGER decrease_item_quantity
-AFTER INSERT ON orders FOR EACH ROW
-BEGIN
-UPDATE items SET 
-END;
+CREATE TRIGGER IF NOT EXISTS decrease_item_quantity
+    AFTER INSERT ON orders
+    FOR EACH ROW UPDATE items SET  
+;
