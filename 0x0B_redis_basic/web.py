@@ -42,4 +42,5 @@ def get_page(url: str) -> str:
     Sets the key's expiration time of 10 seconds.
     Returns the result.
     """
-    return requests.get(url).content
+    response = requests.get(url).text
+    return response
