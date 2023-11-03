@@ -25,12 +25,15 @@ def count_url(get_page_: Callable) -> Callable:
         URL_CACHE_KEY = f"count:{url}"
         DB.incr(URL_CACHE_KEY)
 
-        return DB.setex(url, 10, get_page_(url))
+        RESPONSE_HTML = get_page_(url)
+        DB.setex(url, 10, RESPONSE_HTML)
+
+        return RESPONSE_HTML
 
     return cached_get_page
 
 
-@cout_url
+@count_url
 def get_page(url: str) -> str:
     """
     Makes a request to <url>.
