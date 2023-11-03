@@ -83,8 +83,9 @@ def replay(method: Callable) -> None:
         redis_tunnel.lrange(f"{method.__qualname__}:inputs", 0, -1)
     OUTPUTS: List[bytes] = \
         redis_tunnel.lrange(f"{method.__qualname__}:outputs", 0, -1)
+    CALL_COUNT: int = int(redis_tunnel.get(f"{method.__qualname__}"))
 
-    print(f"{method.__qualname__} was called {len(INPUTS)} times:")
+    print(f"{method.__qualname__} was called {CALL_COUNT} times:")
 
     for input, output in zip(INPUTS, OUTPUTS):
         input = input.decode()

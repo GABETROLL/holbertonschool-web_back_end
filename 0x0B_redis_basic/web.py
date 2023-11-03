@@ -7,10 +7,30 @@ and <get_page>.
 """
 import requests
 import redis
+from typing import Callable
+from functools import wraps
 
 DB = redis.Redis()
 
 
+def count_url(get_page_: Callable) -> Callable:
+    """
+    Decorator for <get_page> that INCR's
+    the <get_page>'s <url> argument
+    in <DB>, using f"count:{url}" as the key,
+    with an expiration time of 10 seconds.
+    """
+    @wraps(get_page_)
+    def cached_get_page(url: str) -> str:
+        URL_CACHE_KEY = f"count:{url}"
+        DB.incr(URL_CACHE_KEY)
+
+        return DB.setex(url, 10, get_page_(url))
+
+    return cached_get_page
+
+
+@cout_url
 def get_page(url: str) -> str:
     """
     Makes a request to <url>.
@@ -19,10 +39,4 @@ def get_page(url: str) -> str:
     Sets the key's expiration time of 10 seconds.
     Returns the result.
     """
-    URL_HTML = requests.get(url).content
-
-    URL_CACHE_KEY = f"count:{url}"
-    DB.incr(URL_CACHE_KEY)
-    DB.expire(URL_CACHE_KEY, 10)
-
-    return URL_HTML
+    return requests.get(url).content
