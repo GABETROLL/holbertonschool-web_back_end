@@ -4,12 +4,8 @@
     -- Only the first letter of name must be indexed
 
 -- (We were given a massive file with a table, named `names`,
--- that looks like this:
-
--- CREATE TABLE `names` (
--- `name` varchar(255) DEFAULT NULL,
--- `score` int(11) DEFAULT NULL
---) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- that has a `name` VARCHAR(255) DEFAULT NULL
+-- and a `score` INT(11) DEFAULT NULL
 
 CREATE INDEX idx_name_first
     ON names (name(1))
