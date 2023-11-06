@@ -1,8 +1,9 @@
--- creates an index idx_name_first on the table names and the first letter of name.
+-- Create an index `idx_name_first`
+-- on the table named `names`, and the first letter of `name`.
 -- Requirements:
     -- Only the first letter of name must be indexed
 
--- (We were given a massive file with a table ``names``
+-- (We were given a massive file with a table, named `names`,
 -- that looks like this:
 
 -- CREATE TABLE `names` (
