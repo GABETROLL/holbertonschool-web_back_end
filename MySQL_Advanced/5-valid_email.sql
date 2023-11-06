@@ -1,9 +1,15 @@
 -- Create a trigger that resets the attribute 'valid_email'
 -- only when the email has been changed.
 CREATE TRIGGER reset_valid_email
-    AFTER UPDATE ON users
+    BEFORE UPDATE ON users
     FOR EACH ROW
-    IF(NEW.email!=OLD.email) THEN
-        UPDATE users SET valid_email=DEFAULT
-        WHERE email=NEW.email
+    SET NEW.valid_email = IF(
+        OLD.email!=NEW.email,
+        0,
+        IF(
+            OLD.valid_email!=NEW.valid_email,
+            NEW.valid_email,
+            OLD.valid_email
+        )
+    )
 ;
