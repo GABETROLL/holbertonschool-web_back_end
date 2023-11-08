@@ -19,6 +19,10 @@ if __name__ == "__main__":
     for j_school in j_schools:
         insert_school(school_collection, **j_school)
 
+    for school in list_all(school_collection):
+        print(school)
+
+    print("---")
     schools = schools_by_topic(school_collection, "Python")
     for school in schools:
         print("[{}] {} {}".format(school.get('_id'), school.get('name'), school.get('topics', "")))

@@ -14,17 +14,9 @@ def schools_by_topic(
     topic: str
 ) -> List:
     """
-    -> return [
-        school
-        for school in
-        mongo_collection.find({"topic": topic})
-    ]
+    -> list(mongo_collection.find({"topic": topic}))
 
     Returns a list of all of the documents in the
     <mongo_collection> that have {"topic": topic}.
     """
-    return [
-        school
-        for school in
-        mongo_collection.find({"topic": topic})
-    ]
+    return list(mongo_collection.find({"topics": topic}))
