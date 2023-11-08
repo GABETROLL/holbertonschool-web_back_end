@@ -15,17 +15,21 @@ You can use this dump as data sample: dump.zip
 """
 import pymongo
 
-CLIENT = pymongo.MongoClient()
-DB = CLIENT.logs
-COLLECTION = DB.nginx
+if __name__ == "__main__":
 
-LOG_COUNT = COLLECTION.count_documents({})
-print(f"{LOG_COUNT} logs")
+    CLIENT = pymongo.MongoClient()
+    DB = CLIENT.logs
+    COLLECTION = DB.nginx
 
-print("Methods:")
-for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-    METHOD_COUNT = COLLECTION.count_documents({"method": method})
-    print(f"\tmethod {method}: {METHOD_COUNT}")
+    LOG_COUNT = COLLECTION.count_documents({})
+    print(f"{LOG_COUNT} logs")
 
-STATUS_LOG_COUNT = COLLECTION.count_documents({"path": "/status"})
-print(f"{STATUS_LOG_COUNT} status check")
+    print("Methods:")
+    for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
+        METHOD_COUNT = COLLECTION.count_documents({"method": method})
+        print(f"\tmethod {method}: {METHOD_COUNT}")
+
+    STATUS_LOG_COUNT = COLLECTION.count_documents({"path": "/status"})
+    print(f"{STATUS_LOG_COUNT} status check")
+
+    CLIENT.close()
