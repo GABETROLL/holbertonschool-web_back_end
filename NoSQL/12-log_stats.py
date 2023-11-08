@@ -12,19 +12,6 @@ Write a Python script that provides some stats about Nginx logs stored in MongoD
             - path=/status
 
 You can use this dump as data sample: dump.zip
-
-The output of your script must be EXACTLY LIKE THE EXAMPLE:
-```
-$ ./12-log_stats.py
-94778 logs
-Methods:
-    method GET: 93842
-    method POST: 229
-    method PUT: 0
-    method PATCH: 0
-    method DELETE: 0
-47415 status check
-```
 """
 import pymongo
 
