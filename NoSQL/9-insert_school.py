@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Write a Python function that inserts a new document in a collection based on kwargs:
 
