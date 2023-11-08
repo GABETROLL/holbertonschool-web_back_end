@@ -17,10 +17,11 @@ def update_topics(
 ) -> None:
     """
     Calls
-    mongo_collection.update_one({"name": name}, {"topics": topics})
+    mongo_collection.update_many({"name": name}, {"$set": {"topics": topics}})
 
     Updates each document in <mongo_collection>
     that has {"name": name}
     to have {"topics": topics}
+    
     """
-    mongo_collection.update_one({"name": name}, {"$set": {"topics": topics}})
+    mongo_collection.update_many({"name": name}, {"$set": {"topics": topics}})
