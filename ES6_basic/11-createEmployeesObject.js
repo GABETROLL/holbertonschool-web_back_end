@@ -17,5 +17,7 @@ The function should return an object with the following format:
 }
 */
 export default function createEmployeesObject(departmentName, employees) {
-  
+  return {
+     [departmentName]: employees,
+  };
 }
