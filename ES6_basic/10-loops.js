@@ -13,9 +13,11 @@ export default function appendToEachArrayValue(array, appendString) {
 }
 */
 export default function appendToEachArrayValue(array, appendString) {
-  for (const idx in array) {
-    array[idx] = appendString + array[idx];
+  let result = [];
+
+  for (const value of array) {
+    result.push(appendString + value);
   }
 
-  return array;
+  return result;
 }
