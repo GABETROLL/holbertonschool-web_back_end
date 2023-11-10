@@ -13,7 +13,7 @@ export default function appendToEachArrayValue(array, appendString) {
 }
 */
 export default function appendToEachArrayValue(array, appendString) {
-  let result = [];
+  const result = [];
 
   for (const value of array) {
     result.push(appendString + value);
