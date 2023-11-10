@@ -25,7 +25,7 @@ def main():
     """
     Runs the task.
     """
-    CLIENT = pymongo.MongoClient()
+    CLIENT = pymongo.MongoClient('mongodb://127.0.0.1:27017')
     DB = CLIENT.logs
     COLLECTION = DB.nginx
 
