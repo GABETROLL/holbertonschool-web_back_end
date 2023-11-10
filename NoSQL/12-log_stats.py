@@ -20,8 +20,11 @@ You can use this dump as data sample: dump.zip
 """
 import pymongo
 
-if __name__ == "__main__":
 
+def main():
+    """
+    Runs the task.
+    """
     CLIENT = pymongo.MongoClient()
     DB = CLIENT.logs
     COLLECTION = DB.nginx
@@ -37,4 +40,6 @@ if __name__ == "__main__":
     STATUS_LOG_COUNT = COLLECTION.count_documents({"path": "/status"})
     print(f"{STATUS_LOG_COUNT} status check")
 
-    # CLIENT.close()
+
+if __name__ == "__main__":
+    main()
