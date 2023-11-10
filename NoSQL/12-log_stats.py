@@ -32,4 +32,4 @@ if __name__ == "__main__":
     STATUS_LOG_COUNT = COLLECTION.count_documents({"path": "/status"})
     print(f"{STATUS_LOG_COUNT} status check")
 
-    CLIENT.close()
+    # CLIENT.close()
