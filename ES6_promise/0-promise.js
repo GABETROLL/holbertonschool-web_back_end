@@ -1,5 +1,7 @@
 export default function getResponseFromAPI() {
-  return new Promise(function (resolve, reject) {
-    resolve("did nothing");
-  });
+  function settlePromise(resolve, reject) { // eslint-disable-line no-unused-vars
+    resolve('did nothing');
+  }
+
+  return new Promise(settlePromise);
 }
