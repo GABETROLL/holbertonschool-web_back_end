@@ -13,14 +13,17 @@ Append three handlers to the function:
 */
 
 export default function handleResponseFromAPI(promise) {
-  let response = undefined;
+  let response;
 
-  promise.then(function (result) {
+  function handleResolve(result) {
     console.log('Got a response from the API');
     response = result;
-  }, function (error) {
+  }
+  function handleError(error) { // eslint-disable-line no-unused-vars
     response = Error();
-  });
+  }
+
+  promise.then(handleResolve, handleError);
 
   return response;
 }
