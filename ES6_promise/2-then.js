@@ -12,13 +12,17 @@ Append three handlers to the function:
     For every resolution, log Got a response from the API to the console
 */
 
-export default function handleResponseFromAPI(promise) {
+export default async function handleResponseFromAPI(promise) {
+  let response;
+  
   function handleResolve(result) {
     console.log('Got a response from the API');
-    return result;
+    response = result;
   }
   function handleError(error) { // eslint-disable-line no-unused-vars
-    return Error();
+    response = Error();
   }
   promise.then(handleResolve, handleError);
+
+  return response;
 }
