@@ -26,6 +26,7 @@ module.exports = {
       'WithStatement',
     ],
   },
+
   overrides:[
     {
       files: ['*.js'],
