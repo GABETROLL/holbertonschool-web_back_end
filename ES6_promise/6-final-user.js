@@ -21,6 +21,16 @@ it should return an array with the following structure:
 Expected output:
 
 Promise { <pending> }
+[
+  {
+    status: 'fulfilled',
+    value: { firstName: 'Bob', lastName: 'Dylan' }
+  },
+  {
+    status: 'rejected',
+    reason: 'Error: bob_dylan.jpg cannot be processed'
+  }
+]
 */
 /* eslint-disable */
 import signUpUser from './4-user-promise.js';
