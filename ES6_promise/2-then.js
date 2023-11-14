@@ -14,7 +14,7 @@ Append three handlers to the function:
 
 export default async function handleResponseFromAPI(promise) {
   let response;
-  
+
   function handleResolve(result) {
     console.log('Got a response from the API');
     response = result;
