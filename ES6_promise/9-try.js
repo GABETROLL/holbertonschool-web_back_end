@@ -11,7 +11,7 @@ the error message should be appended to the queue.
 In every case, the message 'Guardrail was processed'
 should be added to the queue.
 
-Examples: (``divideFunction`` is from the previous exercise) 
+Examples: (``divideFunction`` is from the previous exercise)
 
 guardrail(() => { return divideFunction(10, 2)})
 outputs:
@@ -24,7 +24,7 @@ outputs:
 export default function guardrail(mathFunction) {
   const queue = [];
 
-  try{
+  try {
     queue.push(mathFunction());
   } catch (error) {
     queue.push(error.message);
