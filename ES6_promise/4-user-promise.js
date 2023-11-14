@@ -15,5 +15,14 @@ Expected output:
 Promise { { firstName: 'Bob', lastName: 'Dylan' } }
 */
 export default function signUpUser(firstName, lastName) {
+  /*
+  Same as:
+
+  return new Promise(
+    (resolve, reject) => {
+      resolve({ firstName, lastName });
+    }
+  );
+  */
   return Promise.resolve({ firstName, lastName });
 }
