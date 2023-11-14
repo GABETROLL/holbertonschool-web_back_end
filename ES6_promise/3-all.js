@@ -8,6 +8,6 @@ export default function handleProfileSignup() {
     console.log('Signup system offline');
   }
 
-  Promise.all([uploadPhoto(), createUser()])
+  return Promise.all([uploadPhoto(), createUser()])
     .then(handleResolve, handleError);
 }
