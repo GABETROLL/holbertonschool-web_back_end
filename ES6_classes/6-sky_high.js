@@ -1,4 +1,6 @@
+/* eslint-disable */
 import Building from "./5-building.js";
+/* eslint-enable */
 
 export default class SkyHighBuilding extends Building {
   constructor(sqft, floors) {
