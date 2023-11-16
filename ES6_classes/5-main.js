@@ -7,15 +7,17 @@ console.log(building);
 class TestBuilding extends Building {}
 
 try {
-  const building = new TestBuilding(200);
-} catch(error) {
+  building = new TestBuilding(200);
+} catch (error) {
   console.log(error.toString());
 }
 
 class OtherBuilding extends Building {
+  /* eslint-disable class-methods-use-this */
   evacuationWarningMessage() {
     return 'Evacuate.';
   }
+  /* eslint-enable class-methods-use-this */
 }
 
 building = new OtherBuilding(300);
