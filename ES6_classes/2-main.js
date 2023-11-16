@@ -4,18 +4,34 @@ import HolbertonCourse from './2-hbtn_course.js';
 
 /*
 Expected output in stdout:
-HolbertonCourse { 'ES6', 1, ['Bob', 'Jane'] }
-HolbertonCourse { 'Python 101', 3, ['One', 'Two'] }
-TypeError: `name` must be a string.
-TypeError: `length` must be a number.
-TypeError: `students` must be an array of strings.
-TypeError: `name` must be a string.
-TypeError: `length` must be a number.
-TypeError: `students` must be an array of strings.
+--------------------------
+HolbertonCourse {
+  _name: 'ES6',
+  _length: 1,
+  _students: [ 'Bob', 'Jane' ]
+}
+ES6
+1
+[ 'Bob', 'Jane' ]
+HolbertonCourse {
+  _name: 'Python 101',
+  _length: 3,
+  _students: [ 'One', 'Two' ]
+}
+TypeError: Name must be a string.
+TypeError: Length must be a number.
+TypeError: Students must be an array of strings.
+TypeError: Name must be a string.
+TypeError: Length must be a number.
+TypeError: Students must be an array of strings.
 */
 let course1 = new HolbertonCourse('ES6', 1, ['Bob', 'Jane']);
 
 console.log(course1);
+
+console.log(course1.name);
+console.log(course1.length);
+console.log(course1.students);
 
 course1.name = 'Python 101';
 course1.length = 3;
