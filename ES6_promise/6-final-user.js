@@ -41,5 +41,21 @@ export default function handleProfileSignup(firstName, lastName, fileName) {
   return Promise.allSettled([
     signUpUser(firstName, lastName),
     uploadPhoto(fileName),
-  ]);
+  ]).then(
+    (results) => results.map(
+      (result) => {
+        const newResult = {
+          status: result.status,
+        };
+
+        if (result.status === 'rejected') {
+          newResult.reason = result.reason.toString();
+        } else {
+          newResult.value = result.value;
+        }
+
+        return newResult;
+      },
+    ),
+  );
 }

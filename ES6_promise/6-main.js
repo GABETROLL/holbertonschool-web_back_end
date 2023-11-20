@@ -2,6 +2,7 @@
 import handleProfileSignup from './6-final-user.js';
 /* eslint-enable */
 
-const promise = handleProfileSignup('Bob', 'Dylan', 'bob_dylan.jpg')
-  .then((result) => { console.log(result); });
-console.log(promise);
+const p = handleProfileSignup('Bob', 'Dylan', 'bob_dylan.jpg');
+console.log(p);
+
+(async () => console.log(await p))();
