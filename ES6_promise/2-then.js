@@ -13,11 +13,8 @@ Append three handlers to the function:
 */
 
 export default async function handleResponseFromAPI(promise) {
-  const newPromise = promise
-    .then((result) => { console.log('Got a response from the API'); return result; })
-    .catch((error) => new Error()); // eslint-disable-line no-unused-vars
-
-  await newPromise;
-
-  return newPromise;
+  return promise
+    .then((result) => { return { status: 200, body: 'success'}; })
+    .catch((error) => new Error()) // eslint-disable-line no-unused-vars
+    .finally(() => { console.log('Got a response from the API'); });
 }
