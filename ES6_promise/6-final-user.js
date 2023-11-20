@@ -49,7 +49,7 @@ export default function handleProfileSignup(firstName, lastName, fileName) {
         };
 
         if (result.status === 'rejected') {
-          newResult.reason = result.reason.toString();
+          newResult.value = result.reason.toString();
         } else {
           newResult.value = result.value;
         }
