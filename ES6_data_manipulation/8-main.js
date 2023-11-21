@@ -15,6 +15,8 @@ console.log(cleanSet(new Set(['bonjovi', 'bonaparte', 'bonappetit', 'banana']), 
 // should be 'jovi-aparte-appetit'.
 console.log(cleanSet(new Set(['bonjovi', 'bonaparte', 'bonappetit', 'banana']), ''));
 // should be ''.
+
+/* eslint-disable-next-line no-sparse-arrays */
 console.log(cleanSet(new Set(['id-test', 'id-chicken', 'id-user', , 'id-id-']), 'id-'));
 // should be 'test-chicken-user-id-'.                        NaN ^
 // If an item in the set isn't a string, it's IGNORED.
