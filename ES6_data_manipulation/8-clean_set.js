@@ -15,15 +15,17 @@ When a value starts with ``startString``,
 export default function cleanSet(set, startString) {
   let resultArray = [];
 
-  set.forEach((item) => {
-    if (item.startsWith(startString)) {
-      resultArray.push(
-        item.substring(
-          startString.length, item.length
-        )
-      );
-    }
-  });
+  if (startString) {
+    set.forEach((item) => {
+      if (item.startsWith(startString)) {
+        resultArray.push(
+          item.substring(
+            startString.length, item.length
+          )
+        );
+      }
+    });
+  }
 
   return resultArray.join('-');
 }
