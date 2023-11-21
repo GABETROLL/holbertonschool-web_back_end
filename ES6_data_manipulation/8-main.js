@@ -1,4 +1,5 @@
-import cleanSet from "./8-clean_set.js";
+/* eslint-disable import/extensions */
+import cleanSet from './8-clean_set.js';
 
 console.log((new Set([0, 1, 2])).entries());
 // (new Set(...)).entries() doesn't return an array...

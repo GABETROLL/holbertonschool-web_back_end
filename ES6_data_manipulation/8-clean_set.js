@@ -10,22 +10,24 @@ It accepts two arguments:
 When a value starts with ``startString``,
   you only append the rest of the string.
   The string contains all the values of the set,
-  separated by '-'. 
+  separated by '-'.
 */
 export default function cleanSet(set, startString) {
-  let resultArray = [];
-
-  if (startString) {
-    set.forEach((item) => {
-      if (item.startsWith(startString)) {
-        resultArray.push(
-          item.substring(
-            startString.length, item.length
-          )
-        );
-      }
-    });
+  if (!startString) {
+    return '';
   }
+
+  const resultArray = [];
+
+  set.forEach((item) => {
+    if (item.startsWith(startString)) {
+      resultArray.push(
+        item.substring(
+          startString.length, item.length,
+        ),
+      );
+    }
+  });
 
   return resultArray.join('-');
 }
