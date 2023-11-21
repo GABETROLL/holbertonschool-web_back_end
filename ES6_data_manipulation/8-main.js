@@ -12,5 +12,13 @@ console.log('string'.startsWith(''));
 // startString to any of the set's strings.
 
 console.log(cleanSet(new Set(['bonjovi', 'bonaparte', 'bonappetit', 'banana']), 'bon'));
+// should be 'jovi-aparte-appetit'.
 console.log(cleanSet(new Set(['bonjovi', 'bonaparte', 'bonappetit', 'banana']), ''));
+// should be ''.
 console.log(cleanSet(new Set(['id-test', 'id-chicken', 'id-user', , 'id-id-']), 'id-'));
+// should be 'test-chicken-user-id-'.                        NaN ^
+// If an item in the set isn't a string, it's IGNORED.
+console.log(cleanSet(new Set(['bonjovi', 'bonaparte', 'bonappetit', 'banana']), []));
+// should also be '', since a ``startString`` argument
+// that isn't a string should automatically make ``cleanSet``
+// return ''.
