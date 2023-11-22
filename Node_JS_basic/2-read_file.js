@@ -31,9 +31,11 @@ module.exports = function countStudents(path) {
       const result = {};
 
       for (const columnIndex in columnNames) {
-        const column = columnNames[columnIndex];
-        const studentColumnValue = student[columnIndex];
-        result[column] = studentColumnValue;
+        if (Object.hasOwn(columnNames, columnIndex)) {
+          const column = columnNames[columnIndex];
+          const studentColumnValue = student[columnIndex];
+          result[column] = studentColumnValue;
+        }
       }
 
       return result;
@@ -49,7 +51,7 @@ module.exports = function countStudents(path) {
     }
   }
 
-  fields.forEach((fieldStudents, field, map) => {
+  fields.forEach((fieldStudents, field) => {
     console.log(`Number of students in ${field}: ${fieldStudents.length}. List: ${fieldStudents.join(', ')}`);
   });
 

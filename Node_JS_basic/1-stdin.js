@@ -1,4 +1,4 @@
-process.on('exit', (code) => {
+process.on('exit', () => {
   console.log('This important software is now closing');
 });
 
