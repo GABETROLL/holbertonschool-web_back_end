@@ -37,7 +37,8 @@ module.exports = function countStudents(path) {
         });
 
       // LOG AMOUNT OF STUDENTS:
-      console.log('Number of students: ' + students.length);
+      let output = `Number of students: ${students.length}`;
+      console.log(output);
 
       // LOG THE AMOUNT OF STUDENTS AND THE STUDENTS FOR EACH FIELD:
 
@@ -53,7 +54,8 @@ module.exports = function countStudents(path) {
       }
 
       fields.forEach((fieldStudents, field) => {
-        console.log('Number of students in ' + field + ': ' + fieldStudents.length + '. List: ' + fieldStudents.join(', '));
+        output = `Number of students in ${field}: ${fieldStudents.length}. List: ${fieldStudents.join(', ')}`;
+        console.log(output);
       });
     })
     .catch(() => { throw new Error('Error: Cannot load the database'); });
