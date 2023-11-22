@@ -56,5 +56,5 @@ module.exports = function countStudents(path) {
         console.log(`Number of students in ${field}: ${fieldStudents.length}. List: ${fieldStudents.join(', ')}`);
       });
     })
-    .catch(() => { throw new Error('Cannot load the database'); });
+    .catch(() => { throw new Error('Error: Cannot load the database'); });
 };
