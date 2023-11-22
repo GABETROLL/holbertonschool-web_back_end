@@ -9,10 +9,10 @@ module.exports = function countStudents(path) {
     throw new Error('Cannot load the database');
   }
 
+  // DATA SETUP:
   const splitData = data
     .split('\n')
     .map((row) => row.split(','));
-  console.log(`Number of students: ${splitData.length - 1}`);
 
   // The index of the header row in the CSV file,
   // assuming that the first non-empty row is the header,
@@ -40,6 +40,12 @@ module.exports = function countStudents(path) {
 
       return result;
     });
+
+  // LOG AMOUNT OF STUDENTS:
+  console.log(`Number of students: ${students.length}`);
+
+  // LOG THE AMOUNT OF STUDENTS AND THE STUDENTS FOR EACH FIELD:
+
   // A map of all of the fields that the students study,
   // and the list of the students that study it.
   const fields = new Map();
@@ -54,6 +60,4 @@ module.exports = function countStudents(path) {
   fields.forEach((fieldStudents, field) => {
     console.log(`Number of students in ${field}: ${fieldStudents.length}. List: ${fieldStudents.join(', ')}`);
   });
-
-  // console.log(fieldsRowIndex, fields, students);
 };
