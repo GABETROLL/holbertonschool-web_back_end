@@ -5,3 +5,5 @@ const app = http.createServer((request, response) => {
   response.end('Hello Holberton School!');
 });
 app.listen(1245, 'localhost');
+
+module.exports = { app };
