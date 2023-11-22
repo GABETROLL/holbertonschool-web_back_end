@@ -1,6 +1,8 @@
-process.on('exit', () => {
+function end() {
   console.log('This important software is now closing');
-});
+}
+process.on('exit', end);
+process.on('SIGINT', end);
 
 const readline = require('readline')
   .createInterface({
