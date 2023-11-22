@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 const fsPromsises = require('fs/promises');
 
 module.exports = function countStudents(path) {
