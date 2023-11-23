@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 const fsPromsises = require('fs/promises');
-const studentsTextOutput = require('./2-3-5-7-8-get_students_text').studentsTextOutput;
+const studentsTextOutput = require('./2-3-5-7-8-get_students_text');
 
 module.exports = function countStudents(path) {
   return fsPromsises.readFile(path, { encoding: 'utf8' })

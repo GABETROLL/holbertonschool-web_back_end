@@ -1,13 +1,5 @@
 const fs = require('fs');
 
-function safeReadFileSync(path, errorReturn) {
-  try {
-    return fs.readFileSync(path, 'utf8');
-  } catch (error) {
-    return errorReturn;
-  }
-}
-
 function studentsTextOutput(data) {
   // DATA SETUP:
   const splitData = data
@@ -62,4 +54,4 @@ function studentsTextOutput(data) {
   return result;
 }
 
-module.exports = { safeReadFileSync, studentsTextOutput };
+module.exports = studentsTextOutput;
