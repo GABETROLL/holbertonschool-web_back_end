@@ -1,8 +1,6 @@
 const express = require('express');
-const get_students_text = require('./2-3-5-7-8-get_students_text');
-
-const safeReadFileSync = get_students_text.safeReadFileSync;
-const studentsTextOutput = get_students_text.studentsTextOutput;
+const readFileSync = require('fs').readFileSync;
+const studentsTextOutput = require('./2-3-5-7-8-get_students_text');
 
 const databaseFileName = process.argv[2];
 
@@ -15,9 +13,16 @@ app.get('/students', (request, response) => {
     response.status(500);
     response.send('Internal server error');
   }
-  const studentData = safeReadFileSync(databaseFileName);
-  const textOutput = studentsTextOutput(studentData).join('\n');
 
+  let studentData;
+  try {
+    studentData = readFileSync(databaseFileName, 'utf8');
+  } catch (error) {
+    response.status(500);
+    response.send('Internal server error');
+  }
+
+  const textOutput = studentsTextOutput(studentData).join('\n');
   response.send(`This is the list of our students\n${textOutput}`);
 });
 app.listen(1245);
