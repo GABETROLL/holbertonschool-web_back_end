@@ -9,9 +9,12 @@ app.get('/', (request, response) => {
   response.send('Hello Holberton School!');
 });
 app.get('/students', (request, response) => {
+  const preamble = 'This is the list of our students\n';
+
   if (databaseFileName === undefined) {
     response.status(500);
-    response.send('Internal server error');
+    response.send(preamble + 'Cannot load the database');
+    return;
   }
 
   let studentData;
@@ -19,12 +22,13 @@ app.get('/students', (request, response) => {
     studentData = readFileSync(databaseFileName, 'utf8');
   } catch (error) {
     response.status(500);
-    response.send('Internal server error');
+    response.send(preamble + 'Cannot load the database');
+    return;
   }
 
-  const textOutput = studentsTextOutput(studentData).join('\n');
-  response.send(`This is the list of our students\n${textOutput}`);
-});
+  response.send(preamble + studentsTextOutput(studentData).join('\n'));
+  }
+);
 app.listen(1245);
 
 module.exports = app;
