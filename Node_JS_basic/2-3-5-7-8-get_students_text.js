@@ -1,6 +1,4 @@
-const fs = require('fs');
-
-function studentsTextOutput(data) {
+module.exports = function studentsTextOutput(data) {
   // DATA SETUP:
   const splitData = data
     .split('\n')
@@ -47,11 +45,11 @@ function studentsTextOutput(data) {
 
   // TEXT OUTPUT SETUP:
   const result = [`Number of students: ${students.length}`];
-  fields.forEach((fieldStudents, field) =>
-    result.push(`Number of students in ${field}: ${fieldStudents.length}. List: ${fieldStudents.join(', ')}`)
+  fields.forEach(
+    (fieldStudents, field) => result.push(
+      `Number of students in ${field}: ${fieldStudents.length}. List: ${fieldStudents.join(', ')}`,
+    ),
   );
 
   return result;
-}
-
-module.exports = studentsTextOutput;
+};

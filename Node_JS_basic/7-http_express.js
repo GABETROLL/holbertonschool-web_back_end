@@ -1,5 +1,5 @@
 const express = require('express');
-const readFileSync = require('fs').readFileSync;
+const { readFileSync } = require('fs');
 const studentsTextOutput = require('./2-3-5-7-8-get_students_text');
 
 const databaseFileName = process.argv[2];
@@ -13,7 +13,7 @@ app.get('/students', (request, response) => {
 
   if (databaseFileName === undefined) {
     response.status(500);
-    response.send(preamble + 'Cannot load the database');
+    response.send(`${preamble}Cannot load the database`);
     return;
   }
 
@@ -22,13 +22,12 @@ app.get('/students', (request, response) => {
     studentData = readFileSync(databaseFileName, 'utf8');
   } catch (error) {
     response.status(500);
-    response.send(preamble + 'Cannot load the database');
+    response.send(`${preamble}Cannot load the database`);
     return;
   }
 
   response.send(preamble + studentsTextOutput(studentData).join('\n'));
-  }
-);
+});
 app.listen(1245);
 
 module.exports = app;
