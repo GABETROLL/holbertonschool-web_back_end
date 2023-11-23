@@ -1,12 +1,29 @@
 const http = require('http');
-const countStudents = require('./3-read_file_async.js');
+const get_students_text = require('./2-3-5-7-8-get_students_text');
+const safeReadFileSync = get_students_text.safeReadFileSync;
+const studentsTextOutput = get_students_text.studentsTextOutput;
 
 const app = http.createServer((request, response) => {
-  response.writeHead(200);
-  response.end(request.url === '/'
-    ? 'Hello Holberton School!'
-    : ''
-  );
+  if (process.argv.length <= 1) {
+    response.writeHead(500);
+    response.end('Internal server error');
+  } else if (request.url === '/') {
+    response.writeHead(200);
+    response.end('Hello Holberton School!');
+  } else if (request.url === '/students') {
+    const databaseFileName = process.argv[2];
+    const data = safeReadFileSync(databaseFileName);
+    if (data === undefined) {
+      response.writeHead(500);
+      response.end('Internal server error');
+      return;
+    }
+    response.writeHead(200);
+    response.end(`This is the list of our students\n${studentsTextOutput(data)}`);
+  } else {
+    response.writeHead(404);
+    response.end('Invalid URL');
+  }
 });
 app.listen(1245);
 
