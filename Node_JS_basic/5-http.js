@@ -19,7 +19,8 @@ const app = http.createServer((request, response) => {
       return;
     }
     response.writeHead(200);
-    response.end(`This is the list of our students\n${studentsTextOutput(data)}`);
+    const textOutput = studentsTextOutput(data).join('\n');
+    response.end(`This is the list of our students\n${textOutput}`);
   } else {
     response.writeHead(404);
     response.end('Invalid URL');
