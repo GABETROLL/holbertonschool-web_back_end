@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises.js';
+import { readFile } from 'fs/promises';
 
 /**
  * Create a function, named ``readDatabase``, that accepts a file path as argument:
@@ -9,7 +9,7 @@ import { readFile } from 'fs/promises.js';
  *   of the firstname of students per fields.
  *
  * THIS FUNCTION ASSUMES THAT THE FILE BEING READ ('path')
- * IS 'database.csv', WHICH IS A DATABASE OF StUDENTS,
+ * IS 'database.csv', WHICH IS A DATABASE OF STUDENTS,
  * WITH THIS FORMAT:
  * firstname,lastname,age,field
 */
