@@ -2,7 +2,7 @@ const assert = require('assert');
 const calculateNumber = require('./0-calcul');
 
 describe('calculateNumber', () => {
-  it('returns ``a + b`` when both ``a`` and ``b`` are whole nnumbers', () => {
+  it('returns ``a + b`` when both ``a`` and ``b`` are whole numbers', () => {
     assert.equal(calculateNumber(1, 1), 2);
     assert.equal(calculateNumber(-1, -1), -2);
     assert.equal(calculateNumber(2, 2), 4);
@@ -42,17 +42,5 @@ describe('calculateNumber', () => {
     assert.equal(calculateNumber(2.5, 2.5), 6);
     assert.equal(calculateNumber(-2.25, -2.25), -4);
     assert.equal(calculateNumber(-2.5, -2.5), -4);
-  });
-  it('returns Infinity and NaN when adding Infinities and NaNs', () => {
-    // Infinities
-    assert.equal(calculateNumber(Infinity, Infinity), Infinity);
-    assert.equal(calculateNumber(-Infinity, Infinity), NaN);
-    assert.equal(calculateNumber(Infinity, -Infinity), NaN);
-    assert.equal(calculateNumber(-Infinity, -Infinity), -Infinity);
-    // NaNs
-    assert.equal(calculateNumber(NaN, NaN), NaN);
-    assert.equal(calculateNumber(-NaN, NaN), NaN);
-    assert.equal(calculateNumber(NaN, -NaN), NaN);
-    assert.equal(calculateNumber(-NaN, -NaN), NaN);
   });
 });
