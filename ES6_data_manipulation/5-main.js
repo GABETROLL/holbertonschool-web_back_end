@@ -30,6 +30,8 @@ b[-10000] = NaN;
 b[0] = NaN;
 
 console.log(b);
+console.log(b.slice(1, 3));
+console.log(b.byteLength);
 
 v[69] = 69;
 
@@ -46,4 +48,4 @@ console.log(v);
 
 console.log(createInt8TypedArray(10, 2, 89));
 console.log(createInt8TypedArray(10, 2, -10000));
-console.log(createInt8TypedArray(10, 100000, 1));
+// console.log(createInt8TypedArray(10, 100000, 1));

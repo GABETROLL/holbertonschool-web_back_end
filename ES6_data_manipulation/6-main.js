@@ -7,7 +7,7 @@ const result = setFromArray([
   true, false, null, undefined, -null, -undefined, -false, -true,
   [], [-1], [undefined],
   { }, { hi: 'hello', method() { return NaN; } },
-  Symbol(''), Symbol('hi'),
+  Symbol(''), Symbol(''),
   new Int8Array(10), new ArrayBuffer(10), new DataView(new ArrayBuffer(1)),
 ]);
 

@@ -24,13 +24,13 @@ export default function updateStudentGradeByCity(students, city, newGrades) {
   return students
     .filter((student) => student.location === city)
     .map((student) => {
-      const newStudent = newGrades
+      const studentGradeObj = newGrades
         .find((newStudent) => newStudent.studentId === student.id);
 
       return {
         ...student,
-        grade: newStudent && newStudent.grade
-          ? newStudent.grade : 'N/A',
+        grade: studentGradeObj && studentGradeObj.grade
+          ? studentGradeObj.grade : 'N/A',
       };
     });
 }
