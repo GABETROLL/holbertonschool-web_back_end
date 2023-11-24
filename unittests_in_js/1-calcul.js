@@ -1,4 +1,4 @@
-module.exports = function calculateNumber(a, b, type) {
+module.exports = function calculateNumber(type, a, b) {
   a = Math.round(a);
   b = Math.round(b);
 
