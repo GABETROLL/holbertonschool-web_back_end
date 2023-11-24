@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import express from 'express';
+import express from 'express.js';
 import routes from './routes/index.js';
 
 const app = express();
