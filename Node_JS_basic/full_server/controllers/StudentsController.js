@@ -8,7 +8,7 @@ export default class StudentsController {
 		try {
 			studentsByMajor = await readDatabase(databaseFileName);
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 
 			response.status(500);
 			response.send('Cannot load the database');
@@ -32,7 +32,7 @@ export default class StudentsController {
 		try {
 			studentsByMajor = await readDatabase(databaseFileName);
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 
 			response.status(500);
 			response.send('Cannot load the database');
