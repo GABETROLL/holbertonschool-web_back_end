@@ -1,6 +1,6 @@
 "use strict";
 
-const forEach = Array.prototype.forEach;
+var forEach = Array.prototype.forEach;
 
 function usePromiseLibrary(library, fakes) {
     if (typeof library === "undefined") {
