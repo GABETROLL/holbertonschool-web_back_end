@@ -9,10 +9,10 @@ describe('index page', () => {
       } else {
         try{
           chai.expect(body).to.equal('Welcome to the payment system');
+          done();
         } catch (error) {
           done(error);
         }
-        done();
       }
     });
   });
