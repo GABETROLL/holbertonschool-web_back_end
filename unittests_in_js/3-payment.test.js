@@ -1,20 +1,12 @@
 const sinon = require('sinon');
-const Utils = require('./utils');
+let Utils = require('./utils');
 const sendPaymentRequestToApi = require('./3-payment');
 const chai = require('chai');
 
 describe('sendPaymentRequestToApi', () => {
-  const sandbox = sinon.createSandbox();
-
-  beforeEach(() => {
-    sandbox.spy(Utils);
-  });
-
-  afterEach(() => {
-    sandbox.restore();
-  });
-
   it('uses ``Utils.calculateNumber`` to calculate the total', () => {
+    Utils = sinon.spy(Utils);
+
     const args = [2, 4];
     sendPaymentRequestToApi(...args);
 
