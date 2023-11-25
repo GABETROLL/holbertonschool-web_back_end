@@ -22,11 +22,11 @@ app.get('/available_payments', (request, response) => {
   });
 });
 app.post('/login/', (request, response) => {
-  const userName = request.body.username;
+  const userName = request.body.userName;
 
   if (userName === undefined) {
     response.status(500);
-    response.send('Must provide username.');
+    response.send('Must provide ``userName``.');
   } else {
     response.send(`Welcome ${userName}`);
   }

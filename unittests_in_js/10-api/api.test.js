@@ -72,15 +72,17 @@ describe('cart page', () => {
   });
 });
 
-describe('POST /login/ -d "username=..."', () => {
-  it('should respond with the message: ``Welcome ${username}``', (done) => {
-    request('http://localhost:7865/login', (error, response, body) => {
+describe('POST /login/ -d "userName=..."', () => {
+  it('should respond with the message: ``Welcome ${userName}``', (done) => {
+    const userName = 'GABETROLL';
+
+    request.post('http://localhost:7865/login', { userName }, (error, response, body) => {
       if (error) {
         done(error);
       } else {
         try {
           chai.expect(response.statusCode).to.equal(200);
-          chai.expect(body).to.equals(`Welcome ${username}`);
+          chai.expect(body).to.equals(`Welcome ${userName}`);
           done();
         } catch (error) {
           done(error);
