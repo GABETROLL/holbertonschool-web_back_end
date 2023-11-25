@@ -9,6 +9,7 @@ describe('index page', () => {
         done(error);
       } else {
         try{
+          chai.expect(response.statusCode).to.equal(200);
           chai.expect(body).to.equal('Welcome to the payment system');
           done();
         } catch (error) {
@@ -31,6 +32,7 @@ describe('cart page', () => {
         done(error);
       } else {
         try {
+          chai.expect(response.statusCode).to.equal(200);
           chai.expect(body).to.equal(`Payment methods for cart ${testId}`);
           done();
         } catch (error) {
@@ -42,7 +44,7 @@ describe('cart page', () => {
 
   it('responds with an error code of ``404``,\
  when the ``id`` is not a valid base 10 integer string representation', (done) => {
-    const testInvalidId = 'HHHH';
+    const testInvalidId = '98-HHHH5';
 
     request(`http://localhost:7865/cart/${testInvalidId}`, (error, response, body) => {
       if (error) {
