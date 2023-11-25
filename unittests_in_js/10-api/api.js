@@ -1,7 +1,10 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const port = 7865;
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.get('/', (request, response) => {
   response.send('Welcome to the payment system');
 });
@@ -19,7 +22,14 @@ app.get('/available_payments', (request, response) => {
   });
 });
 app.post('/login/', (request, response) => {
-  const userName = request.body;
-  response.send(`Welcome ${userName}`);
+  const userName = request.body.username;
+
+  if (userName === undefined) {
+    response.status(500);
+    response.send('Must provide username.');
+  } else {
+    response.send(`Welcome ${userName}`);
+  }
 });
+
 app.listen(port, () => console.log(`API available on localhost port ${port}`));
