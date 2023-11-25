@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const port = 7865;
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get('/', (request, response) => {
   response.send('Welcome to the payment system');

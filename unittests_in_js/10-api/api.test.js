@@ -72,17 +72,40 @@ describe('cart page', () => {
   });
 });
 
-describe('POST /login/ -d "userName=..."', () => {
-  it('should respond with the message: ``Welcome ${userName}``', (done) => {
-    const userName = 'GABETROLL';
+describe('POST /login/', () => {
+  it('should respond with the message: ``Welcome ${userName}``,\
+ when given the ``userName`` request body', (done) => {
+    const requestBody = {
+      'json': {
+        userName: 'GABETROLL',
+      },
+    };
 
-    request.post('http://localhost:7865/login', { userName }, (error, response, body) => {
+    request.post('http://localhost:7865/login', requestBody, (error, response, body) => {
       if (error) {
         done(error);
       } else {
         try {
           chai.expect(response.statusCode).to.equal(200);
-          chai.expect(body).to.equals(`Welcome ${userName}`);
+          chai.expect(body).to.equals(`Welcome ${requestBody.json.userName}`);
+          done();
+        } catch (error) {
+          done(error);
+        }
+      }
+    });
+  });
+
+  it('should response with an error code of 500 and\
+ the message: \'Must provide ``userName.``\', when not given the\
+ ``userName`` request body', (done) => {
+    request.post('http://localhost:7865/login', {}, (error, response, body) => {
+      if (error) {
+        done(error);
+      } else {
+        try {
+          chai.expect(response.statusCode).to.equal(500);
+          chai.expect(body).to.equals('Must provide ``userName``.');
           done();
         } catch (error) {
           done(error);
