@@ -2,13 +2,12 @@ const express = require('express');
 const { readFileSync } = require('fs');
 const studentsTextOutput = require('./2-3-5-7-8-get_students_text');
 
-const databaseFileName = process.argv[2];
-
 const app = express();
 app.get('/', (request, response) => {
   response.send('Hello Holberton School!');
 });
 app.get('/students', (request, response) => {
+  const databaseFileName = process.argv[2];
   const preamble = 'This is the list of our students\n';
 
   if (databaseFileName === undefined) {
@@ -26,6 +25,7 @@ app.get('/students', (request, response) => {
     return;
   }
 
+  response.status(200);
   response.send(preamble + studentsTextOutput(studentData).join('\n'));
 });
 app.listen(1245);
