@@ -1,4 +1,5 @@
-import { readFile } from 'fs/promises';
+import { promises} from 'fs';
+const readFile = promises.readFile;
 
 /**
  * Create a function, named ``readDatabase``, that accepts a file path as argument:

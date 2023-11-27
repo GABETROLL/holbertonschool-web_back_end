@@ -44,7 +44,7 @@ export default class StudentsController {
 
     if (urlMajor === undefined) {
       response.status(500);
-      response.send('Must input `major` URL parameter');
+      response.send('`major` URL param missing.');
     } else if (urlMajor === 'CS' || urlMajor === 'SWE') {
       const studentsInMajorString = studentsByMajor[urlMajor].join(', ');
       response.send(`List: ${studentsInMajorString}`);
