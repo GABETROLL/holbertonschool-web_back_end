@@ -1,6 +1,13 @@
 const fs = require('fs');
 
-function studentsTextOutput(data) {
+function countStudents(path) {
+  let data;
+  try {
+    data = fs.readFileSync(path, 'utf8');
+  } catch (error) {
+    throw new Error('Cannot load the database');
+  }
+
   // DATA SETUP:
   const splitData = data
     .split('\n')
@@ -45,28 +52,12 @@ function studentsTextOutput(data) {
     }
   }
 
-  // TEXT OUTPUT SETUP:
-  const result = [`Number of students: ${students.length}`];
-  fields.forEach(
-    (fieldStudents, field) => result.push(
-      `Number of students in ${field}: ${fieldStudents.length}. List: ${fieldStudents.join(', ')}`,
-    ),
-  );
+  // OUTPUT TEXT
+  console.log(`Number of students: ${students.length}`);
 
-  return result;
-}
-
-function countStudents(path) {
-  let data;
-  try {
-    data = fs.readFileSync(path, 'utf8');
-  } catch (error) {
-    throw new Error('Cannot load the database');
-  }
-
-  for (const line of studentsTextOutput(data)) {
-    console.log(line);
-  }
+  fields.forEach((fieldStudents, field) => {
+    console.log(`Number of students in ${field}: ${fieldStudents.length}. List: ${fieldStudents.join(', ')}`);
+  });
 }
 
 module.exports = countStudents;
