@@ -10,8 +10,8 @@ const readFile = promises.readFile;
  *   of the firstname of students per fields.
  *
  * THIS FUNCTION ASSUMES THAT THE FILE BEING READ ('path')
- * IS 'database.csv', WHICH IS A DATABASE OF STUDENTS,
- * WITH THIS FORMAT:
+ * HAS THE FORMAT IN 'database.csv' (students),
+ * WHICH IS:
  * firstname,lastname,age,field
 */
 export default function readDatabase(path) {

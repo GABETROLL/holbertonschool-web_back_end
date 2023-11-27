@@ -1,10 +1,10 @@
 /* eslint-disable import/extensions */
 import readDatabase from '../utils.js';
 
-const databaseFileName = process.argv[2];
-
 export default class StudentsController {
   static async getAllStudents(request, response) {
+    const databaseFileName = process.argv[2];
+
     let studentsByMajor;
     try {
       studentsByMajor = await readDatabase(databaseFileName);
@@ -29,6 +29,8 @@ export default class StudentsController {
   }
 
   static async getAllStudentsByMajor(request, response) {
+    const databaseFileName = process.argv[2];
+
     let studentsByMajor;
     try {
       studentsByMajor = await readDatabase(databaseFileName);
