@@ -56,7 +56,7 @@ function studentsTextOutput(data) {
   return result;
 }
 
-module.exports = function countStudents(path) {
+function countStudents(path) {
   let data;
   try {
     data = fs.readFileSync(path, 'utf8');
@@ -67,4 +67,6 @@ module.exports = function countStudents(path) {
   for (const line of studentsTextOutput(data)) {
     console.log(line);
   }
-};
+}
+
+module.exports = countStudents;
