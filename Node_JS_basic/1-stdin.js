@@ -1,5 +1,5 @@
 function end() {
-  process.stdout.write('\nThis important software is now closing\n');
+  process.stdout.write('This important software is now closing\n');
 }
 process.on('exit', end);
 process.on('SIGINT', end);
