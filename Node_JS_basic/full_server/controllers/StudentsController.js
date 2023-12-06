@@ -1,10 +1,9 @@
-/* eslint-disable import/extensions */
-import readDatabase from '../utils.js';
-
-const databaseFileName = process.argv[2];
+import readDatabase from '../utils';
 
 export default class StudentsController {
   static async getAllStudents(request, response) {
+    const databaseFileName = process.argv[2];
+
     let studentsByMajor;
     try {
       studentsByMajor = await readDatabase(databaseFileName);
@@ -29,6 +28,8 @@ export default class StudentsController {
   }
 
   static async getAllStudentsByMajor(request, response) {
+    const databaseFileName = process.argv[2];
+
     let studentsByMajor;
     try {
       studentsByMajor = await readDatabase(databaseFileName);
@@ -44,7 +45,7 @@ export default class StudentsController {
 
     if (urlMajor === undefined) {
       response.status(500);
-      response.send('Must input `major` URL parameter');
+      response.send('`major` URL param missing.');
     } else if (urlMajor === 'CS' || urlMajor === 'SWE') {
       const studentsInMajorString = studentsByMajor[urlMajor].join(', ');
       response.send(`List: ${studentsInMajorString}`);

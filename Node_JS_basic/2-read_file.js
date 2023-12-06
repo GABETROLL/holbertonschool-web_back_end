@@ -8,58 +8,58 @@ function countStudents(path) {
     throw new Error('Cannot load the database');
   }
 
-  // DATA SETUP:
-  const splitData = data
+  // 2D matrix of the CSV data
+  // If a line in the file was empty,
+  // the row is ``[]``.
+  const table = data
     .split('\n')
     .map((row) => row.split(','));
 
-  // The index of the header row in the CSV file,
-  // assuming that the first non-empty row is the header,
-  // and that the header has the field named: 'field'.
-  const headerRowIndex = splitData.findIndex((row) => row.length);
-  // The header row should have commas separating its fields,
-  // since it's a CSV file.
-  const columnNames = splitData[headerRowIndex];
-  // The students are all of the following rows that are not empty.
-  // They are stored an Array of student objects,
-  // with the column names as keys,
-  // and the student's row's values as values.
-  const students = splitData
-    .slice(headerRowIndex + 1)
-    .filter((row) => row.length === columnNames.length)
-    .map((student) => {
-      const result = {};
+  // index of first row in 'table' that's not empty
+  const tableHeadIndex = table.findIndex((row) => row.length);
+  // 1D matrix of the names of all of the columns in the CSV file
+  const tableHead = table[tableHeadIndex];
+  // the amount of values each (student) row must have,
+  // as decided from the first row, which is believed to be the header row,
+  // and is believed to be the one described above.
+  const validRowLength = tableHead.length;
 
-      for (const columnIndex in columnNames) {
-        if (Object.hasOwnProperty(columnNames, columnIndex)) {
-          const column = columnNames[columnIndex];
-          const studentColumnValue = student[columnIndex];
-          result[column] = studentColumnValue;
-        }
-      }
+  // 2D matrix of all of the (student) rows in 'table'
+  // that have the same length as ``tableHead``,
+  // since we're considering those invalid.
+  const tableBody = table
+    .slice(tableHeadIndex + 1)
+    .filter((row) => row.length === validRowLength);
 
-      return result;
-    });
+  // The fields we assume the students CSV file has
+  const firstnameIndex = tableHead.indexOf('firstname');
+  const fieldIndex = tableHead.indexOf('field');
 
-  // A map of all of the fields that the students study,
-  // and the list of the students that study it.
-  const fields = new Map();
-  for (const student of students) {
-    if (fields.has(student.field)) {
-      fields.get(student.field).push(student.firstname);
-    } else {
-      fields.set(student.field, [student.firstname]);
-    }
+  const result = {};
+
+  // result should now be an object
+  // with the 'field' values in each row as its keys,
+  // and [] as its values
+  for (const row of tableBody) {
+    result[row[fieldIndex]] = [];
+  }
+
+  // ``result`` should now be an object
+  // with the 'field' values in each row as its keys,
+  // and the 'firstname' of each (student) row that studies
+  // that 'field'.
+  for (const row of tableBody) {
+    result[row[fieldIndex]].push(row[firstnameIndex]);
   }
 
   // OUTPUT TEXT
-  let output = `Number of students: ${students.length}`;
+  let output = `Number of students: ${tableBody.length}`;
   console.log(output);
 
-  fields.forEach((fieldStudents, field) => {
+  for (const [field, fieldStudents] of Object.entries(result)) {
     output = `Number of students in ${field}: ${fieldStudents.length}. List: ${fieldStudents.join(', ')}`;
     console.log(output);
-  });
+  }
 }
 
 module.exports = countStudents;
