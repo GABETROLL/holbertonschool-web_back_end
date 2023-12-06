@@ -31,7 +31,7 @@ function countStudents(path) {
       const result = {};
 
       for (const columnIndex in columnNames) {
-        if (Object.hasOwn(columnNames, columnIndex)) {
+        if (Object.hasOwnProperty(columnNames, columnIndex)) {
           const column = columnNames[columnIndex];
           const studentColumnValue = student[columnIndex];
           result[column] = studentColumnValue;
