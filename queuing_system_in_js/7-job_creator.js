@@ -53,11 +53,11 @@ for (const jobData of jobs) {
   const job = push_notification_code_2.create('second job', jobData);
 
   job.on('complete', () => {
-    console.log(`Notification job ${job.id} completed`);
+    console.log(`Notification job #${job.id} completed`);
   }).on('failed', (errorMessage) => {
-    console.log(`Notification job ${job.id} failed: ${errorMessage}`);
+    console.log(`Notification job #${job.id} failed: ${errorMessage}`);
   }).on('progress', (progress) => {
-    console.log(`Notification job ${job.id} ${progress}% complete`);
+    console.log(`Notification job #${job.id} ${progress}% complete`);
   }).save((error) => {
     if (!error) {
       console.log(`Notification job created: ${job.id}`);
